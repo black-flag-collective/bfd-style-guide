@@ -5,7 +5,6 @@
 #
 # Required GitHub Secrets:
 #   CLOUDFLARE_API_KEY     - Cloudflare API Token
-#   CLOUDFLARE_EMAIL       - Cloudflare account email
 #   CLOUDFLARE_ACCOUNT_ID  - Cloudflare account ID
 
 name: Deploy to Staging
@@ -46,6 +45,3 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_KEY }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=bfd-style-guide --branch=staging --commit-dirty=true
-        env:
-          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
-          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
