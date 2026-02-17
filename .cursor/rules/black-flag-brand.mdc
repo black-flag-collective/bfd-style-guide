@@ -1,0 +1,366 @@
+# Black Flag Design Brand Guidelines
+
+> **Playful. Confident. Clear.**
+
+This document defines the visual identity system for Black Flag Design. All implementations MUST follow these specifications exactly.
+
+---
+
+## Brand Essence
+
+### Tagline
+
+**"Software so good you can't help but smile."**
+
+This tagline embodies our mission — building software that delights through quality and craft. The smile is earned, not manufactured.
+
+### Tone & Voice
+
+| Attribute | Description |
+|-----------|-------------|
+| **Playful** | We take our work seriously, not ourselves |
+| **Confident** | We know our craft and it shows in the details |
+| **Clear** | We say what we mean without jargon |
+| **Honest** | Direct, no-BS communication |
+| **Warm** | Approachable, never intimidating |
+
+### Design Philosophy
+
+- **Monochromatic base with playful pops** — Clean black/white foundation, strategic color for delight
+- **Generous white space** — Let content breathe, avoid density
+- **Compact type scale** — Montserrat for clarity, JetBrains Mono for code
+- **Subtle rounding** — 4px-12px radii for friendly but professional feel
+- **Comic shadows for personality** — Hard offset shadows on sticky notes and playful elements
+
+---
+
+## Typography System
+
+### Fonts
+
+| Font | Style | Usage |
+|------|-------|-------|
+| **Montserrat** | Geometric sans-serif | All UI text, headings, body |
+| **JetBrains Mono** | Monospace | Code blocks, tokens, technical references |
+
+```css
+font-family: "Montserrat", system-ui, sans-serif;
+font-family: "JetBrains Mono", monospace;
+```
+
+Both fonts are loaded via Google Fonts CDN (not self-hosted).
+
+### Font Weights
+
+| Weight | Name | Usage |
+|--------|------|-------|
+| **400** | Regular | Body text, descriptions |
+| **500** | Medium | Captions, emphasis, h3/h4 headings |
+| **600** | SemiBold | Available for strong emphasis |
+| **700** | Bold | Display headings, hero text |
+| **900** | Black | Maximum impact, logos, hero display |
+
+### Type Scale (base = 16px)
+
+BFD uses a compact type scale. Hierarchy is achieved through weight and tracking, not just size.
+
+| Element | Size | Line Height | Weight | Tracking |
+|---------|------|-------------|--------|----------|
+| **Display** | 3rem → 4.5rem (responsive) | 1.1 | 700 | -0.02em |
+| **h1** | 1.5rem (24px) | 1.1 | 400 | -0.02em |
+| **h2** | 1.25rem (20px) | 1.25 | 400 | -0.01em |
+| **h3** | 1.125rem (18px) | 1.3 | 500 | -0.01em |
+| **h4** | 1rem (16px) | 1.35 | 500 | 0 |
+| **Body** | 0.875rem (14px) | 1.6 | 400 | 0 |
+| **Caption** | 0.75rem (12px) | 1 | 500 | 0.1em / UPPERCASE |
+
+### Typography Rules
+
+1. **Hierarchy through weight and tracking** — h2 and h3 differ more by weight (400 vs 500) than by size
+2. **Only Captions are uppercase** — Everything else is sentence case
+3. **Brand name is Title Case:** "Black Flag Design" (never "black flag design" or "BLACK FLAG DESIGN")
+4. **Tight negative tracking** on headings (-0.02em to -0.01em) for a confident feel
+5. **Colors:** Light backgrounds → `#171717` (bf-text). Dark backgrounds → `#F2F2F2` (bf-dark-text)
+
+### CSS Classes
+
+| Class | Purpose |
+|-------|---------|
+| `.text-display` | 3rem → 4.5rem responsive display text |
+| `.text-caption` | 0.75rem uppercase caption |
+| `.text-caption-light` | Caption on light backgrounds |
+| `.text-caption-dark` | Caption on dark backgrounds |
+| `.heading-on-dark` | Light text on dark backgrounds |
+| `.font-montserrat` | Force Montserrat |
+| `.font-jetbrains` | Force JetBrains Mono |
+
+---
+
+## Color System: 80-10-10 Rule
+
+The BFD palette follows an **80-10-10** distribution: 80% monochromatic base, 10% brand accent ink, 10% playful pop colors.
+
+### Base Palette (80% visual weight)
+
+The monochromatic foundation. Clean, professional, breathable.
+
+| Token | Hex | Tailwind Class | CSS Variable | Usage |
+|-------|-----|----------------|-------------|-------|
+| Background | `#FFFFFF` | `bg-bf-bg` | `var(--bf-bg)` | Page backgrounds |
+| Surface | `#FAFAFA` | `bg-bf-surface` | `var(--bf-surface)` | Cards, elevated surfaces |
+| Text | `#171717` | `text-bf-text` | `var(--bf-text)` | Primary text, headings |
+| Muted | `#737373` | `text-bf-muted` | `var(--bf-muted)` | Secondary text, descriptions |
+| Border | `#E5E5E5` | `border-bf-border` | `var(--bf-border)` | Dividers, card borders |
+
+### Accent (10% visual weight)
+
+Brand ink — the signature BFD dark tone.
+
+| Token | Hex | Tailwind Class | CSS Variable | Usage |
+|-------|-----|----------------|-------------|-------|
+| Accent | `#181B20` | `bg-bf-accent` | `var(--bf-accent)` | Brand-heavy elements, dark sections |
+| Paper | `#F8F7F6` | `bg-bf-paper` | `var(--bf-paper)` | Warm paper-like backgrounds |
+| Button | `#171717` | `bg-bf-button` | `var(--bf-button)` | Primary buttons |
+| Button Text | `#FFFFFF` | `text-bf-button-text` | `var(--bf-button-text)` | Text on buttons |
+
+### Pop (10% visual weight)
+
+Playful moments. Used sparingly for delight, never as primary UI chrome.
+
+| Token | Hex | Tailwind Class | CSS Variable | Usage |
+|-------|-----|----------------|-------------|-------|
+| Warning/Yellow | `#FFC800` | `bg-bf-note-warning` | `var(--bf-note-warning)` | Sticky notes, warnings, highlights |
+| Success/Green | `#5AE09A` | `bg-bf-note-success` | `var(--bf-note-success)` | Success states, positive sticky notes |
+| Highlight/Purple | `#7B3EC4` | `bg-bf-note-highlight` | `var(--bf-note-highlight)` | Important highlights, featured notes |
+
+### Dark Mode Tokens
+
+| Token | Hex | Tailwind Class | CSS Variable |
+|-------|-----|----------------|-------------|
+| Dark BG | `#171717` | `bg-bf-dark-bg` | `var(--bf-dark-bg)` |
+| Dark Surface | `#1C1C1C` | `bg-bf-dark-surface` | `var(--bf-dark-surface)` |
+| Dark Text | `#F2F2F2` | `text-bf-dark-text` | `var(--bf-dark-text)` |
+| Dark Muted | `#999999` | `text-bf-dark-muted` | `var(--bf-dark-muted)` |
+| Dark Border | `#333333` | `border-bf-dark-border` | `var(--bf-dark-border)` |
+
+### Functional
+
+| Token | Hex | Usage |
+|-------|-----|-------|
+| Destructive | `#E04848` | Error states, delete actions |
+
+---
+
+## Subtle Rounding (NOT Sharp Corners)
+
+Unlike HW's zero-radius policy, BFD uses **subtle rounding** for a friendly-but-professional feel:
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `radius-sm` | 4px | Small inputs, tags |
+| `radius-md` | 8px | Cards, buttons |
+| `radius-lg` | 12px | Modals, large containers |
+| `radius-xl` | 16px | Hero cards, feature highlights |
+
+Never use fully rounded (`rounded-full`) on containers. Reserve it for avatars and small badges only.
+
+---
+
+## Shadows
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `shadow-sm` | `0 1px 2px rgba(0,0,0,0.05)` | Subtle elevation |
+| `shadow-md` | `0 4px 6px -1px rgba(0,0,0,0.1)` | Default card elevation |
+| `shadow-card` | `0 4px 24px rgba(0,0,0,0.06)` | Card resting state |
+| `shadow-card-hover` | `0 8px 40px rgba(0,0,0,0.1)` | Card hover state |
+| `shadow-float` | `0 20px 60px rgba(0,0,0,0.08)` | Floating/modal elements |
+| `shadow-comic` | `4px 4px 0px rgba(0,0,0,0.95)` | Comic-style hard shadow (sticky notes) |
+| `shadow-comic-sm` | `2px 2px 0px rgba(0,0,0,0.95)` | Smaller comic shadow variant |
+
+### Comic Shadow Rules
+
+- `shadow-comic` is the signature BFD personality element
+- Use ONLY on sticky notes, playful callouts, and informal elements
+- NEVER on primary UI chrome (nav, modals, form inputs)
+- Always pair with a solid border (`border-3` or `border-4`) and slight rotation for hand-placed feel
+
+---
+
+## Logo System
+
+### The Mark
+
+The Black Flag Design mark is 6 horizontal bars + a canton (solid rectangle, upper-right). Aspect ratio: **2:1** (280×140 viewBox).
+
+| Variant | File | Usage |
+|---------|------|-------|
+| **Dark** | `public/logos/mark-dark.svg` | Light backgrounds (`#171717` fill) |
+| **Light** | `public/logos/mark-light.svg` | Dark backgrounds (`#F2F2F2` fill) |
+
+### Logo Rules
+
+- Minimum size: **24×12 pixels** (preserve legibility of 6 bars)
+- Clear space: At least 1x mark height on all sides
+- Never stretch, rotate, or add effects (drop shadow, glow, etc.)
+- The canton is always upper-right — never mirror the mark
+
+### Favicons
+
+| File | Usage |
+|------|-------|
+| `public/favicon.svg` | Browser tab (dark variant) |
+| `public/favicon-white.svg` | Dark-mode browser tab (light variant) |
+
+---
+
+## Motion Guidelines
+
+BFD motion is **confident and purposeful** — quick entrances with gentle landings.
+
+### Signature Easing
+
+**Expo-out:** `cubic-bezier(0.16, 1, 0.3, 1)` — fast start, gentle landing. Used for most entrance animations.
+
+### Animation Tokens
+
+| Animation | Duration | Easing | Usage |
+|-----------|----------|--------|-------|
+| `fade-in` | 0.5s | ease-out | Generic fade entrance |
+| `slide-up` | 0.6s | ease-out | Content sliding up |
+| `blur-in` | 0.6s | expo-out | Blur-to-sharp entrance |
+| `scale-in` | 0.5s | expo-out | Scale from 0.95 to 1 |
+| `float-up` | 1.0s | expo-out | Large vertical entrance |
+| `marquee` | variable | linear | Continuous horizontal scroll |
+
+### Motion Rules
+
+1. **Entrance only** — Elements animate IN, never loop or pulse
+2. **Stagger children** — Lists/grids stagger with 60-80ms delay between items
+3. **Hover feedback** — `scale(1.02)` + shadow upgrade on interactive cards
+4. **Comic shadow hover** — Sticky notes shift shadow on hover for a physical "press" feel
+5. **Reduced motion** — All animations disabled via `prefers-reduced-motion: reduce`
+
+---
+
+## Component Patterns
+
+### Buttons (CVA-style variants)
+
+| Variant | Style |
+|---------|-------|
+| **Default** | Dark bg, white text, rounded-md |
+| **Outline** | Transparent bg, dark border, dark text |
+| **Ghost** | Transparent bg, no border, dark text |
+| **Link** | No bg, underline, dark text |
+
+Sizes: `sm` (h-8, text-xs), `default` (h-10, text-sm), `lg` (h-12, text-base)
+
+### Sticky Notes
+
+The signature BFD playful element:
+- Yellow/green/purple backgrounds from the Pop palette
+- `border-3` solid border, `#171717`
+- `shadow-comic` hard offset shadow
+- Slight CSS rotation (±1-3deg) for hand-placed feel
+- Never use on formal UI — only callouts, tips, and personality moments
+
+### Cards
+
+- `bg-bf-surface` or `bg-bf-bg`
+- `rounded-xl` (12px)
+- `shadow-card` → `shadow-card-hover` on hover
+- `border border-bf-border` optional
+
+---
+
+## Forbidden Patterns
+
+### ❌ NEVER DO
+
+**Color Prohibitions:**
+- Use Pop colors (yellow, green, purple) as primary UI backgrounds
+- Use `shadow-comic` on formal UI elements (buttons, nav, modals)
+- Mix dark mode and light mode tokens in the same component without a toggle
+
+**Typography Prohibitions:**
+- Use fonts other than Montserrat and JetBrains Mono
+- Use uppercase on anything except Captions
+- Use weight 600 for primary text (reserved for strong emphasis only)
+
+**Layout Prohibitions:**
+- Use `rounded-full` on containers (only on avatars/badges)
+- Use border-radius > 16px on any element
+- Stack sections without adequate spacing (min `py-16`)
+
+---
+
+## CSS Variables Reference
+
+```css
+:root {
+  /* BASE (80%) */
+  --bf-bg: #FFFFFF;
+  --bf-surface: #FAFAFA;
+  --bf-text: #171717;
+  --bf-muted: #737373;
+  --bf-border: #E5E5E5;
+
+  /* ACCENT (10%) */
+  --bf-accent: #181B20;
+  --bf-paper: #F8F7F6;
+  --bf-button: #171717;
+  --bf-button-text: #FFFFFF;
+
+  /* POP (10%) */
+  --bf-note-warning: #FFC800;
+  --bf-note-success: #5AE09A;
+  --bf-note-highlight: #7B3EC4;
+
+  /* DARK MODE */
+  --bf-dark-bg: #171717;
+  --bf-dark-surface: #1C1C1C;
+  --bf-dark-text: #F2F2F2;
+  --bf-dark-muted: #999999;
+  --bf-dark-border: #333333;
+
+  /* FUNCTIONAL */
+  --bf-destructive: #E04848;
+
+  /* Typography */
+  --font-sans: "Montserrat", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+```
+
+---
+
+## Tailwind Classes Reference
+
+```
+/* BASE (80%) */
+bg-bf-bg         bg-bf-surface       bg-bf-border
+text-bf-text     text-bf-muted       border-bf-border
+
+/* ACCENT (10%) */
+bg-bf-accent     bg-bf-paper         bg-bf-button
+text-bf-accent   text-bf-button-text
+
+/* POP (10%) */
+bg-bf-note-warning  bg-bf-note-success  bg-bf-note-highlight
+
+/* DARK MODE */
+bg-bf-dark-bg    bg-bf-dark-surface  text-bf-dark-text
+text-bf-dark-muted  border-bf-dark-border
+
+/* SHADOWS */
+shadow-sm   shadow-md   shadow-card   shadow-card-hover   shadow-float
+shadow-comic   shadow-comic-sm
+
+/* RADII */
+rounded-sm (4px)  rounded-md (8px)  rounded-lg (12px)  rounded-xl (16px)
+```
+
+---
+
+**This brand guide is the single source of truth. Deviations are not permitted.**
