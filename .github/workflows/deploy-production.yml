@@ -1,0 +1,63 @@
+# Deploy to Cloudflare Pages - Production
+# Black Flag Design Style Guide
+#
+# Triggered on push to main branch
+#
+# Required GitHub Secrets:
+#   CLOUDFLARE_API_KEY     - Cloudflare API Token
+#   CLOUDFLARE_EMAIL       - Cloudflare account email
+#   CLOUDFLARE_ACCOUNT_ID  - Cloudflare account ID
+
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build & Deploy to Production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_KEY }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=bfd-style-guide --branch=main --commit-dirty=true
+        env:
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+
+      - name: Verify deployment
+        run: |
+          echo "Waiting for deployment to propagate..."
+          sleep 15
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://bfd-style-guide.pages.dev)
+          if [ "$STATUS" -eq 200 ]; then
+            echo "Production deployment verified (HTTP $STATUS)"
+          else
+            echo "Warning: Got HTTP $STATUS from bfd-style-guide.pages.dev"
+            exit 1
+          fi
