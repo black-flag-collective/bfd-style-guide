@@ -10,6 +10,7 @@ export default defineConfig({
     port: 4350,
   },
   vite: {
+    // @ts-ignore - Vite version mismatch between @tailwindcss/vite and Astro's bundled Vite
     plugins: [tailwindcss()],
   },
 });
