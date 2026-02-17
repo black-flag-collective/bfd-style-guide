@@ -1,0 +1,1 @@
+export { VendorLogosSection } from "./VendorLogosSection";

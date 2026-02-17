@@ -10,6 +10,9 @@ const navItems = [
   { label: "Typography", href: "#typography" },
   { label: "Motion", href: "#motion" },
   { label: "Components", href: "#components" },
+  { label: "Navigation", href: "#navigation" },
+  { label: "Vendors", href: "#vendor-logos" },
+  { label: "Data", href: "#data-patterns" },
   { label: "Voice", href: "#voice" },
 ];
 

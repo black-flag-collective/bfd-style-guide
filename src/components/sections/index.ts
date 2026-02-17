@@ -4,4 +4,7 @@ export { ColorSection } from "./ColorSection";
 export { TypographySection } from "./TypographySection";
 export { MotionSection } from "./MotionSection";
 export { ComponentSection } from "./ComponentSection";
+export { NavigationSection } from "./NavigationSection";
+export { VendorLogosSection } from "./VendorLogosSection";
+export { DataPatternsSection } from "./DataPatternsSection";
 export { VoiceSection } from "./VoiceSection";
