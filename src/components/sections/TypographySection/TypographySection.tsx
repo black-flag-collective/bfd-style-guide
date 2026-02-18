@@ -2,131 +2,302 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 
-const activeFont = { name: "Montserrat", foundry: "Google Fonts", style: "Geometric Sans-Serif" };
+const ease = [0.16, 1, 0.3, 1] as const;
 
-const weightShowcase = [
-  { weight: 400, label: "400", sample: "Regular" },
-  { weight: 500, label: "500", sample: "Medium" },
-  { weight: 700, label: "700", sample: "Bold" },
-  { weight: 900, label: "900", sample: "Black" },
-];
+const activeFont = {
+  name: "Montserrat",
+  foundry: "Google Fonts",
+  style: "Geometric Sans-Serif",
+};
+
+const monoFont = {
+  name: "JetBrains Mono",
+  foundry: "JetBrains",
+  style: "Monospace",
+};
 
 const typeScale = [
-  { name: "Display", size: "3rem", lineHeight: "1.1", weight: 700, weightName: "Bold", usage: "Hero sections, major page titles" },
-  { name: "H1", size: "1.5rem", lineHeight: "1.1", weight: 400, weightName: "Regular", usage: "Page headings" },
-  { name: "H2", size: "1.25rem", lineHeight: "1.25", weight: 400, weightName: "Regular", usage: "Section headings" },
-  { name: "H3", size: "1.125rem", lineHeight: "1.3", weight: 500, weightName: "Medium", usage: "Card titles" },
-  { name: "Body", size: "0.875rem", lineHeight: "1.6", weight: 400, weightName: "Regular", usage: "Primary reading text" },
-  { name: "CTA", size: "0.875rem", lineHeight: "1", weight: 500, weightName: "Medium", usage: "Buttons, action labels", isCta: true },
+  {
+    label: "Display",
+    specimen: "Software so good you can't help but smile",
+    size: "3rem",
+    mobileSize: "2rem",
+    lineHeight: "1.1",
+    weight: 700,
+    weightLabel: "Bold 700",
+  },
+  {
+    label: "H1",
+    specimen: "Broken software sucks. We fix it.",
+    size: "1.5rem",
+    lineHeight: "1.2",
+    weight: 400,
+    weightLabel: "Regular 400",
+  },
+  {
+    label: "H2",
+    specimen: "Everything your tech team should be",
+    size: "1.25rem",
+    lineHeight: "1.25",
+    weight: 400,
+    weightLabel: "Regular 400",
+  },
+  {
+    label: "H3",
+    specimen: "From idea to production at warp speed",
+    size: "1.125rem",
+    lineHeight: "1.3",
+    weight: 500,
+    weightLabel: "Medium 500",
+  },
+  {
+    label: "Body",
+    specimen:
+      "We become your tech team. Something off? We fix it. No extra charge. Business idea to production services — that's what we do.",
+    size: "0.875rem",
+    lineHeight: "1.6",
+    weight: 400,
+    weightLabel: "Regular 400",
+  },
+  {
+    label: "CTA",
+    specimen: "Get started now",
+    size: "0.875rem",
+    lineHeight: "1",
+    weight: 500,
+    weightLabel: "Medium 500 / uppercase",
+    uppercase: true,
+    tracking: "0.05em",
+  },
 ];
 
-const cardThemes = {
+const weightShowcase = [
+  { weight: 400, sample: "Regular" },
+  { weight: 500, sample: "Medium" },
+  { weight: 700, sample: "Bold" },
+  { weight: 900, sample: "Black" },
+];
+
+const themes = {
   light: {
-    card: "bg-bf-bg",
-    title: "text-bf-text",
-    subtitle: "text-bf-muted",
-    fontName: "text-bf-text",
-    fontMeta: "text-bf-muted",
-    weightText: "text-bf-text",
-    weightLabel: "text-bf-muted",
-    scaleMono: "text-bf-muted",
+    bg: "bg-bf-bg",
+    text: "#171717",
+    muted: "#6B655E",
+    border: "border-bf-border/30",
     toggleBg: "bg-bf-surface hover:bg-bf-border",
-    toggleIcon: "text-bf-muted",
-    textMain: "text-bf-text",
-    textSub: "text-bf-muted",
-    borderColor: "border-bf-border/30",
+    labelBg: "bg-bf-surface",
+    labelBorder: "border-bf-border",
+    monoBg: "bg-bf-surface",
   },
   dark: {
-    card: "bg-bf-dark-bg",
-    title: "text-bf-dark-text",
-    subtitle: "text-bf-dark-muted",
-    fontName: "text-bf-dark-text",
-    fontMeta: "text-bf-dark-muted",
-    weightText: "text-bf-dark-text",
-    weightLabel: "text-bf-dark-muted",
-    scaleMono: "text-bf-dark-muted",
+    bg: "bg-bf-dark-bg",
+    text: "#F0EEE9",
+    muted: "#8A847D",
+    border: "border-white/10",
     toggleBg: "bg-white/10 hover:bg-white/20",
-    toggleIcon: "text-bf-dark-text",
-    textMain: "text-bf-dark-text",
-    textSub: "text-bf-dark-muted",
-    borderColor: "border-white/10",
+    labelBg: "bg-white/5",
+    labelBorder: "border-white/10",
+    monoBg: "bg-white/5",
   },
 };
 
-type ThemeMode = "light" | "dark";
+type Mode = "light" | "dark";
 
 export function TypographySection() {
-  const [themeMode, setThemeMode] = useState<ThemeMode>("light");
-  const theme = cardThemes[themeMode];
-  const isDark = themeMode === "dark";
+  const [mode, setMode] = useState<Mode>("light");
+  const t = themes[mode];
+  const isDark = mode === "dark";
 
   return (
-    <section id="typography" className="relative z-40 px-6 pt-6">
-      <div className="relative" style={{ height: "calc(100vh + 200px)" }}>
-        <div
-          className={`sticky top-6 ${theme.card} rounded-xl shadow-card overflow-hidden transition-colors duration-500`}
-          style={{ height: "calc(100vh - 48px)" }}
-        >
-          <div className="h-full px-8 md:px-12 lg:px-16 pt-6 pb-4 flex flex-col overflow-hidden">
-            <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col min-h-0">
+    <section id="typography" className={`relative ${t.bg} py-16 sm:py-24 transition-colors duration-500`}>
+      <div className="px-4 sm:px-8 md:px-12 lg:px-16">
+        <div className="max-w-6xl mx-auto">
+              {/* Header */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="flex items-start justify-between mb-4"
+                transition={{ duration: 0.6, ease }}
+                className="mb-12 sm:mb-16"
               >
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 mb-5">
+                  <span className="text-[11px] font-medium tracking-[0.2em] uppercase transition-colors duration-500" style={{ color: t.muted }}>03</span>
+                  <div className={`h-px flex-1 max-w-16 sm:max-w-24 ${t.border}`} />
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                <div className="flex items-center gap-3 sm:gap-4">
                   <button
                     type="button"
-                    onClick={() => setThemeMode(isDark ? "light" : "dark")}
-                    className={`p-2 rounded-lg transition-all duration-300 ${theme.toggleBg}`}
+                    onClick={() => setMode(isDark ? "light" : "dark")}
+                    className={`p-2 rounded-lg transition-all duration-300 flex-shrink-0 ${t.toggleBg}`}
                     aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
                   >
-                    <motion.div initial={false} animate={{ rotate: isDark ? 180 : 0 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}>
-                      {isDark ? <Moon className={`w-4 h-4 ${theme.toggleIcon}`} /> : <Sun className={`w-4 h-4 ${theme.toggleIcon}`} />}
+                    <motion.div
+                      initial={false}
+                      animate={{ rotate: isDark ? 180 : 0 }}
+                      transition={{ duration: 0.3, ease }}
+                    >
+                      {isDark ? (
+                        <Moon size={16} strokeWidth={1.75} style={{ color: t.text }} />
+                      ) : (
+                        <Sun size={16} strokeWidth={1.75} style={{ color: t.muted }} />
+                      )}
                     </motion.div>
                   </button>
                   <div>
-                    <h2 className={`text-2xl font-bold ${theme.title} transition-colors duration-500`}>Typography</h2>
-                    <p className={`text-xs ${theme.subtitle} transition-colors duration-500`}>Montserrat + JetBrains Mono. Weight-driven hierarchy.</p>
+                    <h2
+                      className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 transition-colors duration-500"
+                      style={{ color: t.text }}
+                    >
+                      Typography
+                    </h2>
+                    <p
+                      className="text-base max-w-xl transition-colors duration-500"
+                      style={{ color: t.muted }}
+                    >
+                      Montserrat + JetBrains Mono. Weight-driven hierarchy.
+                    </p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className={`text-lg font-medium ${theme.fontName} transition-colors duration-500`}>{activeFont.name}</p>
-                  <p className={`text-xs ${theme.fontMeta} transition-colors duration-500`}>{activeFont.foundry} &middot; {activeFont.style}</p>
+
+                {/* Font meta */}
+                <div className="hidden sm:flex items-center gap-6 flex-shrink-0 pt-1">
+                  <div className="text-right">
+                    <p className="text-sm font-semibold transition-colors duration-500" style={{ color: t.text }}>
+                      {activeFont.name}
+                    </p>
+                    <p className="text-[10px] transition-colors duration-500" style={{ color: t.muted }}>
+                      {activeFont.foundry} &middot; {activeFont.style}
+                    </p>
+                  </div>
+                  <div className={`w-px h-8 ${t.border}`} />
+                  <div className="text-right">
+                    <p
+                      className="text-sm font-semibold transition-colors duration-500"
+                      style={{ color: t.text, fontFamily: "var(--font-mono)" }}
+                    >
+                      {monoFont.name}
+                    </p>
+                    <p className="text-[10px] transition-colors duration-500" style={{ color: t.muted }}>
+                      {monoFont.foundry} &middot; {monoFont.style}
+                    </p>
+                  </div>
+                </div>
                 </div>
               </motion.div>
 
-              <motion.div key={`scale-${themeMode}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} className="flex-1 flex flex-col min-h-0">
-                <div className="flex-1 flex flex-col justify-between py-2">
-                  {typeScale.map((item) => (
-                    <div key={item.name} className="flex items-baseline gap-6">
-                      <p
-                        className={`${theme.textMain} transition-colors duration-500`}
-                        style={{ fontSize: item.size, lineHeight: item.lineHeight, fontWeight: item.weight, textTransform: item.isCta ? "uppercase" : "none", letterSpacing: item.isCta ? "0.025em" : "normal" }}
+              {/* Type scale specimens */}
+              <motion.div
+                key={`scale-${mode}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, ease }}
+                className="flex-1 space-y-6 sm:space-y-8"
+              >
+                {typeScale.map((item) => (
+                  <div key={item.label}>
+                    {/* Label pill */}
+                    <div className="flex items-center gap-3 mb-2">
+                      <span
+                        className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${t.labelBg} ${t.labelBorder} transition-colors duration-500`}
+                        style={{ color: t.muted }}
                       >
-                        {item.name}
-                      </p>
-                      <p className={`text-xs ${theme.scaleMono} font-mono whitespace-nowrap transition-colors duration-500`}>
-                        {item.size} / {item.weightName} {item.weight}{item.isCta ? " / uppercase" : ""}
-                      </p>
+                        {item.label}
+                      </span>
+                      <span
+                        className="text-[10px] font-mono transition-colors duration-500"
+                        style={{ color: t.muted }}
+                      >
+                        {item.size} / {item.weightLabel}
+                      </span>
                     </div>
-                  ))}
+
+                    {/* Specimen */}
+                    <p
+                      className="transition-colors duration-500 max-w-3xl"
+                      style={{
+                        color: t.text,
+                        fontSize: ("mobileSize" in item && item.mobileSize)
+                          ? `clamp(${(item as any).mobileSize}, 5vw, ${item.size})`
+                          : item.size,
+                        lineHeight: item.lineHeight,
+                        fontWeight: item.weight,
+                        textTransform: item.uppercase ? "uppercase" : "none",
+                        letterSpacing: item.tracking ?? "normal",
+                      }}
+                    >
+                      {item.specimen}
+                    </p>
+                  </div>
+                ))}
+
+                {/* Mono specimen */}
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${t.labelBg} ${t.labelBorder} transition-colors duration-500`}
+                      style={{ color: t.muted }}
+                    >
+                      Mono
+                    </span>
+                    <span
+                      className="text-[10px] font-mono transition-colors duration-500"
+                      style={{ color: t.muted }}
+                    >
+                      0.8125rem / Regular 400
+                    </span>
+                  </div>
+                  <p
+                    className={`rounded-lg px-4 py-3 transition-colors duration-500 ${t.monoBg}`}
+                    style={{
+                      color: t.text,
+                      fontSize: "0.8125rem",
+                      lineHeight: "1.6",
+                      fontFamily: "var(--font-mono)",
+                    }}
+                  >
+                    const fixBrokenSoftware = async (client: Client) =&gt; &#123;
+                    <br />
+                    &nbsp;&nbsp;return await deploy(client.project, &#123; fast: true &#125;);
+                    <br />
+                    &#125;;
+                  </p>
                 </div>
-                <div className={`pt-3 border-t ${theme.borderColor} flex items-center justify-between`}>
-                  <p className={`text-xs uppercase tracking-widest ${theme.textSub} transition-colors duration-500`}>Weights</p>
-                  <div className="flex gap-8">
-                    {weightShowcase.map((item) => (
-                      <div key={item.label} className="flex items-baseline gap-2">
-                        <span className={`text-base ${theme.weightText} transition-colors duration-500`} style={{ fontWeight: item.weight }}>{item.sample}</span>
-                        <span className={`text-xs ${theme.weightLabel} transition-colors duration-500`}>{item.weight}</span>
+              </motion.div>
+
+              {/* Weights strip */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.2, ease }}
+                className={`mt-6 sm:mt-8 pt-4 border-t ${t.border}`}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <p
+                    className="text-xs uppercase tracking-widest font-bold transition-colors duration-500"
+                    style={{ color: t.muted }}
+                  >
+                    Weights
+                  </p>
+                  <div className="flex flex-wrap gap-6 sm:gap-10">
+                    {weightShowcase.map((w) => (
+                      <div key={w.weight} className="flex items-baseline gap-2">
+                        <span
+                          className="text-base sm:text-lg transition-colors duration-500"
+                          style={{ color: t.text, fontWeight: w.weight }}
+                        >
+                          {w.sample}
+                        </span>
+                        <span
+                          className="text-[10px] sm:text-xs font-mono transition-colors duration-500"
+                          style={{ color: t.muted }}
+                        >
+                          {w.weight}
+                        </span>
                       </div>
                     ))}
                   </div>
                 </div>
               </motion.div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

@@ -1,44 +1,51 @@
 import { motion } from "framer-motion";
-import { Clerk, Convex, Cloudflare, GitHubDark } from "developer-icons";
+import { Inbox, AlertTriangle, Check } from "lucide-react";
+import { SectionHeader } from "@/components/SectionHeader";
+import { Clerk, Convex, Cloudflare, GitHubLight } from "developer-icons";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 /* ── Badge data ── */
 const statusBadges = [
-  { label: "Backlog", bg: "bg-blue-50", text: "text-blue-700", border: "border-blue-200" },
-  { label: "In Progress", bg: "bg-yellow-50", text: "text-yellow-700", border: "border-yellow-200" },
-  { label: "Done", bg: "bg-green-50", text: "text-green-700", border: "border-green-200" },
-  { label: "Won't Do", bg: "bg-gray-50", text: "text-gray-600", border: "border-gray-200" },
+  { label: "Backlog", bg: "bg-bf-cobalt/10", text: "text-bf-cobalt", border: "border-bf-cobalt/20" },
+  { label: "In Progress", bg: "bg-bf-amber/10", text: "text-bf-amber", border: "border-bf-amber/20" },
+  { label: "Done", bg: "bg-bf-mint/10", text: "text-bf-mint", border: "border-bf-mint/20" },
+  { label: "Won't Do", bg: "bg-bf-slate/10", text: "text-bf-slate", border: "border-bf-slate/20" },
 ];
 
 const severityBadges = [
-  { label: "None", bg: "bg-gray-50", text: "text-gray-600", border: "border-gray-200" },
-  { label: "Low", bg: "bg-blue-50", text: "text-blue-700", border: "border-blue-200" },
-  { label: "Medium", bg: "bg-yellow-50", text: "text-yellow-700", border: "border-yellow-200" },
-  { label: "High", bg: "bg-orange-50", text: "text-orange-700", border: "border-orange-200" },
-  { label: "Critical", bg: "bg-red-50", text: "text-red-700", border: "border-red-200" },
+  { label: "None", bg: "bg-bf-slate/10", text: "text-bf-slate", border: "border-bf-slate/20" },
+  { label: "Low", bg: "bg-bf-cobalt/10", text: "text-bf-cobalt", border: "border-bf-cobalt/20" },
+  { label: "Medium", bg: "bg-bf-gold/10", text: "text-bf-gold", border: "border-bf-gold/20" },
+  { label: "High", bg: "bg-bf-amber/10", text: "text-bf-amber", border: "border-bf-amber/20" },
+  { label: "Critical", bg: "bg-bf-crimson/10", text: "text-bf-crimson", border: "border-bf-crimson/20" },
 ];
 
 const baseBadges = [
-  { label: "Default", classes: "bg-bf-text text-white border-transparent" },
-  { label: "Secondary", classes: "bg-bf-surface text-bf-text border-bf-border" },
-  { label: "Destructive", classes: "bg-bf-destructive text-white border-transparent" },
-  { label: "Outline", classes: "bg-transparent text-bf-text border-bf-border" },
+  { label: "Default", classes: "btn-active border-transparent" },
+  { label: "Secondary", classes: "bg-white/10 text-bf-dark-text border-white/20" },
+  { label: "Destructive", classes: "btn-destructive border-transparent" },
+  { label: "Outline", classes: "bg-transparent text-bf-dark-text border-white/20" },
 ];
 
 /* ── Table data with real vendor icons ── */
 const vendorIcons: Record<string, React.FC<{ size?: number; className?: string }>> = {
   Clerk,
-  GitHub: GitHubDark,
+  GitHub: GitHubLight,
   Cloudflare,
   Convex,
 };
+
+function VantaIcon({ size = 16, className = "" }: { size?: number; className?: string }) {
+  return <img src="/vendors/vanta.png" alt="Vanta" width={size} height={size} className={`rounded-full ${className}`} />;
+}
 
 const tableRows = [
   { name: "User sync", vendor: "Clerk", status: "Done", severity: "None", time: "2 m ago" },
   { name: "Deploy hook", vendor: "GitHub", status: "In Progress", severity: "Medium", time: "5 m ago" },
   { name: "DNS update", vendor: "Cloudflare", status: "Backlog", severity: "High", time: "12 m ago" },
   { name: "DB migration", vendor: "Convex", status: "Done", severity: "Low", time: "1 h ago" },
+  { name: "SOC 2 audit", vendor: "Vanta", status: "In Progress", severity: "Critical", time: "30 m ago" },
 ];
 
 function Badge({ label, bg, text, border }: { label: string; bg: string; text: string; border: string }) {
@@ -51,30 +58,15 @@ function Badge({ label, bg, text, border }: { label: string; bg: string; text: s
 
 export function DataPatternsSection() {
   return (
-    <section id="data-patterns" className="relative z-[60] px-6 pt-6">
-      <div className="relative" style={{ height: "calc(100vh + 500px)" }}>
-        <div
-          className="sticky top-6 bg-bf-dark-bg rounded-xl shadow-float overflow-hidden"
-          style={{ height: "calc(100vh - 48px)" }}
-        >
-          <div className="h-full px-8 md:px-12 lg:px-16 pt-24 pb-8 flex flex-col overflow-y-auto">
-            <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col">
-              {/* Header */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease }}
-                viewport={{ once: true }}
-                className="mb-10"
-              >
-                <h2 className="text-4xl md:text-5xl font-bold text-bf-dark-text mb-3">
-                  Data&nbsp;Patterns
-                </h2>
-                <p className="text-base text-bf-dark-muted max-w-xl">
-                  Badges, tables, avatars, and state handling for data-dense admin
-                  interfaces.
-                </p>
-              </motion.div>
+    <section id="data-patterns" className="relative bg-bf-dark-bg py-16 sm:py-24">
+      <div className="px-4 sm:px-8 md:px-12 lg:px-16">
+        <div className="max-w-6xl mx-auto">
+              <SectionHeader
+                number="11"
+                title="Data Patterns"
+                description="Badges, tables, avatars, and state handling for data-dense admin interfaces."
+                dark
+              />
 
               {/* ── Badges ── */}
               <div className="mb-10">
@@ -116,23 +108,24 @@ export function DataPatternsSection() {
                 <h3 className="text-sm font-medium text-bf-dark-text mb-4 uppercase tracking-wider">
                   Data Table
                 </h3>
-                <div className="rounded-xl border-2 border-white/10 overflow-hidden">
-                  <table className="w-full">
+                <div className="rounded-xl border-2 border-bf-dark-border overflow-hidden">
+                  <div className="overflow-x-auto">
+                  <table className="w-full min-w-[600px]">
                     <thead>
-                      <tr className="border-b border-white/10 bg-white/[0.03]">
-                        <th className="h-11 px-4 text-left text-xs font-black text-bf-dark-muted uppercase tracking-wider">
+                      <tr className="border-b border-bf-dark-border bg-bf-dark-surface">
+                        <th className="h-11 px-4 text-left text-xs font-black text-bf-dark-text/70 uppercase tracking-wider">
                           Event
                         </th>
-                        <th className="h-11 px-4 text-left text-xs font-black text-bf-dark-muted uppercase tracking-wider">
+                        <th className="h-11 px-4 text-left text-xs font-black text-bf-dark-text/70 uppercase tracking-wider">
                           Vendor
                         </th>
-                        <th className="h-11 px-4 text-left text-xs font-black text-bf-dark-muted uppercase tracking-wider">
+                        <th className="h-11 px-4 text-left text-xs font-black text-bf-dark-text/70 uppercase tracking-wider">
                           Status
                         </th>
-                        <th className="h-11 px-4 text-left text-xs font-black text-bf-dark-muted uppercase tracking-wider">
+                        <th className="h-11 px-4 text-left text-xs font-black text-bf-dark-text/70 uppercase tracking-wider">
                           Severity
                         </th>
-                        <th className="h-11 px-4 text-right text-xs font-black text-bf-dark-muted uppercase tracking-wider">
+                        <th className="h-11 px-4 text-right text-xs font-black text-bf-dark-text/70 uppercase tracking-wider">
                           Time
                         </th>
                       </tr>
@@ -145,20 +138,20 @@ export function DataPatternsSection() {
                         const severityStyle =
                           severityBadges.find((b) => b.label === row.severity) ??
                           severityBadges[0];
-                        const VendorIcon = vendorIcons[row.vendor];
+                        const VendorIcon = row.vendor === "Vanta" ? VantaIcon : vendorIcons[row.vendor];
 
                         return (
                           <tr
                             key={i}
-                            className="border-b border-white/5 hover:bg-white/5 transition-colors"
+                            className="border-b border-white/5 hover:bg-bf-paper/5 transition-colors"
                           >
-                            <td className="p-4 text-sm font-medium text-bf-dark-text">
+                            <td className="p-4 text-sm font-medium" style={{ color: 'var(--bf-dark-text)' }}>
                               {row.name}
                             </td>
                             <td className="p-4">
-                              <span className="inline-flex items-center gap-2 text-sm text-bf-dark-muted">
+                              <span className="inline-flex items-center gap-2 text-sm text-bf-dark-text">
                                 {VendorIcon && (
-                                  <VendorIcon size={16} className="opacity-60" />
+                                  <VendorIcon size={16} className="opacity-80" />
                                 )}
                                 {row.vendor}
                               </span>
@@ -179,7 +172,7 @@ export function DataPatternsSection() {
                                 border={severityStyle.border}
                               />
                             </td>
-                            <td className="p-4 text-sm text-bf-dark-muted text-right font-mono">
+                            <td className="p-4 text-sm text-right font-mono text-bf-dark-text/60">
                               {row.time}
                             </td>
                           </tr>
@@ -187,6 +180,7 @@ export function DataPatternsSection() {
                       })}
                     </tbody>
                   </table>
+                  </div>
                 </div>
               </div>
 
@@ -195,7 +189,7 @@ export function DataPatternsSection() {
                 <h3 className="text-sm font-medium text-bf-dark-text mb-4 uppercase tracking-wider">
                   Avatars
                 </h3>
-                <div className="flex items-end gap-8">
+                <div className="flex flex-wrap items-end gap-4 sm:gap-8">
                   {[
                     { initials: "KP", size: "w-8 h-8", textSize: "text-xs", grad: "from-indigo-400 to-purple-500", px: "32" },
                     { initials: "JD", size: "w-10 h-10", textSize: "text-sm", grad: "from-emerald-400 to-teal-500", px: "40" },
@@ -214,18 +208,18 @@ export function DataPatternsSection() {
                     </div>
                   ))}
 
-                  <div className="h-16 w-px bg-white/10 mx-2" />
+                  <div className="hidden sm:block h-16 w-px bg-bf-paper/10 mx-2" />
 
                   {/* Ring variants */}
                   <div className="text-center">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-sm font-bold mb-2 mx-auto ring-2 ring-amber-400 ring-offset-2 ring-offset-bf-dark-bg">
-                      ?
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold mb-2 mx-auto ring-2 ring-bf-gold ring-offset-2 ring-offset-bf-dark-bg">
+                      <span className="text-sm">?</span>
                     </div>
                     <p className="text-[10px] text-bf-dark-muted">Unmatched</p>
                   </div>
                   <div className="text-center">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-sm font-bold mb-2 mx-auto ring-2 ring-green-500 ring-offset-2 ring-offset-bf-dark-bg">
-                      ✓
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold mb-2 mx-auto ring-2 ring-bf-mint ring-offset-2 ring-offset-bf-dark-bg">
+                      <Check size={16} strokeWidth={2.5} className="text-white" />
                     </div>
                     <p className="text-[10px] text-bf-dark-muted">Online</p>
                   </div>
@@ -239,15 +233,15 @@ export function DataPatternsSection() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Loading */}
-                  <div className="rounded-xl border-2 border-white/10 p-5">
+                  <div className="rounded-xl border-2 border-bf-dark-border p-5">
                     <p className="text-xs font-black text-bf-dark-text uppercase tracking-wider mb-3">
                       Loading
                     </p>
                     <div className="space-y-3">
-                      <div className="h-4 w-3/4 rounded-md bg-white/10 animate-pulse" />
-                      <div className="h-4 w-1/2 rounded-md bg-white/10 animate-pulse" />
-                      <div className="h-4 w-5/6 rounded-md bg-white/10 animate-pulse" />
-                      <div className="h-20 w-full rounded-lg bg-white/10 animate-pulse" />
+                      <div className="h-4 w-3/4 rounded-md bg-bf-paper/10 animate-pulse" />
+                      <div className="h-4 w-1/2 rounded-md bg-bf-paper/10 animate-pulse" />
+                      <div className="h-4 w-5/6 rounded-md bg-bf-paper/10 animate-pulse" />
+                      <div className="h-20 w-full rounded-lg bg-bf-paper/10 animate-pulse" />
                     </div>
                     <p className="text-[10px] text-bf-dark-muted mt-3 font-mono">
                       data === undefined &rarr; skeleton
@@ -255,13 +249,13 @@ export function DataPatternsSection() {
                   </div>
 
                   {/* Empty */}
-                  <div className="rounded-xl border-2 border-white/10 p-5 flex flex-col">
+                  <div className="rounded-xl border-2 border-bf-dark-border p-5 flex flex-col">
                     <p className="text-xs font-black text-bf-dark-text uppercase tracking-wider mb-4">
                       Empty State
                     </p>
                     <div className="flex-1 flex flex-col items-center justify-center py-4">
-                      <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-3">
-                        <span className="text-2xl text-bf-dark-muted">📭</span>
+                      <div className="w-12 h-12 rounded-full bg-bf-paper/5 flex items-center justify-center mb-3">
+                        <Inbox size={24} strokeWidth={1.75} className="text-bf-dark-muted" />
                       </div>
                       <p className="text-sm font-medium text-bf-dark-text mb-1">
                         No events found
@@ -276,13 +270,13 @@ export function DataPatternsSection() {
                   </div>
 
                   {/* Error */}
-                  <div className="rounded-xl border-2 border-white/10 p-5">
+                  <div className="rounded-xl border-2 border-bf-dark-border p-5">
                     <p className="text-xs font-black text-bf-dark-text uppercase tracking-wider mb-3">
                       Error State
                     </p>
                     <div className="rounded-lg border-2 border-red-500/30 bg-red-950/30 p-4">
                       <div className="flex items-start gap-2">
-                        <span className="text-red-400 text-sm mt-0.5">⚠</span>
+                        <AlertTriangle size={16} strokeWidth={2} className="text-red-400 mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-bold text-red-300">
                             Connection failed
@@ -302,8 +296,6 @@ export function DataPatternsSection() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

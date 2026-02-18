@@ -9,75 +9,79 @@ export function HeroSection() {
   };
 
   return (
-    <section id="welcome" className="relative z-10 px-6 pt-6">
-      <div
-        className="bg-bf-bg rounded-xl shadow-card overflow-hidden"
-        style={{ height: "calc(100vh - 48px)" }}
-      >
-        <div className="h-full flex flex-col justify-center px-8 md:px-12 lg:px-16 pt-24">
-          <div className="max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, filter: "blur(8px)" }}
-              animate={{ opacity: 1, filter: "blur(0)" }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="mb-12 md:mb-16 flex items-center gap-6"
-            >
-              <BrandLogo variant="dark" size="md" />
-              <div className="h-10 w-px bg-bf-border" />
-              <span className="text-2xl md:text-3xl font-medium tracking-tight text-bf-text">
-                Black Flag Design
-              </span>
-            </motion.div>
+    <section id="welcome" className="relative bg-bf-bg min-h-screen">
+      <div className="flex flex-col min-h-screen px-6 sm:px-12 md:px-20 lg:px-28">
+          <motion.div
+            initial={{ opacity: 0, filter: "blur(8px)" }}
+            animate={{ opacity: 1, filter: "blur(0)" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="pt-10 sm:pt-14 md:pt-16 flex items-center gap-4 sm:gap-5"
+          >
+            <BrandLogo variant="dark" size="md" />
+            <div className="h-7 sm:h-8 w-px bg-bf-border" />
+            <span className="text-sm sm:text-base font-medium tracking-tight text-bf-muted">
+              Black Flag Design
+            </span>
+          </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[40px] md:text-5xl lg:text-6xl font-bold text-bf-text leading-tight mb-10 md:mb-12"
-            >
-              Software so good you can&rsquo;t help but smile
-            </motion.h1>
-
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-5"
-            >
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-medium tracking-widest uppercase text-bf-text">
+          {/* Zone 2: Main content — centered in remaining space */}
+          <div className="flex-1 flex flex-col justify-center -mt-4 sm:-mt-6">
+            <div className="max-w-5xl">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                className="flex items-center gap-4 mb-5 sm:mb-6 md:mb-8"
+              >
+                <span className="text-[11px] sm:text-xs font-medium tracking-[0.2em] uppercase text-bf-muted">
                   Brand Guidelines
                 </span>
-                <div className="h-px flex-1 bg-bf-border max-w-24" />
-              </div>
-              <p className="text-lg text-bf-muted leading-relaxed max-w-2xl">
-                Welcome to the Black Flag Design brand guidelines. They define
-                our visual identity, component language, and voice. Use your best
-                judgement and reference this document as the canonical source.
-              </p>
-            </motion.div>
-          </div>
-        </div>
+                <div className="h-px flex-1 bg-bf-border max-w-16 sm:max-w-24" />
+              </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 1 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2"
-        >
-          <button
-            onClick={scrollToContent}
-            className="text-bf-muted hover:text-bf-text transition-colors"
-            aria-label="Scroll to content"
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="font-bold text-bf-text leading-[1.08] tracking-tight"
+                style={{ fontSize: "clamp(2.75rem, 8vw, 7rem)" }}
+              >
+                Software so good you can&rsquo;t help but smile
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="text-base sm:text-lg md:text-xl text-bf-muted leading-relaxed max-w-lg sm:max-w-xl"
+                style={{ marginTop: "clamp(4rem, 8vw, 10rem)" }}
+              >
+                Visual identity, component language, and voice. Reference this
+                document as the canonical source.
+              </motion.p>
+            </div>
+          </div>
+
+          {/* Zone 3: Scroll cue — anchored at bottom */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 1 }}
+            className="pb-8 sm:pb-10 flex justify-center"
           >
-            <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            <button
+              onClick={scrollToContent}
+              className="text-bf-muted hover:text-bf-text transition-colors"
+              aria-label="Scroll to content"
             >
-              <ChevronDown className="h-6 w-6" strokeWidth={1.5} />
-            </motion.div>
-          </button>
-        </motion.div>
+              <motion.div
+                animate={{ y: [0, 6, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <ChevronDown size={20} strokeWidth={1.5} />
+              </motion.div>
+            </button>
+          </motion.div>
       </div>
     </section>
   );

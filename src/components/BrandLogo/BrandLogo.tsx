@@ -12,7 +12,7 @@ const sizeMap = {
 
 export function BrandLogo({ variant = "dark", className = "", size = "md" }: BrandLogoProps) {
   const { width, height } = sizeMap[size];
-  const fill = variant === "dark" ? "#171717" : "#F2F2F2";
+  const fill = variant === "dark" ? "#111111" : "#F0EEE9";
 
   return (
     <svg
@@ -22,14 +22,19 @@ export function BrandLogo({ variant = "dark", className = "", size = "md" }: Bra
       height={height}
       className={className}
       aria-label="Black Flag Design mark"
+      role="img"
     >
-      <rect x="0" y="5" width="280" height="15" fill={fill} />
-      <rect x="0" y="28" width="280" height="15" fill={fill} />
-      <rect x="0" y="51" width="280" height="15" fill={fill} />
-      <rect x="0" y="74" width="280" height="15" fill={fill} />
-      <rect x="0" y="97" width="280" height="15" fill={fill} />
-      <rect x="0" y="120" width="280" height="15" fill={fill} />
-      <rect x="168" y="0" width="112" height="70" fill={fill} />
+      <title>Our Black Flag that we carry as a part of each team we join. One for all and all for one. Encouragement to move fast, ethically, and shape the world we want to be a part of.</title>
+      {/* 7 horizontal stripes — matches designer's original asset */}
+      <rect y="0" width="280" height="16" fill={fill} />
+      <rect y="23" width="280" height="16" fill={fill} />
+      <rect y="46" width="280" height="16" fill={fill} />
+      <rect y="69" width="280" height="16" fill={fill} />
+      <rect y="92" width="280" height="16" fill={fill} />
+      <rect y="115" width="280" height="16" fill={fill} />
+      <rect y="138" width="280" height="2" fill={fill} />
+      {/* Solid canton — top-right quadrant */}
+      <rect x="154" y="0" width="126" height="70" fill={fill} />
     </svg>
   );
 }

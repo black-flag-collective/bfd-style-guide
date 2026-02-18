@@ -1,17 +1,41 @@
 import { motion } from "framer-motion";
 import { Download } from "lucide-react";
 import { BrandLogo } from "@/components/BrandLogo";
+import { SectionHeader } from "@/components/SectionHeader";
+
+const hierarchy = [
+  {
+    tier: "Primary",
+    name: "Black Flag Mark",
+    rule: "Default in product UI. Use this whenever the brand is already clear from context.",
+  },
+  {
+    tier: "Secondary",
+    name: "Black Flag Lockup",
+    rule: "Use in headers, invoices, and first-impression moments where the full name must be visible.",
+  },
+  {
+    tier: "Tertiary",
+    name: "Silly Face",
+    rule: "Character mark only. Use sparingly for playful moments, never as the default product logo.",
+  },
+];
 
 const logoAssets = [
-  { name: "Mark (Dark)", description: "For light backgrounds", file: "/logos/mark-dark.svg", preview: "dark" as const },
-  { name: "Mark (Light)", description: "For dark backgrounds", file: "/logos/mark-light.svg", preview: "light" as const },
+  { name: "Mark (Dark)", description: "Primary mark for light backgrounds", file: "/logos/mark-dark.svg", preview: "dark" as const },
+  { name: "Mark (Light)", description: "Primary mark for dark backgrounds", file: "/logos/mark-light.svg", preview: "light" as const },
+  { name: "Lockup (Dark)", description: "Wordmark + flag for light backgrounds", file: "/logos/lockup-dark.svg", preview: "dark" as const },
+  { name: "Lockup (Light)", description: "Wordmark + flag for dark backgrounds", file: "/logos/lockup-light.svg", preview: "light" as const },
+  { name: "Character (Dark)", description: "Mouth icon for light backgrounds", file: "/logos/silly-face-dark.png", preview: "dark" as const },
+  { name: "Character (Light)", description: "Mouth icon for dark backgrounds", file: "/logos/silly-face-light.png", preview: "light" as const },
   { name: "Favicon", description: "Browser tab icon", file: "/favicon.svg", preview: "dark" as const },
 ];
 
 const guidelines = [
   { title: "Clear Space", description: "Maintain clear space equal to mark height around the logo at all times." },
-  { title: "Minimum Size", description: "Never smaller than 24\u00d712px. Always maintain the 2:1 aspect ratio." },
+  { title: "Minimum Size", description: "Never smaller than 24x12px. Always maintain the 2:1 aspect ratio for the mark." },
   { title: "Aspect Ratio", description: "The mark is always 2:1 (width:height). No stretching, no exceptions." },
+  { title: "Hierarchy", description: "Primary mark first, lockup second, silly face third. Do not invert this order." },
 ];
 
 export function LogoSection() {
@@ -25,37 +49,46 @@ export function LogoSection() {
   };
 
   return (
-    <section id="logo" className="relative z-20 px-6 pt-6">
-      <div className="relative" style={{ height: "calc(100vh + 200px)" }}>
-        <div
-          className="sticky top-6 bg-bf-dark-bg rounded-xl shadow-float overflow-hidden"
-          style={{ height: "calc(100vh - 48px)" }}
-        >
-          <div className="h-full px-8 md:px-12 lg:px-16 pt-24 pb-8 flex flex-col overflow-y-auto">
-            <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col">
+    <section id="logo" className="relative bg-bf-dark-bg py-16 sm:py-24">
+      <div className="px-4 sm:px-8 md:px-12 lg:px-16">
+        <div className="max-w-6xl mx-auto">
+              <SectionHeader
+                number="01"
+                title="Logo"
+                description="Black Flag uses a strict logo hierarchy: mark first, lockup second, character mark third."
+                dark
+              />
+
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
                 viewport={{ once: true }}
-                className="mb-8"
+                className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6"
               >
-                <h2 className="text-4xl md:text-5xl font-bold text-bf-dark-text mb-3">Logo</h2>
-                <p className="text-base text-bf-dark-muted max-w-xl">
-                  The Black Flag mark: 6 horizontal bars with a solid canton. Always 2:1 aspect ratio.
-                </p>
+                {hierarchy.map((item, index) => (
+                  <div
+                    key={item.tier}
+                    className="bg-bf-dark-surface rounded-lg px-4 py-3 border border-bf-dark-border"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <p className="text-[10px] text-bf-dark-muted uppercase tracking-wider mb-1">{item.tier}</p>
+                    <h3 className="text-sm font-medium text-bf-dark-text mb-1">{item.name}</h3>
+                    <p className="text-xs text-bf-dark-muted leading-relaxed">{item.rule}</p>
+                  </div>
+                ))}
               </motion.div>
 
-              <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                   viewport={{ once: true }}
-                  className="bg-white/5 border border-white/10 rounded-lg p-4 md:p-6 flex flex-col items-center justify-center aspect-[4/3]"
+                  className="bg-bf-dark-surface border border-bf-dark-border rounded-lg p-4 md:p-6 flex flex-col items-center justify-center aspect-[4/3]"
                 >
                   <BrandLogo variant="light" size="lg" className="h-10 md:h-16 lg:h-20" />
-                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-gray-500 uppercase tracking-wider">Light on Dark</p>
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-dark-muted uppercase tracking-wider">Primary Mark - Light on Dark</p>
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -65,24 +98,70 @@ export function LogoSection() {
                   className="bg-bf-bg rounded-lg p-4 md:p-6 flex flex-col items-center justify-center shadow-card aspect-[4/3]"
                 >
                   <BrandLogo variant="dark" size="lg" className="h-10 md:h-16 lg:h-20" />
-                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-muted uppercase tracking-wider">Dark on Light</p>
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-muted uppercase tracking-wider">Primary Mark - Dark on Light</p>
+                </motion.div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  viewport={{ once: true }}
+                  className="bg-bf-dark-surface border border-bf-dark-border rounded-lg p-4 md:p-6 flex flex-col items-center justify-center aspect-[4/3]"
+                >
+                  <img src="/logos/lockup-light.svg" alt="Black Flag lockup on dark background" className="w-[78%] max-w-[360px] h-auto" />
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-dark-muted uppercase tracking-wider">Secondary Lockup - Light on Dark</p>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  viewport={{ once: true }}
+                  className="bg-bf-bg rounded-lg p-4 md:p-6 flex flex-col items-center justify-center shadow-card aspect-[4/3]"
+                >
+                  <img src="/logos/lockup-dark.svg" alt="Black Flag lockup on light background" className="w-[78%] max-w-[360px] h-auto" />
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-muted uppercase tracking-wider">Secondary Lockup - Dark on Light</p>
+                </motion.div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  viewport={{ once: true }}
+                  className="bg-bf-dark-surface border border-bf-dark-border rounded-lg p-4 md:p-6 flex flex-col items-center justify-center aspect-[4/3]"
+                >
+                  <img src="/logos/silly-face-light.png" alt="Mouth character mark on dark background" className="h-16 md:h-20 w-auto" />
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-dark-muted uppercase tracking-wider">Character Mark - Light on Dark</p>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  viewport={{ once: true }}
+                  className="bg-bf-bg rounded-lg p-4 md:p-6 flex flex-col items-center justify-center shadow-card aspect-[4/3]"
+                >
+                  <img src="/logos/silly-face-dark.png" alt="Mouth character mark on light background" className="h-16 md:h-20 w-auto" />
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-muted uppercase tracking-wider">Character Mark - Dark on Light</p>
                 </motion.div>
               </div>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 viewport={{ once: true }}
                 className="mb-6"
               >
-                <h3 className="text-sm font-medium text-bf-dark-text mb-3 uppercase tracking-wider">Download Assets</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <h3 className="text-sm font-medium text-bf-dark-text mb-4 uppercase tracking-wider">Download Assets</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {logoAssets.map((asset) => (
                     <button
                       key={asset.name}
                       onClick={() => handleDownload(asset.file, asset.file.split("/").pop() || asset.name)}
-                      className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 flex items-center gap-3 hover:bg-white/10 transition-colors group"
+                      className="bg-bf-dark-surface border border-bf-dark-border rounded-lg px-4 py-3 flex items-center gap-3 hover:bg-white/10 transition-colors group"
                     >
                       <div className={`w-10 h-10 rounded-md flex items-center justify-center border ${asset.preview === "light" ? "bg-bf-dark-bg border-white/20" : "bg-bf-bg border-bf-border"}`}>
                         <img src={asset.file} alt={asset.name} className="w-6 h-6 object-contain" />
@@ -91,7 +170,7 @@ export function LogoSection() {
                         <p className="text-sm text-bf-dark-text font-medium">{asset.name}</p>
                         <p className="text-xs text-bf-dark-muted">{asset.description}</p>
                       </div>
-                      <Download className="w-4 h-4 text-bf-dark-muted group-hover:text-bf-dark-text transition-colors" />
+                      <Download size={16} strokeWidth={1.75} className="text-bf-dark-muted group-hover:text-bf-dark-text transition-colors" />
                     </button>
                   ))}
                 </div>
@@ -103,17 +182,15 @@ export function LogoSection() {
                     key={item.title}
                     initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.25 + index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.4, delay: 0.45 + index * 0.05, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true }}
-                    className="bg-white/5 rounded-lg px-4 py-3 border border-white/10"
+                    className="bg-bf-dark-surface rounded-lg px-4 py-3 border border-bf-dark-border"
                   >
                     <h3 className="text-sm font-medium text-bf-dark-text mb-1">{item.title}</h3>
                     <p className="text-xs text-bf-dark-muted leading-relaxed">{item.description}</p>
                   </motion.div>
                 ))}
               </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

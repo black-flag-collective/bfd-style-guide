@@ -5,6 +5,9 @@ import { ColorSection } from "@/components/sections/ColorSection";
 import { TypographySection } from "@/components/sections/TypographySection";
 import { MotionSection } from "@/components/sections/MotionSection";
 import { ComponentSection } from "@/components/sections/ComponentSection";
+import { FormPatternsSection } from "@/components/sections/FormPatternsSection";
+import { SurfacePatternsSection } from "@/components/sections/SurfacePatternsSection";
+import { FeedbackSection } from "@/components/sections/FeedbackSection";
 import { NavigationSection } from "@/components/sections/NavigationSection";
 import { VendorLogosSection } from "@/components/sections/VendorLogosSection";
 import { DataPatternsSection } from "@/components/sections/DataPatternsSection";
@@ -15,7 +18,7 @@ import { ScrollBackground } from "@/components/effects";
 function App() {
   return (
     <ScrollBackground>
-      <div className="min-h-screen relative z-0">
+      <div className="min-h-screen">
         <Navigation />
         <main>
           <HeroSection />
@@ -24,6 +27,9 @@ function App() {
           <TypographySection />
           <MotionSection />
           <ComponentSection />
+          <FormPatternsSection />
+          <SurfacePatternsSection />
+          <FeedbackSection />
           <NavigationSection />
           <VendorLogosSection />
           <DataPatternsSection />

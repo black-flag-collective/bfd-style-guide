@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 
 export function Footer() {
   return (
-    <footer className="relative z-[80] px-6 pt-6 pb-6">
-      <div className="bg-bf-dark-bg rounded-xl shadow-float overflow-hidden py-12">
-        <div className="container mx-auto px-6">
+    <footer className="relative bg-bf-dark-bg py-12">
+      <div className="px-4 sm:px-8 md:px-12 lg:px-16">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

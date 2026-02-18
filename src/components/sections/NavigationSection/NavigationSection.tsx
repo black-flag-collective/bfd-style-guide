@@ -1,18 +1,41 @@
 import { useState, Fragment } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  IconBuilding,
+  IconBolt,
+  IconCurrencyDollar,
+  IconServer,
+  IconUsers,
+  IconX,
+} from "@tabler/icons-react";
+import {
+  Search,
+  Settings,
+  Folder,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
+import { SectionHeader } from "@/components/SectionHeader";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-/* ───────────────────────────────────────────────── */
-/* DATA — mirrors real admin-app-convex nav items    */
-/* ───────────────────────────────────────────────── */
+const ICON_SIZE = 20;
+const ICON_STROKE = 1.75;
 
-const sidebarItems = [
-  { icon: "🏢", label: "Clients", shortcut: "⌘1" },
-  { icon: "⚡", label: "Events", shortcut: "⌘2" },
-  { icon: "💲", label: "Code Gen", shortcut: "⌘3" },
-  { icon: "🖥", label: "Infrastructure", shortcut: "⌘4" },
-  { icon: "👥", label: "People", shortcut: "⌘5" },
+type TablerIcon = typeof IconBuilding;
+
+interface SidebarItem {
+  Icon: TablerIcon;
+  label: string;
+}
+
+const sidebarItems: SidebarItem[] = [
+  { Icon: IconBuilding, label: "Clients" },
+  { Icon: IconBolt, label: "Events" },
+  { Icon: IconCurrencyDollar, label: "Code Gen" },
+  { Icon: IconServer, label: "Infrastructure" },
+  { Icon: IconUsers, label: "People" },
 ];
 
 const detailPageTabs = [
@@ -30,32 +53,32 @@ const settingsTabItems = ["Access", "Vendors", "Meetings"];
 
 const filterSortTabs = ["All", "Linear", "GitHub", "Webhook", "BFD"];
 
-const breadcrumbSets = [
-  { path: ["Clients", "Acme Corp", "Project Alpha"], icon: "A" },
-  { path: ["Clients", "Black Flag", "Foundry", "Events"], icon: "⚑" },
-  { path: ["Settings", "Vendors", "GitHub"], icon: "⚙" },
-  { path: ["Events", "Webhook Delivery #4821"], icon: "⚡" },
-  { path: ["Clients", "HealthCo", "HW Portal", "Files", "docs/"], icon: "📁" },
-];
+const ipodFaces = ["Connection", "History", "Performance", "Summary"];
 
-const pageHeaderExamples = [
-  {
-    title: "Clients",
-    description: "All client accounts and their projects",
-    breadcrumbs: [] as string[],
-    actions: ["+ New Client"],
-  },
-  {
-    title: "Events",
-    description: "Incoming webhooks, issue updates, and deployment events",
-    breadcrumbs: [] as string[],
-    actions: ["Filter", "Export"],
-  },
-];
+const drawerTabs = ["Overview", "Entity", "Timeline", "Artifacts", "Raw Source"];
 
-/* ───────────────────────────────────────────────── */
-/* COMPONENT                                        */
-/* ───────────────────────────────────────────────── */
+const rangeOptions = ["24h", "7d", "30d"];
+
+interface BreadcrumbExample {
+  path: string[];
+  icon: "building" | "bolt" | "settings" | "folder";
+  iconLabel: string;
+}
+
+const breadcrumbIcons: Record<BreadcrumbExample["icon"], TablerIcon | typeof Settings | typeof Folder> = {
+  building: IconBuilding,
+  bolt: IconBolt,
+  settings: Settings as unknown as TablerIcon,
+  folder: Folder as unknown as TablerIcon,
+};
+
+const breadcrumbSets: BreadcrumbExample[] = [
+  { path: ["Clients", "Acme Corp", "Project Alpha"], icon: "building", iconLabel: "A" },
+  { path: ["Clients", "Black Flag", "Foundry", "Events"], icon: "bolt", iconLabel: "BF" },
+  { path: ["Settings", "Vendors", "GitHub"], icon: "settings", iconLabel: "S" },
+  { path: ["Events", "Webhook Delivery #4821"], icon: "bolt", iconLabel: "E" },
+  { path: ["Clients", "HealthCo", "HW Portal", "Files", "docs/"], icon: "folder", iconLabel: "F" },
+];
 
 export function NavigationSection() {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
@@ -63,38 +86,20 @@ export function NavigationSection() {
   const [activeDetailTab, setActiveDetailTab] = useState(0);
   const [activeSettingsTab, setActiveSettingsTab] = useState(0);
   const [activeFilterTab, setActiveFilterTab] = useState(0);
-  const [tabVariant, setTabVariant] = useState<"platinum" | "solid">("solid");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeIpodFace, setActiveIpodFace] = useState(0);
+  const [activeDrawerTab, setActiveDrawerTab] = useState(0);
+  const [activeRange, setActiveRange] = useState(0);
 
   return (
-    <section id="navigation" className="relative z-[55] px-6 pt-6">
-      <div className="relative" style={{ height: "calc(100vh + 2200px)" }}>
-        <div
-          className="sticky top-6 bg-bf-bg rounded-xl shadow-card overflow-hidden"
-          style={{ height: "calc(100vh - 48px)" }}
-        >
-          <div className="h-full px-8 md:px-12 lg:px-16 pt-24 pb-8 flex flex-col overflow-y-auto">
-            <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col">
-              {/* ═══════════════════════════════════════════ */}
-              {/* HEADER                                     */}
-              {/* ═══════════════════════════════════════════ */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease }}
-                viewport={{ once: true }}
-                className="mb-16"
-              >
-                <h2 className="text-4xl md:text-5xl font-bold text-bf-text mb-3">
-                  Navigation
-                </h2>
-                <p className="text-base text-bf-muted max-w-2xl">
-                  Four tiers for complex admin interfaces. Primary sidebar for
-                  top-level context, page headers with breadcrumbs, secondary tabs
-                  for sub-pages, and filter bars for data views. Every pattern
-                  below is drawn from the real admin app.
-                </p>
-              </motion.div>
+    <section id="navigation" className="relative bg-bf-bg py-16 sm:py-24">
+      <div className="px-4 sm:px-8 md:px-12 lg:px-16">
+        <div className="max-w-6xl mx-auto">
+              <SectionHeader
+                number="09"
+                title="Navigation"
+                description="Six tiers of navigation for complex admin interfaces. From primary sidebar to page-level platinum tabs, content-level segmented controls, drawer underline tabs, and filter bars. Every pattern below is the canonical specification — no alternatives, no variations."
+              />
 
               {/* ═══════════════════════════════════════════ */}
               {/* 1. PRIMARY: Sidebar                        */}
@@ -104,96 +109,106 @@ export function NavigationSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.05, ease }}
                 viewport={{ once: true }}
-                className="mb-16"
+                className="mb-10"
               >
-                <h3 className="text-sm font-medium text-bf-text mb-2 uppercase tracking-wider">
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
                   1 · Primary — Sidebar
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  Hover-expand from 64 → 208 px. Active item uses a dark fill with 3 px left
-                  accent bar. Collapsed shows only icons with right-side tooltips;
-                  expanded reveals labels. User avatar pinned to bottom.
+                  Hover-expand from 64 → 208 px. Active item uses a clean white fill
+                  with subtle border and 3 px left accent bar. Collapsed shows only
+                  icons with right-side tooltips; expanded reveals labels. User avatar
+                  pinned to bottom.
                 </p>
 
-                <div className="flex gap-6 items-start">
-                  {/* Interactive sidebar demo */}
+                <div className="flex flex-col lg:flex-row gap-8 items-start">
+                  {/* Interactive sidebar — full-height preview matching AdminSidebar.tsx */}
                   <div
-                    className="relative bg-bf-surface rounded-xl border-2 border-bf-border overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] flex-shrink-0 flex flex-col"
-                    style={{ width: sidebarExpanded ? 208 : 64, minHeight: 340 }}
+                    className="relative rounded-2xl overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] flex-shrink-0 flex flex-col bg-gradient-to-b from-[#ececec] to-[#dfdfdf] border border-[#bdbdbd] shadow-sm"
+                    style={{ width: sidebarExpanded ? 208 : 64, height: 540 }}
                     onMouseEnter={() => setSidebarExpanded(true)}
                     onMouseLeave={() => setSidebarExpanded(false)}
                   >
-                    {/* Logo zone */}
+                    {/* Logo zone — h-20, crossfade between icon mark and full lockup */}
                     <div
-                      className={`flex items-center h-16 px-2.5 border-b border-bf-border ${
+                      className={`flex items-center h-20 px-3 ${
                         sidebarExpanded ? "justify-start" : "justify-center"
                       }`}
                     >
-                      <div className="h-8 w-8 rounded bg-bf-text flex items-center justify-center flex-shrink-0">
-                        <span className="text-white text-xs font-black">⚑</span>
-                      </div>
-                      <AnimatePresence>
-                        {sidebarExpanded && (
-                          <motion.span
-                            initial={{ opacity: 0, width: 0 }}
-                            animate={{ opacity: 1, width: "auto" }}
-                            exit={{ opacity: 0, width: 0 }}
-                            className="ml-2.5 text-sm font-bold text-bf-text whitespace-nowrap overflow-hidden"
-                          >
-                            Black Flag
-                          </motion.span>
-                        )}
-                      </AnimatePresence>
-                    </div>
-
-                    {/* Nav items */}
-                    <nav className="flex-1 py-3 px-2.5 space-y-0.5">
-                      {sidebarItems.map((item, i) => (
-                        <button
-                          key={item.label}
-                          onClick={() => setActiveSidebarItem(i)}
-                          className={`relative w-full flex items-center rounded-lg py-2.5 text-sm font-medium transition-all duration-200 border ${
+                      <div className="relative flex items-center h-10">
+                        <div
+                          className={`transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
                             sidebarExpanded
-                              ? "px-3 gap-3 justify-start"
-                              : "justify-center"
-                          } ${
-                            activeSidebarItem === i
-                              ? "border-[#c4c4c4] bg-gradient-to-b from-[#fafafa] to-[#ececec] text-bf-text shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
-                              : "border-transparent text-bf-muted hover:bg-white/45 hover:text-bf-text"
+                              ? "opacity-0 scale-90 pointer-events-none absolute left-0"
+                              : "opacity-100 scale-100"
                           }`}
                         >
-                          {activeSidebarItem === i && (
-                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 bg-bf-text rounded-r" />
-                          )}
-                          <span className="text-base w-5 text-center flex-shrink-0">
-                            {item.icon}
-                          </span>
-                          <AnimatePresence>
-                            {sidebarExpanded && (
-                              <motion.span
-                                initial={{ opacity: 0, width: 0 }}
-                                animate={{ opacity: 1, width: "auto" }}
-                                exit={{ opacity: 0, width: 0 }}
-                                className="whitespace-nowrap overflow-hidden"
-                              >
-                                {item.label}
-                              </motion.span>
-                            )}
-                          </AnimatePresence>
-                        </button>
-                      ))}
+                          <BrandLogo variant="dark" size="sm" className="h-10 w-auto" />
+                        </div>
+                        <div
+                          className={`transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
+                            sidebarExpanded
+                              ? "opacity-100 scale-100"
+                              : "opacity-0 scale-95 pointer-events-none absolute left-0"
+                          }`}
+                        >
+                          <img src="/logos/lockup-dark.svg" alt="Black Flag Design" className="h-7 w-auto" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Nav items — @tabler/icons-react · size 20 · stroke 1.75 */}
+                    <nav className="flex-1 py-3 px-3 space-y-1">
+                      {sidebarItems.map((item, i) => {
+                        const IconComponent = item.Icon;
+                        const isActive = activeSidebarItem === i;
+                        return (
+                          <button
+                            key={item.label}
+                            onClick={() => setActiveSidebarItem(i)}
+                            className={`relative w-full flex items-center rounded-lg py-2.5 text-sm font-medium transition-all duration-200 border ${
+                              sidebarExpanded
+                                ? "px-3 gap-3 justify-start"
+                                : "justify-center"
+                            } ${
+                              isActive
+                                ? "border-[#c4c4c4] bg-gradient-to-b from-[#fafafa] to-[#ececec] text-[#171717] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+                                : "border-transparent text-[#171717]/55 hover:bg-white/45 hover:text-[#171717]/85"
+                            }`}
+                          >
+                            <span
+                              className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3px] rounded-r-full bg-[#171717] transition-all duration-200 ${
+                                isActive ? "h-4 opacity-100" : "h-0 opacity-0"
+                              }`}
+                            />
+                            <IconComponent size={ICON_SIZE} stroke={ICON_STROKE} className="flex-shrink-0" />
+                            <AnimatePresence>
+                              {sidebarExpanded && (
+                                <motion.span
+                                  initial={{ opacity: 0, width: 0 }}
+                                  animate={{ opacity: 1, width: "auto" }}
+                                  exit={{ opacity: 0, width: 0 }}
+                                  className="whitespace-nowrap overflow-hidden"
+                                >
+                                  {item.label}
+                                </motion.span>
+                              )}
+                            </AnimatePresence>
+                          </button>
+                        );
+                      })}
                     </nav>
 
-                    {/* User area */}
-                    <div className="border-t border-bf-border px-2.5 py-2">
+                    {/* User area — avatar pinned to bottom */}
+                    <div className="border-t border-[#bdbdbd] px-3 py-3">
                       <div
-                        className={`flex items-center rounded-lg py-2 hover:bg-bf-border/40 transition-colors cursor-pointer ${
+                        className={`flex items-center rounded-lg py-2 hover:bg-white/45 transition-colors cursor-pointer ${
                           sidebarExpanded
                             ? "px-2 gap-3 justify-start"
                             : "justify-center"
                         }`}
                       >
-                        <div className="h-8 w-8 rounded-full bg-bf-text/10 flex items-center justify-center text-xs font-bold text-bf-text flex-shrink-0">
+                        <div className="h-8 w-8 rounded-full bg-[#171717]/10 flex items-center justify-center text-xs font-bold text-[#171717] flex-shrink-0">
                           KP
                         </div>
                         <AnimatePresence>
@@ -204,10 +219,10 @@ export function NavigationSection() {
                               exit={{ opacity: 0, width: 0 }}
                               className="overflow-hidden"
                             >
-                              <p className="text-sm font-medium text-bf-text truncate whitespace-nowrap">
-                                Keith Patterson
+                              <p className="text-sm font-medium text-[#171717] truncate whitespace-nowrap">
+                                Keith Pattison
                               </p>
-                              <p className="text-[10px] text-bf-muted truncate whitespace-nowrap">
+                              <p className="text-xs text-[#171717]/55 truncate whitespace-nowrap">
                                 keith@blackflag.design
                               </p>
                             </motion.div>
@@ -217,26 +232,33 @@ export function NavigationSection() {
                     </div>
                   </div>
 
-                  {/* Spec card */}
-                  <div className="flex-1 space-y-4">
+                  {/* Spec cards */}
+                  <div className="flex-1 min-w-0 space-y-4">
                     <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-6 space-y-3">
                       <p className="text-xs font-black text-bf-text uppercase tracking-wider">
                         Sidebar Spec
                       </p>
-                      <div className="grid grid-cols-[8rem_1fr] gap-x-6 gap-y-2 text-sm">
+                      <div className="grid grid-cols-[6rem_1fr] sm:grid-cols-[8rem_1fr] gap-x-3 sm:gap-x-6 gap-y-2 text-sm">
                         {[
-                          ["Collapsed", "64 px (icon only)"],
-                          ["Expanded", "208 px (icon + label)"],
+                          ["Icons", "@tabler/icons-react · size 20 · stroke 1.75"],
+                          ["Collapsed", "w-16 (64 px) · icon only"],
+                          ["Expanded", "w-52 (208 px) · icon + label"],
                           ["Trigger", "mouseenter / mouseleave"],
                           ["Easing", "cubic-bezier(0.25, 0.1, 0.25, 1)"],
                           ["Duration", "300 ms"],
+                          ["Frame bg", "gradient from-[#ececec] to-[#dfdfdf]"],
+                          ["Frame border", "border-[#bdbdbd]"],
                           ["Active fill", "gradient from-[#fafafa] to-[#ececec]"],
-                          ["Active bar", "3 px left · bf-text · rounded-r"],
-                          ["Border", "border-[#c4c4c4] on active"],
-                          ["Shadow", "inset_0_1px_0_rgba(255,255,255,0.8)"],
-                          ["Logo zone", "h-16 md:h-20 · aligns with page header"],
-                          ["Mobile", "Slide-in overlay, 256 px, always expanded"],
-                          ["Tooltips", "Right-side on collapsed icons"],
+                          ["Active border", "border-[#c4c4c4]"],
+                          ["Active shadow", "inset 0 1px 0 rgba(255,255,255,0.8)"],
+                          ["Active bar", "3 px left · bg-foreground · rounded-r-full"],
+                          ["Inactive text", "text-foreground/55"],
+                          ["Hover", "hover:bg-white/45 hover:text-foreground/85"],
+                          ["Logo collapsed", "BrandLogo mark · h-10 · crossfade"],
+                          ["Logo expanded", "lockup-dark.svg · h-7 · crossfade"],
+                          ["Logo zone", "h-20 · aligns with page header"],
+                          ["Mobile", "Slide-in overlay, w-64 (256 px), always expanded"],
+                          ["Tooltips", "Right-side on collapsed icons (shadcn/ui)"],
                         ].map(([label, value]) => (
                           <Fragment key={label}>
                             <span className="text-bf-muted">{label}</span>
@@ -248,7 +270,6 @@ export function NavigationSection() {
                       </div>
                     </div>
 
-                    {/* User popover spec */}
                     <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-5">
                       <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
                         User Popover Menu
@@ -278,22 +299,21 @@ export function NavigationSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1, ease }}
                 viewport={{ once: true }}
-                className="mb-16"
+                className="mb-10"
               >
-                <h3 className="text-sm font-medium text-bf-text mb-2 uppercase tracking-wider">
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
                   2 · Page Headers
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  Two variants: <strong>Chrome</strong> (gradient with inner shadow — default for top-level pages)
-                  and <strong>Default</strong> (clean white). Chrome headers feature breadcrumbs above the
-                  title (desktop only) and optional action buttons aligned right.
+                  Page headers anchor every view. Paper background with strong
+                  typographic emphasis. Breadcrumbs sit above the title on desktop.
+                  Optional action buttons aligned right.
                 </p>
 
-                {/* Chrome variant header demos */}
                 <div className="space-y-4">
                   {/* Top-level page header */}
                   <div className="rounded-xl border-2 border-bf-border overflow-hidden">
-                    <div className="border-b border-[#bdbdbd] bg-gradient-to-b from-[#ececec] to-[#dfdfdf] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
+                    <div className="border-b-2 border-bf-border bg-bf-paper">
                       <div className="h-16 md:h-20 flex items-center px-4 md:px-6">
                         <div className="flex items-center justify-between w-full gap-3">
                           <div className="min-w-0 flex-1">
@@ -305,7 +325,7 @@ export function NavigationSection() {
                             </p>
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">
-                            <span className="px-3 py-1.5 text-xs font-bold bg-bf-text text-white rounded-lg cursor-pointer hover:opacity-90 transition-opacity">
+                            <span className="px-3 py-1.5 text-xs font-bold btn-active rounded-lg cursor-pointer hover:opacity-90 transition-opacity">
                               + New Client
                             </span>
                           </div>
@@ -314,26 +334,26 @@ export function NavigationSection() {
                     </div>
                     <div className="bg-bf-surface px-4 py-2">
                       <span className="text-[10px] font-mono text-bf-muted uppercase tracking-wider">
-                        Chrome variant · top-level page · h-16 md:h-20
+                        Top-level page · h-16 md:h-20 · bg-bf-paper
                       </span>
                     </div>
                   </div>
 
                   {/* Detail page header with breadcrumbs */}
                   <div className="rounded-xl border-2 border-bf-border overflow-hidden">
-                    <div className="border-b border-[#bdbdbd] bg-gradient-to-b from-[#ececec] to-[#dfdfdf] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
+                    <div className="border-b-2 border-bf-border bg-bf-paper">
                       <div className="h-16 md:h-20 flex items-center px-4 md:px-6">
                         <div className="flex items-center justify-between w-full gap-3">
                           <div className="min-w-0 flex-1">
-                            <nav className="hidden md:flex items-center gap-2 text-xs text-bf-muted mb-1">
+                            <nav className="hidden md:flex items-center gap-1.5 text-xs text-bf-muted mb-1">
                               <span className="hover:text-bf-text cursor-pointer transition-colors">
                                 Clients
                               </span>
-                              <span className="text-bf-border">›</span>
+                              <ChevronRight size={12} strokeWidth={2} className="text-bf-border" />
                               <span className="hover:text-bf-text cursor-pointer transition-colors">
                                 Black Flag
                               </span>
-                              <span className="text-bf-border">›</span>
+                              <ChevronRight size={12} strokeWidth={2} className="text-bf-border" />
                               <span className="text-bf-text">Foundry</span>
                             </nav>
                             <h1 className="text-xl md:text-2xl font-semibold text-bf-text tracking-tight">
@@ -341,10 +361,10 @@ export function NavigationSection() {
                             </h1>
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">
-                            <span className="px-3 py-1.5 text-xs font-medium text-bf-muted border border-bf-border rounded-lg cursor-pointer hover:bg-white transition-colors">
+                            <span className="px-3 py-1.5 text-xs font-medium text-bf-muted border border-bf-border rounded-lg cursor-pointer hover:bg-bf-paper transition-colors">
                               Filter
                             </span>
-                            <span className="px-3 py-1.5 text-xs font-medium text-bf-muted border border-bf-border rounded-lg cursor-pointer hover:bg-white transition-colors">
+                            <span className="px-3 py-1.5 text-xs font-medium text-bf-muted border border-bf-border rounded-lg cursor-pointer hover:bg-bf-paper transition-colors">
                               Export
                             </span>
                           </div>
@@ -353,24 +373,24 @@ export function NavigationSection() {
                     </div>
                     <div className="bg-bf-surface px-4 py-2">
                       <span className="text-[10px] font-mono text-bf-muted uppercase tracking-wider">
-                        Chrome variant · with breadcrumbs · action buttons
+                        With breadcrumbs · action buttons · bg-bf-paper
                       </span>
                     </div>
                   </div>
 
                   {/* Entity header (DetailPageLayout pattern) */}
                   <div className="rounded-xl border-2 border-bf-border overflow-hidden">
-                    <div className="border-b border-[#bdbdbd] bg-gradient-to-b from-[#ececec] to-[#dfdfdf] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
+                    <div className="border-b-2 border-bf-border bg-bf-paper">
                       <div className="h-16 md:h-20 flex items-center px-4 md:px-6">
                         <div className="flex items-center justify-between w-full gap-3">
                           <nav className="flex items-center gap-3 text-xl md:text-2xl font-medium text-bf-text tracking-tight min-w-0">
-                            <div className="h-9 w-9 rounded bg-bf-text flex items-center justify-center flex-shrink-0">
-                              <span className="text-white text-sm font-black">⚑</span>
+                            <div className="h-9 w-9 rounded bg-bf-text flex items-center justify-center flex-shrink-0 p-1.5">
+                              <BrandLogo variant="light" size="sm" className="w-full h-full" />
                             </div>
                             <span className="truncate">BFD Style Guide</span>
                           </nav>
                           <div className="flex items-center gap-2 flex-shrink-0">
-                            <span className="px-3 py-1.5 text-xs font-bold bg-bf-text text-white rounded-lg cursor-pointer hover:opacity-90 transition-opacity">
+                            <span className="px-3 py-1.5 text-xs font-bold btn-active rounded-lg cursor-pointer hover:opacity-90 transition-opacity">
                               Deploy
                             </span>
                           </div>
@@ -379,7 +399,7 @@ export function NavigationSection() {
                     </div>
                     <div className="bg-bf-surface px-4 py-2">
                       <span className="text-[10px] font-mono text-bf-muted uppercase tracking-wider">
-                        Entity header · logo + name as breadcrumb · DetailPageLayout pattern
+                        Entity header · logo + name · DetailPageLayout pattern
                       </span>
                     </div>
                   </div>
@@ -390,14 +410,13 @@ export function NavigationSection() {
                   <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-3">
                     Page Header Spec
                   </p>
-                  <div className="grid grid-cols-[8rem_1fr] gap-x-6 gap-y-2 text-sm">
+                  <div className="grid grid-cols-[6rem_1fr] sm:grid-cols-[8rem_1fr] gap-x-3 sm:gap-x-6 gap-y-2 text-sm">
                     {[
                       ["Height", "h-16 (64 px) mobile · h-20 (80 px) desktop"],
-                      ["Chrome bg", "gradient from-[#ececec] to-[#dfdfdf]"],
-                      ["Chrome border", "border-[#bdbdbd]"],
-                      ["Chrome shadow", "inset_0_1px_0_rgba(255,255,255,0.85)"],
-                      ["Title size", "text-xl md:text-3xl · font-semibold"],
-                      ["Breadcrumbs", "hidden md:flex · text-sm · above title"],
+                      ["Background", "bg-bf-paper"],
+                      ["Border", "border-b-2 border-bf-border"],
+                      ["Title size", "text-xl md:text-2xl · font-semibold"],
+                      ["Breadcrumbs", "hidden md:flex · text-xs · above title"],
                       ["Entity logo", "h-9 w-9 · rounded · object-contain"],
                       ["Max width", "max-w-[1600px] mx-auto"],
                       ["Padding", "px-4 md:px-6"],
@@ -414,64 +433,40 @@ export function NavigationSection() {
               </motion.div>
 
               {/* ═══════════════════════════════════════════ */}
-              {/* 3. SECONDARY: Tab Bar                      */}
+              {/* 3. PLATINUM TAB BAR                        */}
               {/* ═══════════════════════════════════════════ */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.15, ease }}
                 viewport={{ once: true }}
-                className="mb-16"
+                className="mb-10"
               >
-                <h3 className="text-sm font-medium text-bf-text mb-2 uppercase tracking-wider">
-                  3 · Secondary — Tab Bar
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
+                  3 · Platinum Tab Bar
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  Two variants: <strong>Platinum</strong> (chrome-style, matches macOS
-                  toolbar chrome — currently used in admin app) and <strong>Solid</strong>
-                  (flat BFD fill — our target brand direction). Toggle below to compare.
+                  The signature page-level secondary navigation. A brushed-metal
+                  gradient track with raised pill triggers. Active state uses a subtle
+                  border, light fill, and inset shadow that feels tactile — like real
+                  hardware controls. Used on every detail page and settings panel.
                 </p>
 
-                {/* Variant toggle */}
-                <div className="flex gap-2 mb-5">
-                  {(["solid", "platinum"] as const).map((v) => (
-                    <button
-                      key={v}
-                      onClick={() => setTabVariant(v)}
-                      className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider border-2 transition-all duration-200 ${
-                        tabVariant === v
-                          ? "bg-bf-text text-white border-bf-text shadow-comic-sm"
-                          : "bg-transparent text-bf-muted border-bf-border hover:border-bf-text/40"
-                      }`}
-                    >
-                      {v}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Detail page tabs (9 tabs — real admin app) */}
+                {/* Detail page tabs (8+ tabs, horizontal scroll) */}
                 <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
-                  Detail Page — 8 tabs (real admin app)
+                  Detail Page — 8 tabs, scrollable
                 </p>
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden mb-4">
-                  <div
-                    className={`px-2 py-2 transition-colors duration-300 ${
-                      tabVariant === "platinum"
-                        ? "bg-gradient-to-b from-[#f2f2f2] to-[#dcdcdc] border-b border-[#bdbdbd] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]"
-                        : "bg-bf-paper border-b border-bf-border"
-                    }`}
-                  >
-                    <div className="flex gap-1 overflow-x-auto scrollbar-hide">
+                  <div className="border-y border-[#bdbdbd] bg-gradient-to-b from-[#f2f2f2] to-[#dcdcdc] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] px-2 py-2">
+                    <div className="flex gap-2 overflow-x-auto scrollbar-hide">
                       {detailPageTabs.map((tab, i) => (
                         <button
                           key={tab}
                           onClick={() => setActiveDetailTab(i)}
                           className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 whitespace-nowrap flex-shrink-0 border ${
                             activeDetailTab === i
-                              ? tabVariant === "platinum"
-                                ? "border-[#bcbcbc] bg-[#f8f8f8] text-bf-text shadow-[0_1px_0_rgba(255,255,255,0.7),inset_0_1px_0_rgba(255,255,255,0.9)]"
-                                : "bg-bf-text text-white border-transparent"
-                              : "border-transparent text-bf-muted hover:text-bf-text hover:bg-white/40"
+                              ? "border-[#bcbcbc] bg-[#f8f8f8] text-[#171717] shadow-[0_1px_0_rgba(255,255,255,0.7),inset_0_1px_0_rgba(255,255,255,0.9)]"
+                              : "border-transparent text-[#171717]/60 hover:bg-white/40 hover:text-[#171717]"
                           }`}
                         >
                           {tab}
@@ -479,7 +474,7 @@ export function NavigationSection() {
                       ))}
                     </div>
                   </div>
-                  <div className="bg-white h-16 flex items-center justify-center">
+                  <div className="bg-bf-paper h-16 flex items-center justify-center">
                     <span className="text-sm text-bf-muted">
                       {detailPageTabs[activeDetailTab]} content area
                     </span>
@@ -491,24 +486,16 @@ export function NavigationSection() {
                   Settings Page — 3 tabs
                 </p>
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden mb-4">
-                  <div
-                    className={`px-2 py-2 transition-colors duration-300 ${
-                      tabVariant === "platinum"
-                        ? "bg-gradient-to-b from-[#f2f2f2] to-[#dcdcdc] border-b border-[#bdbdbd] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]"
-                        : "bg-bf-paper border-b border-bf-border"
-                    }`}
-                  >
-                    <div className="flex gap-1">
+                  <div className="border-y border-[#bdbdbd] bg-gradient-to-b from-[#f2f2f2] to-[#dcdcdc] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] px-2 py-2">
+                    <div className="flex gap-2">
                       {settingsTabItems.map((tab, i) => (
                         <button
                           key={tab}
                           onClick={() => setActiveSettingsTab(i)}
                           className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 whitespace-nowrap border ${
                             activeSettingsTab === i
-                              ? tabVariant === "platinum"
-                                ? "border-[#bcbcbc] bg-[#f8f8f8] text-bf-text shadow-[0_1px_0_rgba(255,255,255,0.7),inset_0_1px_0_rgba(255,255,255,0.9)]"
-                                : "bg-bf-text text-white border-transparent"
-                              : "border-transparent text-bf-muted hover:text-bf-text hover:bg-white/40"
+                              ? "border-[#bcbcbc] bg-[#f8f8f8] text-[#171717] shadow-[0_1px_0_rgba(255,255,255,0.7),inset_0_1px_0_rgba(255,255,255,0.9)]"
+                              : "border-transparent text-[#171717]/60 hover:bg-white/40 hover:text-[#171717]"
                           }`}
                         >
                           {tab}
@@ -516,66 +503,43 @@ export function NavigationSection() {
                       ))}
                     </div>
                   </div>
-                  <div className="bg-white h-12 flex items-center justify-center">
+                  <div className="bg-bf-paper h-12 flex items-center justify-center">
                     <span className="text-sm text-bf-muted">
-                      {settingsTabItems[activeSettingsTab]} settings panel
+                      Access settings panel
                     </span>
                   </div>
                 </div>
 
-                {/* Variant spec cards */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div
-                    className={`bg-bf-paper rounded-xl border-2 p-5 transition-colors duration-200 ${
-                      tabVariant === "solid" ? "border-bf-text" : "border-bf-border"
-                    }`}
-                  >
-                    <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
-                      Solid (BFD Direction)
-                    </p>
-                    <p className="text-xs text-bf-muted mb-3">
-                      Paper bg. Active: bf-text fill with white text. Clean, bold, brand-forward.
-                      Use as the primary tab variant going forward.
-                    </p>
-                    <div className="grid grid-cols-[6rem_1fr] gap-x-4 gap-y-1 text-[11px]">
-                      {[
-                        ["Active bg", "bg-bf-text"],
-                        ["Active text", "text-white"],
-                        ["Inactive", "text-bf-muted"],
-                        ["Track bg", "bg-bf-paper"],
-                      ].map(([k, v]) => (
-                        <Fragment key={k}>
-                          <span className="text-bf-muted">{k}</span>
-                          <span className="font-mono text-bf-text">{v}</span>
-                        </Fragment>
-                      ))}
-                    </div>
-                  </div>
-                  <div
-                    className={`bg-bf-paper rounded-xl border-2 p-5 transition-colors duration-200 ${
-                      tabVariant === "platinum" ? "border-bf-text" : "border-bf-border"
-                    }`}
-                  >
-                    <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
-                      Platinum (Current App)
-                    </p>
-                    <p className="text-xs text-bf-muted mb-3">
-                      Chrome gradient. Active: raised card with inset shadow.
-                      macOS-inspired. Will be rewritten to Solid in future.
-                    </p>
-                    <div className="grid grid-cols-[6rem_1fr] gap-x-4 gap-y-1 text-[11px]">
-                      {[
-                        ["Track bg", "gradient #f2f2f2 → #dcdcdc"],
-                        ["Active bg", "bg-[#f8f8f8]"],
-                        ["Active bdr", "border-[#bcbcbc]"],
-                        ["Shadow", "inset white + outer sm"],
-                      ].map(([k, v]) => (
-                        <Fragment key={k}>
-                          <span className="text-bf-muted">{k}</span>
-                          <span className="font-mono text-bf-text">{v}</span>
-                        </Fragment>
-                      ))}
-                    </div>
+                {/* Platinum tab spec */}
+                <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-5">
+                  <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
+                    Platinum Tab Spec
+                  </p>
+                  <p className="text-xs text-bf-muted mb-3">
+                    Metallic gradient track with raised pill active states. The only
+                    page-level secondary navigation pattern. No alternatives.
+                  </p>
+                  <div className="grid grid-cols-[7rem_1fr] gap-x-4 gap-y-1 text-[11px]">
+                    {[
+                      ["Track bg", "gradient from-[#f2f2f2] to-[#dcdcdc]"],
+                      ["Track border", "border-y border-[#bdbdbd]"],
+                      ["Track shadow", "inset 0 1px 0 rgba(255,255,255,0.85)"],
+                      ["Active bg", "bg-[#f8f8f8]"],
+                      ["Active border", "border-[#bcbcbc]"],
+                      ["Active shadow", "0 1px 0 white/70, inset 0 1px 0 white/90"],
+                      ["Active text", "text-foreground (#171717)"],
+                      ["Inactive text", "text-foreground/60"],
+                      ["Hover", "hover:bg-white/40"],
+                      ["Radius", "rounded-md"],
+                      ["Padding", "px-3 py-1.5"],
+                      ["Gap", "gap-2"],
+                      ["Routing", "URL (?tab=) via TanStack Router"],
+                    ].map(([k, v]) => (
+                      <Fragment key={k}>
+                        <span className="text-bf-muted">{k}</span>
+                        <span className="font-mono text-bf-text">{v}</span>
+                      </Fragment>
+                    ))}
                   </div>
                 </div>
               </motion.div>
@@ -588,9 +552,9 @@ export function NavigationSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2, ease }}
                 viewport={{ once: true }}
-                className="mb-16"
+                className="mb-10"
               >
-                <h3 className="text-sm font-medium text-bf-text mb-2 uppercase tracking-wider">
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
                   4 · Settings Secondary Nav
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
@@ -600,7 +564,7 @@ export function NavigationSection() {
                 </p>
 
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden">
-                  <div className="flex shrink-0 items-center gap-1 border-b border-[#c8c8c8] bg-gradient-to-b from-[#f6f6f6] to-[#ececec] px-1 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
+                  <div className="flex shrink-0 items-center gap-1 border-b border-[#c8c8c8] bg-gradient-to-b from-[#f6f6f6] to-[#ececec] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] px-1 py-1.5">
                     {/* Prev button */}
                     <button
                       onClick={() =>
@@ -609,9 +573,9 @@ export function NavigationSection() {
                             settingsTabItems.length
                         )
                       }
-                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-bf-muted transition-colors hover:bg-black/5 hover:text-bf-text"
+                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[#171717]/45 transition-colors hover:bg-black/5 hover:text-[#171717]"
                     >
-                      ‹
+                      <ChevronLeft size={14} strokeWidth={2} />
                     </button>
                     <div className="flex min-w-0 flex-1 items-center justify-center gap-0.5">
                       {settingsTabItems.map((item, i) => {
@@ -622,8 +586,8 @@ export function NavigationSection() {
                             onClick={() => setActiveSettingsTab(i)}
                             className={`flex items-center gap-1.5 rounded-md px-3 py-1 text-sm font-medium transition-all ${
                               isActive
-                                ? "border border-[#bcbcbc] bg-white text-bf-text shadow-[0_1px_2px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]"
-                                : "border border-transparent text-bf-muted hover:bg-white/50 hover:text-bf-text"
+                                ? "border border-[#bcbcbc] bg-white text-[#171717] shadow-[0_1px_2px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]"
+                                : "border border-transparent text-[#171717]/45 hover:bg-white/50 hover:text-[#171717]"
                             }`}
                           >
                             {item}
@@ -638,12 +602,12 @@ export function NavigationSection() {
                           (activeSettingsTab + 1) % settingsTabItems.length
                         )
                       }
-                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-bf-muted transition-colors hover:bg-black/5 hover:text-bf-text"
+                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[#171717]/45 transition-colors hover:bg-black/5 hover:text-[#171717]"
                     >
-                      ›
+                      <ChevronRight size={14} strokeWidth={2} />
                     </button>
                   </div>
-                  <div className="bg-white h-12 flex items-center justify-center">
+                  <div className="bg-bf-paper h-12 flex items-center justify-center">
                     <span className="text-xs text-bf-muted">
                       ← / → arrow keys to navigate · {settingsTabItems[activeSettingsTab]} selected
                     </span>
@@ -651,10 +615,14 @@ export function NavigationSection() {
                 </div>
 
                 <div className="mt-3 bg-bf-paper rounded-xl border-2 border-bf-border p-4">
-                  <div className="grid grid-cols-[8rem_1fr] gap-x-6 gap-y-1.5 text-[11px]">
+                  <div className="grid grid-cols-[7rem_1fr] gap-x-6 gap-y-1.5 text-[11px]">
                     {[
                       ["Track bg", "gradient from-[#f6f6f6] to-[#ececec]"],
-                      ["Active", "bg-white · border-[#bcbcbc] · shadow"],
+                      ["Track border", "border-b border-[#c8c8c8]"],
+                      ["Active bg", "bg-white"],
+                      ["Active border", "border-[#bcbcbc]"],
+                      ["Active shadow", "0 1px 2px rgba(0,0,0,0.08), inset white/90"],
+                      ["Inactive", "text-foreground/45 hover:bg-white/50"],
                       ["Arrows", "h-7 w-7 · ‹ / › · wrapping cycle"],
                       ["Keyboard", "ArrowLeft / ArrowRight global"],
                     ].map(([k, v]) => (
@@ -675,9 +643,9 @@ export function NavigationSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.25, ease }}
                 viewport={{ once: true }}
-                className="mb-16"
+                className="mb-10"
               >
-                <h3 className="text-sm font-medium text-bf-text mb-2 uppercase tracking-wider">
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
                   5 · Filter / Sort Bar
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
@@ -689,30 +657,30 @@ export function NavigationSection() {
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden">
                   <div className="bg-bf-surface border-b border-bf-border px-4 py-3">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-xs text-bf-muted mr-1">🔍</span>
+                      <Search size={14} strokeWidth={ICON_STROKE} className="text-bf-muted mr-1 flex-shrink-0" />
                       {filterSortTabs.map((tab, i) => (
                         <button
                           key={tab}
                           onClick={() => setActiveFilterTab(i)}
                           className={`px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-200 border ${
                             activeFilterTab === i
-                              ? "bg-bf-text text-white border-bf-text"
-                              : "bg-white text-bf-muted border-bf-border hover:border-bf-text/40 hover:text-bf-text"
+                              ? "btn-active-border"
+                              : "bg-bf-paper text-bf-muted border-bf-border hover:border-bf-text/40 hover:text-bf-text"
                           }`}
                         >
                           {tab}
                         </button>
                       ))}
                       <div className="h-4 w-px bg-bf-border mx-1" />
-                      <span className="px-2.5 py-1 text-xs font-medium bg-white text-bf-muted border border-bf-border rounded-md">
+                      <span className="px-2.5 py-1 text-xs font-medium bg-bf-paper text-bf-muted border border-bf-border rounded-md">
                         Status ▾
                       </span>
-                      <span className="px-2.5 py-1 text-xs font-medium bg-white text-bf-muted border border-bf-border rounded-md">
+                      <span className="px-2.5 py-1 text-xs font-medium bg-bf-paper text-bf-muted border border-bf-border rounded-md">
                         Date ▾
                       </span>
                     </div>
                   </div>
-                  <div className="bg-white h-12 flex items-center justify-center">
+                  <div className="bg-bf-paper h-12 flex items-center justify-center">
                     <span className="text-xs text-bf-muted">
                       Showing {filterSortTabs[activeFilterTab]} events
                     </span>
@@ -721,17 +689,334 @@ export function NavigationSection() {
               </motion.div>
 
               {/* ═══════════════════════════════════════════ */}
-              {/* 6. BREADCRUMBS                             */}
+              {/* 6. IPOD SEGMENTS                           */}
+              {/* ═══════════════════════════════════════════ */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.27, ease }}
+                viewport={{ once: true }}
+                className="mb-10"
+              >
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
+                  6 · iPod Segments
+                </h3>
+                <p className="text-sm text-bf-muted mb-6 max-w-xl">
+                  Rounded pill controls for switching &ldquo;faces&rdquo; within a
+                  content area — like flipping a card to see different sides of the
+                  same entity. Used in People and Vendor management views. Each face
+                  triggers a card-flip animation on the content below.
+                </p>
+
+                <div className="rounded-xl border-2 border-bf-border overflow-hidden mb-4">
+                  <div className="bg-gradient-to-b from-[#f6f6f6] to-[#ececec] border-b border-[#c8c8c8] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      {/* Range selector (sits beside iPod segments in real app) */}
+                      <div className="flex items-center gap-1">
+                        {rangeOptions.map((range, i) => (
+                          <button
+                            key={range}
+                            onClick={() => setActiveRange(i)}
+                            className={`rounded-md px-2 py-0.5 text-xs font-medium transition-all border ${
+                              activeRange === i
+                                ? "border-[#bcbcbc] bg-white text-[#171717]"
+                                : "border-transparent text-[#171717]/45 hover:bg-white/50"
+                            }`}
+                          >
+                            {range}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="h-4 w-px bg-[#c8c8c8]" />
+                      {/* iPod segments */}
+                      <div className="inline-flex gap-1">
+                        {ipodFaces.map((face, i) => (
+                          <button
+                            key={face}
+                            onClick={() => setActiveIpodFace(i)}
+                            className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 border ${
+                              activeIpodFace === i
+                                ? "border-[#aeaeae] bg-gradient-to-b from-[#fefefe] to-[#ebebeb] text-[#171717] shadow-[inset_0_1px_0_rgba(255,255,255,0.92),0_1px_1px_rgba(0,0,0,0.08)]"
+                                : "border-transparent text-[#171717]/55 hover:bg-white/40 hover:text-[#171717]"
+                            }`}
+                          >
+                            {face}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-bf-paper h-24 flex items-center justify-center overflow-hidden">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={activeIpodFace}
+                        initial={{ opacity: 0, rotateY: 90, scale: 0.95 }}
+                        animate={{ opacity: 1, rotateY: 0, scale: 1 }}
+                        exit={{ opacity: 0, rotateY: -90, scale: 0.95 }}
+                        transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
+                        className="text-center"
+                        style={{ perspective: 1000 }}
+                      >
+                        <p className="text-sm font-medium text-bf-text">
+                          {ipodFaces[activeIpodFace]} Face
+                        </p>
+                        <p className="text-xs text-bf-muted mt-1">
+                          Card flip animation · {rangeOptions[activeRange]} range selected
+                        </p>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* iPod segment spec */}
+                  <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-5">
+                    <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
+                      iPod Segment Spec
+                    </p>
+                    <div className="grid grid-cols-[7rem_1fr] gap-x-4 gap-y-1 text-[11px]">
+                      {[
+                        ["Shape", "rounded-full (pill)"],
+                        ["Padding", "px-3.5 py-1.5"],
+                        ["Active bg", "gradient from-[#fefefe] to-[#ebebeb]"],
+                        ["Active border", "border-[#aeaeae]"],
+                        ["Active shadow", "inset white/92, 0 1px 1px black/8"],
+                        ["Inactive", "text-foreground/55 hover:bg-white/40"],
+                        ["Content anim", "cardFlipIn 0.5s ease-out"],
+                        ["Routing", "URL-based (?face= param)"],
+                      ].map(([k, v]) => (
+                        <Fragment key={k}>
+                          <span className="text-bf-muted">{k}</span>
+                          <span className="font-mono text-bf-text">{v}</span>
+                        </Fragment>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Range selector spec */}
+                  <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-5">
+                    <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
+                      Range Selector Spec
+                    </p>
+                    <p className="text-xs text-bf-muted mb-2">
+                      Compact time-range toggles. Sits inline beside iPod segments
+                      or filter bars. Smaller than tabs — intentionally minimal.
+                    </p>
+                    <div className="grid grid-cols-[7rem_1fr] gap-x-4 gap-y-1 text-[11px]">
+                      {[
+                        ["Size", "text-xs · px-2 py-0.5"],
+                        ["Active", "border-[#bcbcbc] bg-white"],
+                        ["Inactive", "border-transparent text-foreground/45"],
+                        ["Radius", "rounded-md"],
+                        ["Routing", "URL-based (?range= param)"],
+                      ].map(([k, v]) => (
+                        <Fragment key={k}>
+                          <span className="text-bf-muted">{k}</span>
+                          <span className="font-mono text-bf-text">{v}</span>
+                        </Fragment>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* ═══════════════════════════════════════════ */}
+              {/* 7. UNDERLINE TABS                          */}
               {/* ═══════════════════════════════════════════ */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3, ease }}
                 viewport={{ once: true }}
-                className="mb-16"
+                className="mb-10"
               >
-                <h3 className="text-sm font-medium text-bf-text mb-2 uppercase tracking-wider">
-                  6 · Breadcrumbs
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
+                  7 · Underline Tabs
+                </h3>
+                <p className="text-sm text-bf-muted mb-6 max-w-xl">
+                  Lightweight tabs for drawers, modals, and side panels. Minimal
+                  chrome — just a 2 px bottom border indicator. The lightest
+                  navigation pattern in the hierarchy. Tab count varies by context
+                  (2–6). Never used at page level.
+                </p>
+
+                {/* Drawer-style underline tabs demo */}
+                <div className="rounded-xl border-2 border-bf-border overflow-hidden bg-white mb-4">
+                  <div className="border-b border-bf-border px-5">
+                    <div className="flex gap-6 overflow-x-auto">
+                      {drawerTabs.map((tab, i) => (
+                        <button
+                          key={tab}
+                          onClick={() => setActiveDrawerTab(i)}
+                          className={`py-3 border-b-2 text-sm font-medium whitespace-nowrap transition-colors ${
+                            activeDrawerTab === i
+                              ? "border-[#171717] text-[#171717]"
+                              : "border-transparent text-[#171717]/40 hover:text-[#171717]/65"
+                          }`}
+                        >
+                          {tab}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="h-24 flex items-center justify-center">
+                    <span className="text-sm text-bf-muted">
+                      {drawerTabs[activeDrawerTab]} panel content
+                    </span>
+                  </div>
+                </div>
+
+                {/* Fewer tabs variant */}
+                <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
+                  Minimal variant — 2 tabs (Feedback source)
+                </p>
+                <div className="rounded-xl border-2 border-bf-border overflow-hidden bg-white mb-4">
+                  <div className="border-b border-bf-border px-5">
+                    <div className="flex gap-6">
+                      {["Overview", "Raw Source"].map((tab, i) => (
+                        <button
+                          key={tab}
+                          className={`py-3 border-b-2 text-sm font-medium whitespace-nowrap transition-colors ${
+                            i === 0
+                              ? "border-[#171717] text-[#171717]"
+                              : "border-transparent text-[#171717]/40 hover:text-[#171717]/65"
+                          }`}
+                        >
+                          {tab}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="h-16 flex items-center justify-center">
+                    <span className="text-sm text-bf-muted">
+                      Overview content
+                    </span>
+                  </div>
+                </div>
+
+                <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-5">
+                  <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
+                    Underline Tab Spec
+                  </p>
+                  <div className="grid grid-cols-[7rem_1fr] gap-x-4 gap-y-1 text-[11px]">
+                    {[
+                      ["Indicator", "border-b-2 border-foreground"],
+                      ["Inactive", "border-transparent text-foreground/40"],
+                      ["Hover", "text-foreground/65"],
+                      ["Padding", "py-3 (vertical only)"],
+                      ["Gap", "gap-6 (generous, airy spacing)"],
+                      ["Background", "bg-white (clean, no gradient)"],
+                      ["Context", "Drawers, modals, panels only"],
+                      ["Routing", "Local state (never URL-persisted)"],
+                    ].map(([k, v]) => (
+                      <Fragment key={k}>
+                        <span className="text-bf-muted">{k}</span>
+                        <span className="font-mono text-bf-text">{v}</span>
+                      </Fragment>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* ═══════════════════════════════════════════ */}
+              {/* 8. NAVIGATION HIERARCHY                    */}
+              {/* ═══════════════════════════════════════════ */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.33, ease }}
+                viewport={{ once: true }}
+                className="mb-10"
+              >
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
+                  8 · Navigation Hierarchy
+                </h3>
+                <p className="text-sm text-bf-muted mb-6 max-w-xl">
+                  How the six navigation tiers compose in a real admin interface.
+                  Each tier has a single pattern — no alternatives, no feature flags,
+                  no &ldquo;it depends.&rdquo; Pick the tier that matches your context.
+                </p>
+
+                <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-6 space-y-4">
+                  {[
+                    {
+                      tier: "1",
+                      name: "Sidebar",
+                      pattern: "Hover-expand rail",
+                      context: "Top-level app sections (Clients, Events, Settings…)",
+                      style: "Gradient track, 3 px left accent, icon + label",
+                    },
+                    {
+                      tier: "2",
+                      name: "Page Header",
+                      pattern: "Breadcrumb + title",
+                      context: "Every page — anchors the view",
+                      style: "Paper bg, h-20, entity icon left",
+                    },
+                    {
+                      tier: "3",
+                      name: "Platinum Tabs",
+                      pattern: "Raised pill on metallic track",
+                      context: "Page sub-sections (Detail tabs, Settings tabs)",
+                      style: "Gradient track, border + inset shadow active",
+                    },
+                    {
+                      tier: "4",
+                      name: "Settings Sub-Nav",
+                      pattern: "Chevron picker",
+                      context: "Cycling within a tab (vendor configs, meeting sources)",
+                      style: "Gradient track, white pill active, ← → arrows",
+                    },
+                    {
+                      tier: "5",
+                      name: "iPod Segments",
+                      pattern: "Rounded pill toggle",
+                      context: "View/face switching within content (Connection, History…)",
+                      style: "Pill shape, gradient active, card flip animation",
+                    },
+                    {
+                      tier: "6",
+                      name: "Underline Tabs",
+                      pattern: "Border-bottom indicator",
+                      context: "Drawers, modals, side panels",
+                      style: "Minimal — 2 px bottom border, no bg, gap-6",
+                    },
+                  ].map((tier) => (
+                    <div key={tier.tier} className="flex items-start gap-4">
+                      <div className="w-8 h-8 rounded-lg bg-[#171717] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
+                        {tier.tier}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-baseline gap-2 mb-0.5">
+                          <span className="text-sm font-bold text-bf-text">
+                            {tier.name}
+                          </span>
+                          <span className="text-[10px] font-mono text-bf-muted">
+                            {tier.pattern}
+                          </span>
+                        </div>
+                        <p className="text-xs text-bf-muted">{tier.context}</p>
+                        <p className="text-[10px] font-mono text-bf-muted/70 mt-0.5">
+                          {tier.style}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* ═══════════════════════════════════════════ */}
+              {/* 9. BREADCRUMBS                             */}
+              {/* ═══════════════════════════════════════════ */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.35, ease }}
+                viewport={{ once: true }}
+                className="mb-10"
+              >
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
+                  9 · Breadcrumbs
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
                   The final segment is the page title (bold). Preceding segments are
@@ -740,38 +1025,41 @@ export function NavigationSection() {
                 </p>
 
                 <div className="space-y-3">
-                  {breadcrumbSets.map((example, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.4, delay: i * 0.06, ease }}
-                      viewport={{ once: true }}
-                      className="bg-bf-surface rounded-xl border-2 border-bf-border px-5 py-3.5 flex items-center gap-3 hover:border-bf-text/30 transition-colors"
-                    >
-                      <div className="h-8 w-8 rounded-lg bg-bf-text text-white flex items-center justify-center text-sm font-bold flex-shrink-0">
-                        {example.icon}
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        {example.path.map((segment, j) => (
-                          <span key={j} className="flex items-center gap-2">
-                            {j > 0 && (
-                              <span className="text-bf-border">›</span>
-                            )}
-                            <span
-                              className={
-                                j === example.path.length - 1
-                                  ? "font-bold text-bf-text"
-                                  : "text-bf-muted hover:text-bf-text cursor-pointer transition-colors"
-                              }
-                            >
-                              {segment}
+                  {breadcrumbSets.map((example, i) => {
+                    const IconComponent = breadcrumbIcons[example.icon];
+                    return (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: i * 0.06, ease }}
+                        viewport={{ once: true }}
+                        className="bg-bf-surface rounded-xl border-2 border-bf-border px-5 py-3.5 flex items-center gap-3 hover:border-bf-text/30 transition-colors"
+                      >
+                        <div className="h-8 w-8 rounded-lg btn-active flex items-center justify-center flex-shrink-0">
+                          <IconComponent size={16} strokeWidth={ICON_STROKE} />
+                        </div>
+                        <div className="flex items-center gap-1.5 text-sm">
+                          {example.path.map((segment, j) => (
+                            <span key={j} className="flex items-center gap-1.5">
+                              {j > 0 && (
+                                <ChevronRight size={12} strokeWidth={2} className="text-bf-border" />
+                              )}
+                              <span
+                                className={
+                                  j === example.path.length - 1
+                                    ? "font-bold text-bf-text"
+                                    : "text-bf-muted hover:text-bf-text cursor-pointer transition-colors"
+                                }
+                              >
+                                {segment}
+                              </span>
                             </span>
-                          </span>
-                        ))}
-                      </div>
-                    </motion.div>
-                  ))}
+                          ))}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </div>
 
                 <div className="mt-4 bg-bf-paper rounded-xl border-2 border-bf-border p-4">
@@ -779,51 +1067,51 @@ export function NavigationSection() {
                     Entity Hierarchy
                   </p>
                   <p className="text-xs text-bf-muted mb-3">
-                    The admin app uses a strict two-level hierarchy:
+                    The canonical entity hierarchy is a strict two-level structure:
                     <strong> Client → Project</strong>. All content (events, files, meetings)
                     lives under a project. Breadcrumbs reflect this at every depth.
                   </p>
-                  <div className="bg-white rounded-lg border border-bf-border p-3 font-mono text-xs text-bf-text space-y-1">
-                    <p>Clients (top-level page)</p>
-                    <p className="pl-4">└─ Client Detail (tabs: Projects, Meetings, Events, Files, Expenses)</p>
-                    <p className="pl-8">└─ Project Detail (tabs: Meetings, Files, Knowledge, Whiteboards, Events, Work, Deployments, Analytics)</p>
-                    <p className="pl-12">└─ Individual item views (event drawer, file viewer, etc.)</p>
+                  <div className="bg-bf-paper rounded-lg border border-bf-border p-3 font-mono text-[10px] sm:text-xs text-bf-text space-y-1 overflow-x-auto">
+                    <p className="whitespace-nowrap">Clients (top-level page)</p>
+                    <p className="whitespace-nowrap pl-4">└─ Client Detail (tabs: Projects, Meetings, Events, Files, Expenses)</p>
+                    <p className="whitespace-nowrap pl-8">└─ Project Detail (tabs: Meetings, Files, Knowledge, ...)</p>
+                    <p className="whitespace-nowrap pl-12">└─ Individual item views (event drawer, file viewer, etc.)</p>
                   </div>
                 </div>
               </motion.div>
 
               {/* ═══════════════════════════════════════════ */}
-              {/* 7. MOBILE NAV                              */}
+              {/* 10. MOBILE NAV                             */}
               {/* ═══════════════════════════════════════════ */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.35, ease }}
+                transition={{ duration: 0.5, delay: 0.4, ease }}
                 viewport={{ once: true }}
-                className="mb-16"
+                className="mb-10"
               >
-                <h3 className="text-sm font-medium text-bf-text mb-2 uppercase tracking-wider">
-                  7 · Mobile Navigation
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
+                  10 · Mobile Navigation
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
                   Mobile replaces the hover sidebar with a hamburger trigger and slide-in
                   overlay. Tab bars switch to horizontal scroll. Breadcrumbs are hidden.
                 </p>
 
-                <div className="flex gap-4 items-start">
+                <div className="flex flex-col sm:flex-row gap-4 items-start">
                   {/* Mobile phone frame */}
-                  <div className="w-[200px] flex-shrink-0">
+                  <div className="w-[200px] flex-shrink-0 mx-auto sm:mx-0">
                     <div className="relative bg-bf-text rounded-2xl p-2 overflow-hidden">
                       <div className="bg-white rounded-xl overflow-hidden">
                         {/* Mobile header bar */}
-                        <div className="flex items-center h-11 px-3 border-b border-bf-border bg-gradient-to-b from-[#ececec] to-[#dfdfdf]">
+                        <div className="flex items-center h-11 px-3 border-b border-[#bdbdbd] bg-white">
                           <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="h-6 w-6 rounded flex items-center justify-center bg-bf-text"
+                            className="h-6 w-auto flex items-center justify-center"
                           >
-                            <span className="text-white text-[8px] font-black">⚑</span>
+                            <BrandLogo variant="dark" size="sm" className="h-5 w-auto" />
                           </button>
-                          <span className="ml-2 text-[10px] font-semibold text-bf-text">
+                          <span className="ml-2 text-[10px] font-semibold text-[#171717]">
                             Clients
                           </span>
                         </div>
@@ -836,41 +1124,46 @@ export function NavigationSection() {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className="absolute inset-0 bg-black/40 z-10 rounded-xl"
+                                className="absolute inset-0 bg-black/50 z-10 rounded-xl"
                                 onClick={() => setMobileMenuOpen(false)}
                               />
                               <motion.div
                                 initial={{ x: "-100%" }}
                                 animate={{ x: 0 }}
                                 exit={{ x: "-100%" }}
-                                transition={{ duration: 0.3, ease }}
-                                className="absolute left-2 top-2 bottom-2 w-[140px] bg-white z-20 rounded-lg shadow-lg border border-bf-border flex flex-col"
+                                transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                                className="absolute left-2 top-2 bottom-2 w-[140px] bg-white z-20 rounded-lg shadow-lg border border-[#bdbdbd] flex flex-col"
                               >
-                                <div className="flex items-center justify-between px-2 py-2 border-b border-bf-border">
-                                  <span className="text-[9px] font-bold text-bf-text">
-                                    Black Flag
-                                  </span>
+                                <div className="flex items-center justify-between px-2 py-2">
+                                  <BrandLogo variant="dark" size="sm" className="h-4 w-auto" />
                                   <button
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className="text-bf-muted text-[10px]"
+                                    className="text-[#171717]/55 hover:text-[#171717] transition-colors"
                                   >
-                                    ✕
+                                    <IconX size={12} stroke={2} />
                                   </button>
                                 </div>
-                                <nav className="flex-1 py-1 px-1 space-y-0.5">
-                                  {sidebarItems.map((item, i) => (
-                                    <div
-                                      key={item.label}
-                                      className={`flex items-center gap-1.5 px-2 py-1.5 rounded text-[9px] font-medium ${
-                                        activeSidebarItem === i
-                                          ? "bg-bf-surface text-bf-text border border-bf-border"
-                                          : "text-bf-muted"
-                                      }`}
-                                    >
-                                      <span className="text-[10px]">{item.icon}</span>
-                                      <span>{item.label}</span>
-                                    </div>
-                                  ))}
+                                <nav className="flex-1 py-1 px-1.5 space-y-0.5">
+                                  {sidebarItems.map((item, i) => {
+                                    const IconComponent = item.Icon;
+                                    const isActive = activeSidebarItem === i;
+                                    return (
+                                      <div
+                                        key={item.label}
+                                        className={`relative flex items-center gap-1.5 px-2 py-1.5 rounded-md text-[9px] font-medium border ${
+                                          isActive
+                                            ? "border-[#c4c4c4] bg-gradient-to-b from-[#fafafa] to-[#ececec] text-[#171717]"
+                                            : "border-transparent text-[#171717]/55"
+                                        }`}
+                                      >
+                                        {isActive && (
+                                          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-3 bg-[#171717] rounded-r-full" />
+                                        )}
+                                        <IconComponent size={12} stroke={ICON_STROKE} />
+                                        <span>{item.label}</span>
+                                      </div>
+                                    );
+                                  })}
                                 </nav>
                               </motion.div>
                             </>
@@ -879,7 +1172,7 @@ export function NavigationSection() {
 
                         {/* Content placeholder */}
                         <div className="h-48 flex items-center justify-center">
-                          <p className="text-[9px] text-bf-muted text-center px-4">
+                          <p className="text-[9px] text-[#171717]/45 text-center px-4">
                             Tap flag icon to open mobile sidebar
                           </p>
                         </div>
@@ -893,7 +1186,7 @@ export function NavigationSection() {
                       <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-3">
                         Mobile Patterns
                       </p>
-                      <div className="grid grid-cols-[8rem_1fr] gap-x-6 gap-y-2 text-sm">
+                      <div className="grid grid-cols-[6rem_1fr] sm:grid-cols-[8rem_1fr] gap-x-3 sm:gap-x-6 gap-y-2 text-sm">
                         {[
                           ["Sidebar", "Slide-in overlay, 256 px, always expanded"],
                           ["Trigger", "Logo icon tap → open sidebar"],
@@ -935,47 +1228,50 @@ export function NavigationSection() {
               </motion.div>
 
               {/* ═══════════════════════════════════════════ */}
-              {/* 8. FULL COMPOSITE DEMO                     */}
+              {/* 11. FULL COMPOSITE DEMO                    */}
               {/* ═══════════════════════════════════════════ */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4, ease }}
+                transition={{ duration: 0.5, delay: 0.45, ease }}
                 viewport={{ once: true }}
               >
-                <h3 className="text-sm font-medium text-bf-text mb-2 uppercase tracking-wider">
-                  8 · Composite — All Layers
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
+                  11 · Composite — All Layers
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  How all four navigation tiers stack in a real detail page view.
-                  Sidebar + Page Header + Tabs + Content with breadcrumbs.
+                  How multiple navigation tiers stack in a real detail page view.
+                  Sidebar + Page Header + Platinum Tabs + Content with filter bar.
                 </p>
 
                 {/* Full admin layout composite */}
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden bg-bf-surface">
                   <div className="flex h-[360px]">
-                    {/* Mini sidebar */}
+                    {/* Mini sidebar — collapsed state matching admin sidebar */}
                     <div className="w-12 flex-shrink-0 bg-gradient-to-b from-[#ececec] to-[#dfdfdf] border-r border-[#bdbdbd] flex flex-col py-2 items-center">
-                      <div className="h-6 w-6 rounded bg-bf-text flex items-center justify-center mb-3">
-                        <span className="text-white text-[8px] font-black">⚑</span>
+                      <div className="h-8 w-8 flex items-center justify-center mb-3">
+                        <BrandLogo variant="dark" size="sm" className="h-8 w-auto" />
                       </div>
-                      {sidebarItems.map((item, i) => (
-                        <div
-                          key={item.label}
-                          className={`relative w-8 h-8 rounded-md flex items-center justify-center text-[11px] mb-0.5 ${
-                            i === 0
-                              ? "bg-gradient-to-b from-[#fafafa] to-[#ececec] border border-[#c4c4c4] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
-                              : "text-bf-muted hover:bg-white/40"
-                          }`}
-                        >
-                          {i === 0 && (
-                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-3 bg-bf-text rounded-r" />
-                          )}
-                          {item.icon}
-                        </div>
-                      ))}
+                      {sidebarItems.map((item, i) => {
+                        const IconComponent = item.Icon;
+                        return (
+                          <div
+                            key={item.label}
+                            className={`relative w-8 h-8 rounded-md flex items-center justify-center mb-0.5 border ${
+                              i === 0
+                                ? "border-[#c4c4c4] bg-gradient-to-b from-[#fafafa] to-[#ececec] text-[#171717] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+                                : "border-transparent text-[#171717]/55 hover:bg-white/45"
+                            }`}
+                          >
+                            {i === 0 && (
+                              <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-3 bg-[#171717] rounded-r-full" />
+                            )}
+                            <IconComponent size={14} stroke={ICON_STROKE} />
+                          </div>
+                        );
+                      })}
                       <div className="mt-auto">
-                        <div className="w-6 h-6 rounded-full bg-bf-text/10 flex items-center justify-center text-[8px] font-bold text-bf-text">
+                        <div className="w-6 h-6 rounded-full bg-[#171717]/10 flex items-center justify-center text-[8px] font-bold text-[#171717]">
                           KP
                         </div>
                       </div>
@@ -984,10 +1280,10 @@ export function NavigationSection() {
                     {/* Main area */}
                     <div className="flex-1 flex flex-col min-w-0">
                       {/* Entity header */}
-                      <div className="h-12 flex items-center px-3 bg-gradient-to-b from-[#ececec] to-[#dfdfdf] border-b border-[#bdbdbd] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
+                      <div className="h-12 flex items-center px-3 bg-bf-paper border-b-2 border-bf-border">
                         <div className="flex items-center gap-2">
-                          <div className="h-7 w-7 rounded bg-bf-text flex items-center justify-center">
-                            <span className="text-white text-[10px] font-black">⚑</span>
+                          <div className="h-7 w-7 rounded bg-bf-text flex items-center justify-center p-1">
+                            <BrandLogo variant="light" size="sm" className="w-full h-full" />
                           </div>
                           <span className="text-sm font-medium text-bf-text truncate">
                             BFD Style Guide
@@ -995,16 +1291,16 @@ export function NavigationSection() {
                         </div>
                       </div>
 
-                      {/* Platinum tab strip */}
-                      <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-b from-[#f2f2f2] to-[#dcdcdc] border-b border-[#bdbdbd] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] overflow-x-auto">
+                      {/* Tab strip — Platinum style */}
+                      <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-b from-[#f2f2f2] to-[#dcdcdc] border-y border-[#bdbdbd] overflow-x-auto">
                         {["Meetings", "Files", "Events", "Work", "Analytics"].map(
                           (tab, i) => (
                             <span
                               key={tab}
-                              className={`px-2 py-1 text-[10px] font-medium rounded whitespace-nowrap ${
+                              className={`px-2 py-0.5 text-[10px] font-medium rounded whitespace-nowrap border ${
                                 i === 2
-                                  ? "border border-[#bcbcbc] bg-[#f8f8f8] text-bf-text shadow-sm"
-                                  : "text-bf-muted"
+                                  ? "border-[#bcbcbc] bg-[#f8f8f8] text-[#171717] shadow-[0_1px_0_rgba(255,255,255,0.7),inset_0_1px_0_rgba(255,255,255,0.9)]"
+                                  : "border-transparent text-[#171717]/55"
                               }`}
                             >
                               {tab}
@@ -1014,16 +1310,16 @@ export function NavigationSection() {
                       </div>
 
                       {/* Content area */}
-                      <div className="flex-1 bg-white p-3 overflow-hidden">
+                      <div className="flex-1 bg-bf-paper p-3 overflow-hidden">
                         <div className="flex items-center gap-1.5 mb-3">
-                          <span className="text-[10px] text-bf-muted">🔍</span>
+                          <Search size={10} strokeWidth={ICON_STROKE} className="text-bf-muted" />
                           {["All", "Linear", "GitHub"].map((f, i) => (
                             <span
                               key={f}
                               className={`px-1.5 py-0.5 text-[9px] font-medium rounded border ${
                                 i === 0
-                                  ? "bg-bf-text text-white border-bf-text"
-                                  : "bg-white text-bf-muted border-bf-border"
+                                  ? "btn-active-border"
+                                  : "bg-bf-paper text-bf-muted border-bf-border"
                               }`}
                             >
                               {f}
@@ -1046,7 +1342,7 @@ export function NavigationSection() {
                                 2 min ago · webhook
                               </p>
                             </div>
-                            <span className="text-[8px] text-bf-muted opacity-40">⚡</span>
+                            <IconBolt size={10} stroke={ICON_STROKE} className="text-bf-muted opacity-40" />
                           </div>
                         ))}
                       </div>
@@ -1059,7 +1355,7 @@ export function NavigationSection() {
                   {[
                     "① Sidebar (64 px)",
                     "② Entity Header",
-                    "③ Tab Bar",
+                    "③ Platinum Tabs",
                     "④ Filter Bar",
                     "⑤ Content Cards",
                   ].map((label) => (
@@ -1072,8 +1368,6 @@ export function NavigationSection() {
                   ))}
                 </div>
               </motion.div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Black Flag character mark - mouth">
+  <title>Black Flag character mark dark</title>
+  <g fill="#171717" fill-rule="evenodd">
+    <!-- Upper lip -->
+    <path d="M128 24c-4 0-7.5 1.2-10 3.5L46 76c-6 5.2-8 12-5 18 3 6 10 10 18 10h32c4 0 7-1 9.5-3.5l14-14c4-4 9-6 13.5-6s9.5 2 13.5 6l14 14c2.5 2.5 5.5 3.5 9.5 3.5h32c8 0 15-4 18-10 3-6 1-12.8-5-18L138 27.5c-2.5-2.3-6-3.5-10-3.5z"/>
+    <!-- Lower lip with tongue -->
+    <path d="M56 108c-6 0-11 2-14.5 6.5S36 123 36 130c0 22 12 42 32 56 20 14 44 22 60 22s40-8 60-22c20-14 32-34 32-56 0-7-2-12.5-5.5-15.5S207 108 200 108H56z"/>
+    <!-- Teeth cutout (white space between lips) -->
+    <path d="M72 96h112c2 0 3.5 1.5 3.5 3.5v12c0 2-1.5 3.5-3.5 3.5H72c-2 0-3.5-1.5-3.5-3.5v-12C68.5 97.5 70 96 72 96z" fill="#F0EEE9"/>
+    <!-- Tooth dividers -->
+    <rect x="95" y="96" width="4" height="19" rx="1" fill="#171717"/>
+    <rect x="118" y="96" width="4" height="19" rx="1" fill="#171717"/>
+    <rect x="138" y="96" width="4" height="19" rx="1" fill="#171717"/>
+    <rect x="158" y="96" width="4" height="19" rx="1" fill="#171717"/>
+    <!-- Tongue -->
+    <ellipse cx="156" cy="178" rx="30" ry="38" fill="#F0EEE9"/>
+    <path d="M156 178c-14 0-26 14-26 32s12 22 26 22 26-4 26-22-12-32-26-32z" fill="#F0EEE9"/>
+    <path d="M156 184v40" stroke="#171717" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

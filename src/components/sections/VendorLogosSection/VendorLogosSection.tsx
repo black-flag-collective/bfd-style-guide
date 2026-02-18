@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { SectionHeader } from "@/components/SectionHeader";
 import {
   AWS,
   Cloudflare,
@@ -46,7 +47,7 @@ function CursorLogo({ size = 20, className }: { size?: number; className?: strin
   );
 }
 
-/* Linear — uses favicon.ico matching admin-app-convex ProviderLogos.tsx */
+/* Linear — favicon.ico from linear.app */
 function LinearLogo({ size = 20, className }: { size?: number; className?: string }) {
   return (
     <img
@@ -70,31 +71,14 @@ export function VendorLogosSection() {
   const [activeCard, setActiveCard] = useState<"inactive" | "active">("inactive");
 
   return (
-    <section id="vendor-logos" className="relative z-[56] px-6 pt-6">
-      <div className="relative" style={{ height: "calc(100vh + 400px)" }}>
-        <div
-          className="sticky top-6 bg-bf-bg rounded-xl shadow-card overflow-hidden"
-          style={{ height: "calc(100vh - 48px)" }}
-        >
-          <div className="h-full px-8 md:px-12 lg:px-16 pt-24 pb-8 flex flex-col overflow-y-auto">
-            <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col">
-              {/* Header */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease }}
-                viewport={{ once: true }}
-                className="mb-12"
-              >
-                <h2 className="text-4xl md:text-5xl font-bold text-bf-text mb-3">
-                  Vendor&nbsp;Logos
-                </h2>
-                <p className="text-base text-bf-muted max-w-2xl">
-                  Partner and integration logos use <strong>opacity states</strong>,
-                  never CSS grayscale. Preserves brand color fidelity while creating
-                  clear visual hierarchy.
-                </p>
-              </motion.div>
+    <section id="vendor-logos" className="relative bg-bf-bg py-16 sm:py-24">
+      <div className="px-4 sm:px-8 md:px-12 lg:px-16">
+        <div className="max-w-6xl mx-auto">
+              <SectionHeader
+                number="10"
+                title="Vendor Logos"
+                description="Partner and integration logos use opacity states, never CSS grayscale. Preserves brand color fidelity while creating clear visual hierarchy."
+              />
 
               {/* ── Watermark Pattern ── */}
               <motion.div
@@ -104,7 +88,7 @@ export function VendorLogosSection() {
                 viewport={{ once: true }}
                 className="mb-14"
               >
-                <h3 className="text-sm font-medium text-bf-text mb-2 uppercase tracking-wider">
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
                   Watermark Pattern
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
@@ -118,9 +102,9 @@ export function VendorLogosSection() {
                     <button
                       key={v}
                       onClick={() => setActiveCard(v)}
-                      className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider border-2 transition-all duration-200 ${
+                      className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider border-2 rounded-md transition-all duration-200 ${
                         activeCard === v
-                          ? "bg-bf-text text-white border-bf-text shadow-comic-sm"
+                          ? "btn-active-border"
                           : "bg-transparent text-bf-muted border-bf-border hover:border-bf-text/40"
                       }`}
                     >
@@ -131,7 +115,7 @@ export function VendorLogosSection() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Inactive card */}
-                  <div className="relative bg-white rounded-xl border-2 border-bf-border p-5 overflow-hidden group hover:border-bf-text/30 transition-colors">
+                  <div className="relative bg-bf-paper rounded-xl border-2 border-bf-border p-5 overflow-hidden group hover:border-bf-text/30 transition-colors">
                     <p className="text-sm font-medium text-bf-text mb-1">
                       Webhook received
                     </p>
@@ -209,7 +193,7 @@ export function VendorLogosSection() {
                 viewport={{ once: true }}
                 className="mb-14"
               >
-                <h3 className="text-sm font-medium text-bf-text mb-2 uppercase tracking-wider">
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
                   Integration Grid
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
@@ -217,7 +201,7 @@ export function VendorLogosSection() {
                   in tiles. No grayscale filter — ever.
                 </p>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {allVendors.map((vendor, i) => {
                     const isHovered = hovered === i;
                     return (
@@ -230,10 +214,10 @@ export function VendorLogosSection() {
                         viewport={{ once: true }}
                         onMouseEnter={() => setHovered(i)}
                         onMouseLeave={() => setHovered(null)}
-                        className="relative bg-white rounded-xl border-2 border-bf-border p-5 text-center transition-all duration-200 hover:border-bf-text/30 hover:shadow-card group"
+                        className="relative bg-bf-paper rounded-xl border-2 border-bf-border px-6 py-7 text-center transition-all duration-200 hover:border-bf-text/30 hover:shadow-card group"
                       >
                         <div
-                          className="w-14 h-14 mx-auto mb-3 rounded-xl flex items-center justify-center transition-all duration-200 border-2"
+                          className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center transition-all duration-200 border-2"
                           style={{
                             borderColor: isHovered
                               ? `${vendor.color}40`
@@ -251,7 +235,7 @@ export function VendorLogosSection() {
                         <p className="text-sm font-bold text-bf-text">
                           {vendor.name}
                         </p>
-                        <p className="text-[10px] text-bf-muted uppercase tracking-wider mt-0.5">
+                        <p className="text-[10px] text-bf-muted uppercase tracking-wider mt-1">
                           {vendor.role}
                         </p>
                       </motion.button>
@@ -287,8 +271,6 @@ export function VendorLogosSection() {
                   </div>
                 </motion.div>
               </motion.div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

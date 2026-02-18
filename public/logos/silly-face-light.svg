@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" role="img" aria-label="Black Flag silly face light">
+  <title>Black Flag silly face light</title>
+  <g fill="none" stroke="#F2F2F2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="110" cy="110" r="84" stroke-width="10" />
+    <path d="M78 86h22" stroke-width="10" />
+    <path d="M120 86h22" stroke-width="10" />
+    <path d="M72 124c12 24 64 24 76 0" stroke-width="10" />
+    <path d="M102 135v22c0 12 16 12 16 0v-22" stroke-width="8" />
+    <path d="M102 157c0 8 16 8 16 0" stroke-width="8" />
+  </g>
+  <path d="M102 157c0 18 16 18 16 0v10c0 9-16 9-16 0z" fill="#F2F2F2" />
+</svg>
