@@ -20,6 +20,7 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { SectionHeader } from "@/components/SectionHeader";
 import { DeviceFrame } from "@/components/DeviceFrame/DeviceFrame";
 import type { Device } from "@/components/DeviceFrame/DeviceFrame";
+import { CLIENTS } from "../EventCardsSection/shared/ClientGrid";
 
 function LinearIcon({ size = 14 }: { size?: number }) {
   return (
@@ -73,6 +74,14 @@ const ipodFaces = ["Connection", "History", "Performance", "Summary"];
 const drawerTabs = ["Overview", "Entity", "Timeline", "Artifacts", "Raw Source"];
 
 const rangeOptions = ["24h", "7d", "30d"];
+
+const listPageClients = CLIENTS.slice(0, 3);
+
+function getInitials(name: string): string {
+  const words = name.trim().split(/\s+/);
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return words.slice(0, 2).map(word => word[0]).join("").toUpperCase();
+}
 
 export function NavigationSection() {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
@@ -1538,7 +1547,7 @@ export function NavigationSection() {
                 </p>
                 <p className="text-xs text-bf-muted mb-3">
                   Simple top-level page with header and scrollable content. No tabs.
-                  Used for primary collection views like Clients and People.
+                  Uses the same live client records mirrored from admin-app-convex metadata.
                 </p>
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden bg-bf-surface mb-6">
                   <div className="flex h-[260px]">
@@ -1571,17 +1580,27 @@ export function NavigationSection() {
                         <span className="px-2 py-0.5 text-[9px] font-bold btn-active rounded">+ New</span>
                       </div>
                       <div className="flex-1 bg-bf-paper p-3 overflow-hidden">
-                        {["Acme Corp", "Vanta", "HealthCo"].map((name) => (
+                        {listPageClients.map((client) => (
                           <div
-                            key={name}
+                            key={client.slug}
                             className="flex items-center gap-2 p-2 rounded-lg border border-bf-border mb-1.5"
                           >
-                            <div className="h-6 w-6 rounded bg-bf-surface flex items-center justify-center text-[8px] font-bold text-bf-text">
-                              {name[0]}
+                            <div className="h-6 w-6 rounded bg-bf-surface overflow-hidden flex items-center justify-center text-[8px] font-bold text-bf-text">
+                              {client.logoUrl ? (
+                                <img
+                                  src={client.logoUrl}
+                                  alt=""
+                                  className="h-6 w-6 object-contain rounded"
+                                />
+                              ) : (
+                                getInitials(client.name)
+                              )}
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-[10px] font-medium text-bf-text">{name}</p>
-                              <p className="text-[8px] text-bf-muted">3 projects</p>
+                              <p className="text-[10px] font-medium text-bf-text truncate">{client.name}</p>
+                              <p className="text-[8px] text-bf-muted truncate">
+                                {(client.websiteUrl ?? client.description).replace(/^https?:\/\//, "")}
+                              </p>
                             </div>
                           </div>
                         ))}
