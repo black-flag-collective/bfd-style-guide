@@ -5,7 +5,6 @@ interface SectionHeaderProps {
   number: string;
   title: string;
   description: string;
-  dark?: boolean;
   actions?: ReactNode;
 }
 
@@ -15,14 +14,8 @@ export function SectionHeader({
   number,
   title,
   description,
-  dark = false,
   actions,
 }: SectionHeaderProps) {
-  const labelColor = dark ? "text-bf-dark-muted" : "text-bf-muted";
-  const lineColor = dark ? "bg-bf-dark-border" : "bg-bf-border";
-  const titleColor = dark ? "text-bf-dark-text" : "text-bf-text";
-  const descColor = dark ? "text-bf-dark-muted" : "text-bf-muted";
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -33,22 +26,22 @@ export function SectionHeader({
     >
       <div className="flex items-center gap-4 mb-5">
         <span
-          className={`text-[11px] font-medium tracking-[0.2em] uppercase ${labelColor}`}
+          className="text-[11px] font-medium tracking-[0.2em] uppercase text-bf-muted"
         >
           {number}
         </span>
-        <div className={`h-px flex-1 ${lineColor} max-w-16 sm:max-w-24`} />
+        <div className="h-px flex-1 bg-bf-border max-w-16 sm:max-w-24" />
       </div>
 
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-6">
         <div className="flex-1 min-w-0">
           <h2
-            className={`text-3xl sm:text-4xl md:text-5xl font-bold ${titleColor} mb-3 tracking-tight`}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-bf-text mb-3 tracking-tight"
           >
             {title}
           </h2>
           <p
-            className={`text-base sm:text-lg ${descColor} max-w-xl leading-relaxed`}
+            className="text-base sm:text-lg text-bf-muted max-w-xl leading-relaxed"
           >
             {description}
           </p>

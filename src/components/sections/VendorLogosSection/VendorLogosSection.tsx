@@ -60,10 +60,24 @@ function LinearLogo({ size = 20, className }: { size?: number; className?: strin
   );
 }
 
-const allVendors: (VendorDef | { id: string; name: string; color: string; role: string; Icon: React.FC<{ size?: number; className?: string }> })[] = [
+function VantaLogo({ size = 20, className }: { size?: number; className?: string }) {
+  return (
+    <img
+      src="/vendors/vanta.png"
+      alt="Vanta"
+      width={size}
+      height={size}
+      className={className}
+      style={{ objectFit: "contain" }}
+    />
+  );
+}
+
+const allVendors: VendorDef[] = [
   ...vendors,
   { id: "cursor", name: "Cursor", color: "#000000", role: "IDE", Icon: CursorLogo },
   { id: "linear", name: "Linear", color: "#5e6ad2", role: "Issues", Icon: LinearLogo },
+  { id: "vanta", name: "Vanta", color: "#7b61ff", role: "Compliance", Icon: VantaLogo },
 ];
 
 export function VendorLogosSection() {
@@ -71,7 +85,7 @@ export function VendorLogosSection() {
   const [activeCard, setActiveCard] = useState<"inactive" | "active">("inactive");
 
   return (
-    <section id="vendor-logos" className="relative bg-bf-bg py-16 sm:py-24">
+    <section id="vendor-logos" className="relative bg-white border-t-4 border-bf-mint py-16 sm:py-24">
       <div className="px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="max-w-6xl mx-auto">
               <SectionHeader
@@ -214,7 +228,7 @@ export function VendorLogosSection() {
                         viewport={{ once: true }}
                         onMouseEnter={() => setHovered(i)}
                         onMouseLeave={() => setHovered(null)}
-                        className="relative bg-bf-paper rounded-xl border-2 border-bf-border px-6 py-7 text-center transition-all duration-200 hover:border-bf-text/30 hover:shadow-card group"
+                        className="relative bg-bf-paper rounded-xl border-2 border-bf-border px-6 pt-8 pb-6 text-center transition-all duration-200 hover:border-bf-text/30 hover:shadow-card group flex flex-col items-center justify-center"
                       >
                         <div
                           className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center transition-all duration-200 border-2"

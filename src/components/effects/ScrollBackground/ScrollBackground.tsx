@@ -15,8 +15,8 @@ const defaultShapes: FloatingShapeProps[] = [
 ];
 
 const defaultGradient = {
-  from: { start: "#F0EEE9", middle: "#F0EEE9", end: "#F0EEE9" },
-  to: { start: "#F0EEE9", middle: "#F0EEE9", end: "#F0EEE9" },
+  from: { start: "#F4F4F5", middle: "#F4F4F5", end: "#F4F4F5" },
+  to: { start: "#F4F4F5", middle: "#F4F4F5", end: "#F4F4F5" },
   angle: 135,
 };
 

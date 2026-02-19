@@ -15,8 +15,23 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { GitHubDark } from "developer-icons";
 import { BrandLogo } from "@/components/BrandLogo";
 import { SectionHeader } from "@/components/SectionHeader";
+import { DeviceFrame } from "@/components/DeviceFrame/DeviceFrame";
+import type { Device } from "@/components/DeviceFrame/DeviceFrame";
+
+function LinearIcon({ size = 14 }: { size?: number }) {
+  return (
+    <img
+      src="https://linear.app/favicon.ico"
+      alt="Linear"
+      width={size}
+      height={size}
+      className="inline-block"
+    />
+  );
+}
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -59,27 +74,6 @@ const drawerTabs = ["Overview", "Entity", "Timeline", "Artifacts", "Raw Source"]
 
 const rangeOptions = ["24h", "7d", "30d"];
 
-interface BreadcrumbExample {
-  path: string[];
-  icon: "building" | "bolt" | "settings" | "folder";
-  iconLabel: string;
-}
-
-const breadcrumbIcons: Record<BreadcrumbExample["icon"], TablerIcon | typeof Settings | typeof Folder> = {
-  building: IconBuilding,
-  bolt: IconBolt,
-  settings: Settings as unknown as TablerIcon,
-  folder: Folder as unknown as TablerIcon,
-};
-
-const breadcrumbSets: BreadcrumbExample[] = [
-  { path: ["Clients", "Acme Corp", "Project Alpha"], icon: "building", iconLabel: "A" },
-  { path: ["Clients", "Black Flag", "Foundry", "Events"], icon: "bolt", iconLabel: "BF" },
-  { path: ["Settings", "Vendors", "GitHub"], icon: "settings", iconLabel: "S" },
-  { path: ["Events", "Webhook Delivery #4821"], icon: "bolt", iconLabel: "E" },
-  { path: ["Clients", "HealthCo", "HW Portal", "Files", "docs/"], icon: "folder", iconLabel: "F" },
-];
-
 export function NavigationSection() {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [activeSidebarItem, setActiveSidebarItem] = useState(0);
@@ -89,16 +83,18 @@ export function NavigationSection() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeIpodFace, setActiveIpodFace] = useState(0);
   const [activeDrawerTab, setActiveDrawerTab] = useState(0);
+  const [activeMinimalTab, setActiveMinimalTab] = useState(0);
   const [activeRange, setActiveRange] = useState(0);
+  const [sidebarDevice, setSidebarDevice] = useState<Device>("desktop");
 
   return (
-    <section id="navigation" className="relative bg-bf-bg py-16 sm:py-24">
+    <section id="navigation" className="relative bg-bf-paper border-t-4 border-bf-cobalt py-16 sm:py-24">
       <div className="px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="max-w-6xl mx-auto">
               <SectionHeader
                 number="09"
                 title="Navigation"
-                description="Six tiers of navigation for complex admin interfaces. From primary sidebar to page-level platinum tabs, content-level segmented controls, drawer underline tabs, and filter bars. Every pattern below is the canonical specification — no alternatives, no variations."
+                description="Navigation tiers for complex admin interfaces — primary sidebar, page-level tab bars, segmented controls, underline tabs, filter bars, and page compositions. Every pattern below is the canonical specification."
               />
 
               {/* ═══════════════════════════════════════════ */}
@@ -115,178 +111,226 @@ export function NavigationSection() {
                   1 · Primary — Sidebar
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  Hover-expand from 64 → 208 px. Active item uses a clean white fill
+                  Hover-expand from 64 → 208 px. Active item uses a gradient fill
                   with subtle border and 3 px left accent bar. Collapsed shows only
-                  icons with right-side tooltips; expanded reveals labels. User avatar
-                  pinned to bottom.
+                  icons with tooltip hints; expanded reveals labels. Footer rail
+                  reserves space below a divider.
                 </p>
 
-                <div className="flex flex-col lg:flex-row gap-8 items-start">
-                  {/* Interactive sidebar — full-height preview matching AdminSidebar.tsx */}
-                  <div
-                    className="relative rounded-2xl overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] flex-shrink-0 flex flex-col bg-gradient-to-b from-[#ececec] to-[#dfdfdf] border border-[#bdbdbd] shadow-sm"
-                    style={{ width: sidebarExpanded ? 208 : 64, height: 540 }}
-                    onMouseEnter={() => setSidebarExpanded(true)}
-                    onMouseLeave={() => setSidebarExpanded(false)}
-                  >
-                    {/* Logo zone — h-20, crossfade between icon mark and full lockup */}
-                    <div
-                      className={`flex items-center h-20 px-3 ${
-                        sidebarExpanded ? "justify-start" : "justify-center"
-                      }`}
-                    >
-                      <div className="relative flex items-center h-10">
-                        <div
-                          className={`transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
-                            sidebarExpanded
-                              ? "opacity-0 scale-90 pointer-events-none absolute left-0"
-                              : "opacity-100 scale-100"
-                          }`}
-                        >
-                          <BrandLogo variant="dark" size="sm" className="h-10 w-auto" />
-                        </div>
-                        <div
-                          className={`transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
-                            sidebarExpanded
-                              ? "opacity-100 scale-100"
-                              : "opacity-0 scale-95 pointer-events-none absolute left-0"
-                          }`}
-                        >
-                          <img src="/logos/lockup-dark.svg" alt="Black Flag Design" className="h-7 w-auto" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Nav items — @tabler/icons-react · size 20 · stroke 1.75 */}
-                    <nav className="flex-1 py-3 px-3 space-y-1">
-                      {sidebarItems.map((item, i) => {
-                        const IconComponent = item.Icon;
-                        const isActive = activeSidebarItem === i;
-                        return (
-                          <button
-                            key={item.label}
-                            onClick={() => setActiveSidebarItem(i)}
-                            className={`relative w-full flex items-center rounded-lg py-2.5 text-sm font-medium transition-all duration-200 border ${
-                              sidebarExpanded
-                                ? "px-3 gap-3 justify-start"
-                                : "justify-center"
-                            } ${
-                              isActive
-                                ? "border-[#c4c4c4] bg-gradient-to-b from-[#fafafa] to-[#ececec] text-[#171717] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
-                                : "border-transparent text-[#171717]/55 hover:bg-white/45 hover:text-[#171717]/85"
-                            }`}
-                          >
-                            <span
-                              className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3px] rounded-r-full bg-[#171717] transition-all duration-200 ${
-                                isActive ? "h-4 opacity-100" : "h-0 opacity-0"
-                              }`}
-                            />
-                            <IconComponent size={ICON_SIZE} stroke={ICON_STROKE} className="flex-shrink-0" />
-                            <AnimatePresence>
-                              {sidebarExpanded && (
-                                <motion.span
-                                  initial={{ opacity: 0, width: 0 }}
-                                  animate={{ opacity: 1, width: "auto" }}
-                                  exit={{ opacity: 0, width: 0 }}
-                                  className="whitespace-nowrap overflow-hidden"
+                <DeviceFrame
+                  hint="Hover sidebar to expand · click items to navigate"
+                  desktopHeight={520}
+                  tabletHeight={520}
+                  mobileHeight={520}
+                  onDeviceChange={setSidebarDevice}
+                >
+                  {({ device }) => {
+                    if (device === "mobile") {
+                      return (
+                        <div style={{ height: "100%", background: "#FFFFFF", position: "relative" }}>
+                          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 52, padding: "0 16px", borderBottom: "1px solid #D4D4D8" }}>
+                            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ cursor: "pointer", background: "none", border: "none", padding: 0 }}>
+                              <img src="/logos/mark-dark.svg" alt="" style={{ height: 24, width: "auto" }} />
+                            </button>
+                            <span style={{ fontSize: 13, fontWeight: 600, color: "#171717" }}>
+                              {sidebarItems[activeSidebarItem]?.label ?? "Logo"}
+                            </span>
+                            <div style={{ width: 24 }} />
+                          </div>
+                          <AnimatePresence>
+                            {mobileMenuOpen && (
+                              <>
+                                <motion.div
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: 1 }}
+                                  exit={{ opacity: 0 }}
+                                  style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 10 }}
+                                  onClick={() => setMobileMenuOpen(false)}
+                                />
+                                <motion.div
+                                  initial={{ x: "-100%" }}
+                                  animate={{ x: 0 }}
+                                  exit={{ x: "-100%" }}
+                                  transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                                  style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 210, background: "#FFFFFF", zIndex: 20, borderRight: "1px solid #bdbdbd", display: "flex", flexDirection: "column" }}
                                 >
-                                  {item.label}
-                                </motion.span>
-                              )}
-                            </AnimatePresence>
-                          </button>
-                        );
-                      })}
-                    </nav>
-
-                    {/* User area — avatar pinned to bottom */}
-                    <div className="border-t border-[#bdbdbd] px-3 py-3">
-                      <div
-                        className={`flex items-center rounded-lg py-2 hover:bg-white/45 transition-colors cursor-pointer ${
-                          sidebarExpanded
-                            ? "px-2 gap-3 justify-start"
-                            : "justify-center"
-                        }`}
-                      >
-                        <div className="h-8 w-8 rounded-full bg-[#171717]/10 flex items-center justify-center text-xs font-bold text-[#171717] flex-shrink-0">
-                          KP
+                                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 12px", height: 52, flexShrink: 0, borderBottom: "1px solid #D4D4D8" }}>
+                                    <img src="/logos/lockup-dark.svg" alt="" style={{ height: 28, width: "auto" }} />
+                                    <button onClick={() => setMobileMenuOpen(false)} style={{ color: "#71717A", background: "none", border: "none", cursor: "pointer", padding: 2 }}>
+                                      <IconX size={16} stroke={1.75} />
+                                    </button>
+                                  </div>
+                                  <nav style={{ flex: 1, padding: "8px 8px", display: "flex", flexDirection: "column", gap: 2, overflowY: "auto" }}>
+                                    {sidebarItems.map((item, i) => {
+                                      const IconComponent = item.Icon;
+                                      const isActive = activeSidebarItem === i;
+                                      return (
+                                        <button
+                                          key={item.label}
+                                          onClick={() => { setActiveSidebarItem(i); setMobileMenuOpen(false); }}
+                                          style={{
+                                            display: "flex", alignItems: "center", width: "100%", borderRadius: 7, padding: "7px 10px", gap: 10, justifyContent: "flex-start", fontSize: 12, fontWeight: 500, position: "relative",
+                                            border: isActive ? "1px solid #c4c4c4" : "1px solid transparent",
+                                            background: isActive ? "linear-gradient(to bottom, #fafafa, #ececec)" : "transparent",
+                                            color: isActive ? "#171717" : "rgba(23,23,23,0.55)",
+                                            boxShadow: isActive ? "inset 0 1px 0 rgba(255,255,255,0.8)" : "none",
+                                            transition: "all 200ms ease", cursor: "pointer",
+                                          }}
+                                        >
+                                          <span style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", width: 2.5, borderRadius: "0 9999px 9999px 0", background: "#171717", height: isActive ? 12 : 0, opacity: isActive ? 1 : 0, transition: "all 200ms ease" }} />
+                                          <IconComponent size={15} stroke={1.75} style={{ flexShrink: 0 }} />
+                                          <span style={{ whiteSpace: "nowrap" }}>{item.label}</span>
+                                        </button>
+                                      );
+                                    })}
+                                  </nav>
+                                  <div style={{ borderTop: "1px solid #bdbdbd", padding: "8px", flexShrink: 0, minHeight: 24 }} />
+                                </motion.div>
+                              </>
+                            )}
+                          </AnimatePresence>
+                          <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", height: "calc(100% - 52px)" }}>
+                            <p style={{ fontSize: 12, color: "#71717A", textAlign: "center", padding: "0 24px" }}>
+                              {mobileMenuOpen ? "" : "Tap logo mark to open sidebar"}
+                            </p>
+                          </div>
                         </div>
-                        <AnimatePresence>
-                          {sidebarExpanded && (
-                            <motion.div
-                              initial={{ opacity: 0, width: 0 }}
-                              animate={{ opacity: 1, width: "auto" }}
-                              exit={{ opacity: 0, width: 0 }}
-                              className="overflow-hidden"
-                            >
-                              <p className="text-sm font-medium text-[#171717] truncate whitespace-nowrap">
-                                Keith Pattison
-                              </p>
-                              <p className="text-xs text-[#171717]/55 truncate whitespace-nowrap">
-                                keith@blackflag.design
-                              </p>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    </div>
-                  </div>
+                      );
+                    }
 
-                  {/* Spec cards */}
-                  <div className="flex-1 min-w-0 space-y-4">
-                    <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-6 space-y-3">
-                      <p className="text-xs font-black text-bf-text uppercase tracking-wider">
-                        Sidebar Spec
-                      </p>
-                      <div className="grid grid-cols-[6rem_1fr] sm:grid-cols-[8rem_1fr] gap-x-3 sm:gap-x-6 gap-y-2 text-sm">
-                        {[
+                    const isTablet = device === "tablet";
+                    return (
+                      <div style={{ display: "flex", height: "100%" }}>
+                        <div
+                          style={{
+                            display: "flex", flexDirection: "column",
+                            backgroundImage: "linear-gradient(to bottom, #ececec, #dfdfdf)",
+                            borderRight: "1px solid #bdbdbd",
+                            width: sidebarExpanded && !isTablet ? 200 : 60,
+                            minWidth: sidebarExpanded && !isTablet ? 200 : 60,
+                            transition: "all 300ms cubic-bezier(0.25,0.1,0.25,1)",
+                            flexShrink: 0, overflow: "hidden",
+                          }}
+                          onMouseEnter={() => !isTablet && setSidebarExpanded(true)}
+                          onMouseLeave={() => !isTablet && setSidebarExpanded(false)}
+                        >
+                          <div style={{ display: "flex", alignItems: "center", height: 60, padding: "0 10px", flexShrink: 0, justifyContent: sidebarExpanded && !isTablet ? "flex-start" : "center" }}>
+                            <div style={{ position: "relative", display: "flex", alignItems: "center", height: 36 }}>
+                              <div style={{ transition: "all 300ms cubic-bezier(0.25,0.1,0.25,1)", opacity: sidebarExpanded && !isTablet ? 0 : 1, transform: sidebarExpanded && !isTablet ? "scale(0.9)" : "scale(1)", position: sidebarExpanded && !isTablet ? "absolute" : "relative", left: 0, pointerEvents: sidebarExpanded && !isTablet ? "none" : "auto" }}>
+                                <img src="/logos/mark-dark.svg" alt="" style={{ height: 32, width: "auto" }} />
+                              </div>
+                              <div style={{ transition: "all 300ms cubic-bezier(0.25,0.1,0.25,1)", opacity: sidebarExpanded && !isTablet ? 1 : 0, transform: sidebarExpanded && !isTablet ? "scale(1)" : "scale(0.95)", position: sidebarExpanded && !isTablet ? "relative" : "absolute", left: 0, pointerEvents: sidebarExpanded && !isTablet ? "auto" : "none" }}>
+                                <img src="/logos/lockup-dark.svg" alt="" style={{ height: 36, width: "auto" }} />
+                              </div>
+                            </div>
+                          </div>
+                          <nav style={{ flex: 1, padding: "8px 8px", display: "flex", flexDirection: "column", gap: 2, overflow: "hidden" }}>
+                            {sidebarItems.map((item, i) => {
+                              const IconComponent = item.Icon;
+                              const isActive = activeSidebarItem === i;
+                              const showLabel = sidebarExpanded && !isTablet;
+                              return (
+                                <button
+                                  key={item.label}
+                                  onClick={() => setActiveSidebarItem(i)}
+                                  style={{
+                                    display: "flex", alignItems: "center", width: "100%", borderRadius: 7,
+                                    padding: showLabel ? "8px 10px" : "8px 0",
+                                    gap: showLabel ? 10 : 0,
+                                    justifyContent: showLabel ? "flex-start" : "center",
+                                    fontSize: 13, fontWeight: 500, position: "relative",
+                                    border: isActive ? "1px solid #c4c4c4" : "1px solid transparent",
+                                    background: isActive ? "linear-gradient(to bottom, #fafafa, #ececec)" : "transparent",
+                                    color: isActive ? "#171717" : "rgba(23,23,23,0.55)",
+                                    boxShadow: isActive ? "inset 0 1px 0 rgba(255,255,255,0.8)" : "none",
+                                    transition: "all 200ms ease", cursor: "pointer",
+                                  }}
+                                >
+                                  <span style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", width: 3, borderRadius: "0 9999px 9999px 0", background: "#171717", height: isActive ? 14 : 0, opacity: isActive ? 1 : 0, transition: "all 200ms ease" }} />
+                                  <IconComponent size={18} stroke={1.75} style={{ flexShrink: 0 }} />
+                                  {showLabel && <span style={{ whiteSpace: "nowrap", overflow: "hidden" }}>{item.label}</span>}
+                                </button>
+                              );
+                            })}
+                          </nav>
+                          <div style={{ borderTop: "1px solid #bdbdbd", padding: "10px 8px", flexShrink: 0, minHeight: 32 }} />
+                        </div>
+                        <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+                          <div style={{ height: 48, display: "flex", alignItems: "center", padding: "0 16px", borderBottom: "2px solid #D4D4D8", background: "#FAFAFA" }}>
+                            <span style={{ fontSize: 14, fontWeight: 600, color: "#171717" }}>
+                              {sidebarItems[activeSidebarItem]?.label ?? "Logo"}
+                            </span>
+                          </div>
+                          <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAFA" }}>
+                            <span style={{ fontSize: 12, color: "#71717A" }}>
+                              {sidebarItems[activeSidebarItem]?.label ?? "Logo"} content area
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }}
+                </DeviceFrame>
+
+                {/* Spec card — context-sensitive to active tab */}
+                <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-6 space-y-3">
+                  <p className="text-xs font-black text-bf-text uppercase tracking-wider">
+                    {sidebarDevice === "desktop" ? "Desktop Sidebar Spec" : sidebarDevice === "tablet" ? "Tablet Sidebar Spec" : "Mobile Sidebar Spec"}
+                  </p>
+                  <div className="grid grid-cols-[6rem_1fr] sm:grid-cols-[8rem_1fr] gap-x-3 sm:gap-x-6 gap-y-2 text-sm">
+                    {(sidebarDevice === "desktop"
+                      ? [
                           ["Icons", "@tabler/icons-react · size 20 · stroke 1.75"],
-                          ["Collapsed", "w-16 (64 px) · icon only"],
+                          ["Collapsed", "w-16 (64 px) · icon only + tooltip"],
                           ["Expanded", "w-52 (208 px) · icon + label"],
                           ["Trigger", "mouseenter / mouseleave"],
                           ["Easing", "cubic-bezier(0.25, 0.1, 0.25, 1)"],
                           ["Duration", "300 ms"],
-                          ["Frame bg", "gradient from-[#ececec] to-[#dfdfdf]"],
-                          ["Frame border", "border-[#bdbdbd]"],
-                          ["Active fill", "gradient from-[#fafafa] to-[#ececec]"],
-                          ["Active border", "border-[#c4c4c4]"],
+                          ["Frame bg", "linear-gradient(to bottom, #ececec, #dfdfdf)"],
+                          ["Frame border", "1px solid #bdbdbd"],
+                          ["Active fill", "linear-gradient(to bottom, #fafafa, #ececec)"],
+                          ["Active border", "1px solid #c4c4c4"],
                           ["Active shadow", "inset 0 1px 0 rgba(255,255,255,0.8)"],
                           ["Active bar", "3 px left · bg-foreground · rounded-r-full"],
-                          ["Inactive text", "text-foreground/55"],
-                          ["Hover", "hover:bg-white/45 hover:text-foreground/85"],
-                          ["Logo collapsed", "BrandLogo mark · h-10 · crossfade"],
-                          ["Logo expanded", "lockup-dark.svg · h-7 · crossfade"],
-                          ["Logo zone", "h-20 · aligns with page header"],
-                          ["Mobile", "Slide-in overlay, w-64 (256 px), always expanded"],
-                          ["Tooltips", "Right-side on collapsed icons (shadcn/ui)"],
-                        ].map(([label, value]) => (
-                          <Fragment key={label}>
-                            <span className="text-bf-muted">{label}</span>
-                            <span className="font-mono text-bf-text text-xs">
-                              {value}
-                            </span>
-                          </Fragment>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-5">
-                      <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
-                        User Popover Menu
-                      </p>
-                      <div className="bg-white rounded-lg border border-bf-border p-2 max-w-[14rem] shadow-sm space-y-0.5">
-                        <div className="px-2 py-1.5 text-sm text-bf-text rounded hover:bg-bf-surface cursor-pointer transition-colors">
-                          My Profile
-                        </div>
-                        <div className="px-2 py-1.5 text-sm text-bf-text rounded hover:bg-bf-surface cursor-pointer transition-colors">
-                          Settings
-                        </div>
-                        <div className="border-t border-bf-border my-1" />
-                        <div className="px-2 py-1.5 text-sm text-red-600 rounded hover:bg-red-50 cursor-pointer transition-colors">
-                          Sign Out
-                        </div>
-                      </div>
-                    </div>
+                          ["Inactive text", "rgba(23,23,23,0.55)"],
+                          ["Hover", "bg-white/45 · color rgba(23,23,23,0.85)"],
+                          ["Logo collapsed", "mark-dark.svg · h-10 · crossfade"],
+                          ["Logo expanded", "lockup-dark.svg · h-12 · crossfade"],
+                          ["Footer", "1px solid #bdbdbd divider · reserved space"],
+                        ]
+                      : sidebarDevice === "tablet"
+                      ? [
+                          ["Width", "w-16 (64 px) · permanently collapsed"],
+                          ["Hover expand", "Disabled — stays icon-only"],
+                          ["Logo", "mark-dark.svg · h-8 · centered"],
+                          ["Trigger", "Tap icon to navigate (no expand)"],
+                          ["Active state", "Same gradient + accent bar as desktop"],
+                          ["Frame bg", "Same chrome gradient as desktop"],
+                          ["Content area", "Full remaining width"],
+                          ["Breakpoint", "768 px – 1024 px"],
+                        ]
+                      : [
+                          ["Width", "w-64 (256 px) · always expanded"],
+                          ["Trigger", "Logo mark tap → slide-in"],
+                          ["Close", "✕ button + overlay backdrop tap"],
+                          ["Overlay", "bg-black/50 · inset 0"],
+                          ["Slide easing", "300ms ease-in-out"],
+                          ["Position", "fixed · left 0 · full height"],
+                          ["z-index", "50 (sidebar) · 40 (overlay)"],
+                          ["Header", "lockup-dark.svg + close icon"],
+                          ["Active state", "Same gradient + accent bar as desktop"],
+                          ["Footer", "Same divider + reserved space"],
+                          ["Border", "border-right 1px solid #bdbdbd"],
+                          ["Background", "#FFFFFF (clean, no gradient)"],
+                        ]
+                    ).map(([label, value]) => (
+                      <Fragment key={label}>
+                        <span className="text-bf-muted">{label}</span>
+                        <span className="font-mono text-bf-text text-xs">
+                          {value}
+                        </span>
+                      </Fragment>
+                    ))}
                   </div>
                 </div>
               </motion.div>
@@ -443,13 +487,12 @@ export function NavigationSection() {
                 className="mb-10"
               >
                 <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
-                  3 · Platinum Tab Bar
+                  3 · Tab Bar
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  The signature page-level secondary navigation. A brushed-metal
-                  gradient track with raised pill triggers. Active state uses a subtle
-                  border, light fill, and inset shadow that feels tactile — like real
-                  hardware controls. Used on every detail page and settings panel.
+                  Page-level secondary navigation. Clean surface track with white
+                  pill active states and soft shadows. Used on every detail page
+                  and settings panel. Active tab syncs with the URL.
                 </p>
 
                 {/* Detail page tabs (8+ tabs, horizontal scroll) */}
@@ -457,16 +500,16 @@ export function NavigationSection() {
                   Detail Page — 8 tabs, scrollable
                 </p>
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden mb-4">
-                  <div className="border-y border-[#bdbdbd] bg-gradient-to-b from-[#f2f2f2] to-[#dcdcdc] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] px-2 py-2">
-                    <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+                  <div className="bg-[#F4F4F5] border-b border-[#D4D4D8] px-1.5 py-1.5">
+                    <div className="flex gap-1 overflow-x-auto scrollbar-hide">
                       {detailPageTabs.map((tab, i) => (
                         <button
                           key={tab}
                           onClick={() => setActiveDetailTab(i)}
                           className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 whitespace-nowrap flex-shrink-0 border ${
                             activeDetailTab === i
-                              ? "border-[#bcbcbc] bg-[#f8f8f8] text-[#171717] shadow-[0_1px_0_rgba(255,255,255,0.7),inset_0_1px_0_rgba(255,255,255,0.9)]"
-                              : "border-transparent text-[#171717]/60 hover:bg-white/40 hover:text-[#171717]"
+                              ? "border-[#D4D4D8] bg-white text-[#171717] shadow-[0_1px_3px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)]"
+                              : "border-transparent text-[#171717]/50 hover:bg-white/60 hover:text-[#171717]"
                           }`}
                         >
                           {tab}
@@ -486,16 +529,16 @@ export function NavigationSection() {
                   Settings Page — 3 tabs
                 </p>
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden mb-4">
-                  <div className="border-y border-[#bdbdbd] bg-gradient-to-b from-[#f2f2f2] to-[#dcdcdc] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] px-2 py-2">
-                    <div className="flex gap-2">
+                  <div className="bg-[#F4F4F5] border-b border-[#D4D4D8] px-1.5 py-1.5">
+                    <div className="flex gap-1">
                       {settingsTabItems.map((tab, i) => (
                         <button
                           key={tab}
                           onClick={() => setActiveSettingsTab(i)}
                           className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 whitespace-nowrap border ${
                             activeSettingsTab === i
-                              ? "border-[#bcbcbc] bg-[#f8f8f8] text-[#171717] shadow-[0_1px_0_rgba(255,255,255,0.7),inset_0_1px_0_rgba(255,255,255,0.9)]"
-                              : "border-transparent text-[#171717]/60 hover:bg-white/40 hover:text-[#171717]"
+                              ? "border-[#D4D4D8] bg-white text-[#171717] shadow-[0_1px_3px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)]"
+                              : "border-transparent text-[#171717]/50 hover:bg-white/60 hover:text-[#171717]"
                           }`}
                         >
                           {tab}
@@ -513,26 +556,21 @@ export function NavigationSection() {
                 {/* Platinum tab spec */}
                 <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-5">
                   <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
-                    Platinum Tab Spec
-                  </p>
-                  <p className="text-xs text-bf-muted mb-3">
-                    Metallic gradient track with raised pill active states. The only
-                    page-level secondary navigation pattern. No alternatives.
+                    Tab Bar Spec
                   </p>
                   <div className="grid grid-cols-[7rem_1fr] gap-x-4 gap-y-1 text-[11px]">
                     {[
-                      ["Track bg", "gradient from-[#f2f2f2] to-[#dcdcdc]"],
-                      ["Track border", "border-y border-[#bdbdbd]"],
-                      ["Track shadow", "inset 0 1px 0 rgba(255,255,255,0.85)"],
-                      ["Active bg", "bg-[#f8f8f8]"],
-                      ["Active border", "border-[#bcbcbc]"],
-                      ["Active shadow", "0 1px 0 white/70, inset 0 1px 0 white/90"],
-                      ["Active text", "text-foreground (#171717)"],
-                      ["Inactive text", "text-foreground/60"],
-                      ["Hover", "hover:bg-white/40"],
+                      ["Track bg", "bg-[#F4F4F5] (warm surface, flat)"],
+                      ["Track border", "border-b border-[#D4D4D8]"],
+                      ["Active bg", "bg-white"],
+                      ["Active border", "border-[#D4D4D8]"],
+                      ["Active shadow", "0 1px 3px rgba(0,0,0,0.06)"],
+                      ["Active text", "text-[#171717]"],
+                      ["Inactive text", "text-[#171717]/50"],
+                      ["Hover", "hover:bg-white/60"],
                       ["Radius", "rounded-md"],
                       ["Padding", "px-3 py-1.5"],
-                      ["Gap", "gap-2"],
+                      ["Gap", "gap-1"],
                       ["Routing", "URL (?tab=) via TanStack Router"],
                     ].map(([k, v]) => (
                       <Fragment key={k}>
@@ -564,8 +602,7 @@ export function NavigationSection() {
                 </p>
 
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden">
-                  <div className="flex shrink-0 items-center gap-1 border-b border-[#c8c8c8] bg-gradient-to-b from-[#f6f6f6] to-[#ececec] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] px-1 py-1.5">
-                    {/* Prev button */}
+                  <div className="flex shrink-0 items-center gap-1 border-b border-[#D4D4D8] bg-[#F4F4F5] px-1 py-1.5">
                     <button
                       onClick={() =>
                         setActiveSettingsTab(
@@ -573,36 +610,46 @@ export function NavigationSection() {
                             settingsTabItems.length
                         )
                       }
-                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[#171717]/45 transition-colors hover:bg-black/5 hover:text-[#171717]"
+                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[#171717]/40 transition-colors hover:bg-white/60 hover:text-[#171717]"
                     >
                       <ChevronLeft size={14} strokeWidth={2} />
                     </button>
-                    <div className="flex min-w-0 flex-1 items-center justify-center gap-0.5">
+                    <div style={{ display: "flex", flex: 1, minWidth: 0, alignItems: "center", justifyContent: "center", gap: 2 }}>
                       {settingsTabItems.map((item, i) => {
                         const isActive = i === activeSettingsTab;
                         return (
                           <button
                             key={item}
                             onClick={() => setActiveSettingsTab(i)}
-                            className={`flex items-center gap-1.5 rounded-md px-3 py-1 text-sm font-medium transition-all ${
-                              isActive
-                                ? "border border-[#bcbcbc] bg-white text-[#171717] shadow-[0_1px_2px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]"
-                                : "border border-transparent text-[#171717]/45 hover:bg-white/50 hover:text-[#171717]"
-                            }`}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 6,
+                              padding: "5px 12px",
+                              fontSize: 13,
+                              fontWeight: 500,
+                              borderRadius: 6,
+                              whiteSpace: "nowrap",
+                              border: isActive ? "1px solid #D4D4D8" : "1px solid transparent",
+                              background: isActive ? "#fff" : "transparent",
+                              color: isActive ? "#171717" : "rgba(23,23,23,0.45)",
+                              boxShadow: isActive ? "0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)" : "none",
+                              cursor: "pointer",
+                              transition: "all 150ms ease",
+                            }}
                           >
                             {item}
                           </button>
                         );
                       })}
                     </div>
-                    {/* Next button */}
                     <button
                       onClick={() =>
                         setActiveSettingsTab(
                           (activeSettingsTab + 1) % settingsTabItems.length
                         )
                       }
-                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[#171717]/45 transition-colors hover:bg-black/5 hover:text-[#171717]"
+                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[#171717]/40 transition-colors hover:bg-white/60 hover:text-[#171717]"
                     >
                       <ChevronRight size={14} strokeWidth={2} />
                     </button>
@@ -617,12 +664,12 @@ export function NavigationSection() {
                 <div className="mt-3 bg-bf-paper rounded-xl border-2 border-bf-border p-4">
                   <div className="grid grid-cols-[7rem_1fr] gap-x-6 gap-y-1.5 text-[11px]">
                     {[
-                      ["Track bg", "gradient from-[#f6f6f6] to-[#ececec]"],
-                      ["Track border", "border-b border-[#c8c8c8]"],
+                      ["Track bg", "bg-[#F4F4F5] (matches tab bar)"],
+                      ["Track border", "border-b border-[#D4D4D8]"],
                       ["Active bg", "bg-white"],
-                      ["Active border", "border-[#bcbcbc]"],
-                      ["Active shadow", "0 1px 2px rgba(0,0,0,0.08), inset white/90"],
-                      ["Inactive", "text-foreground/45 hover:bg-white/50"],
+                      ["Active border", "border-[#D4D4D8]"],
+                      ["Active shadow", "0 1px 3px rgba(0,0,0,0.06)"],
+                      ["Inactive", "text-foreground/45 hover:bg-white/60"],
                       ["Arrows", "h-7 w-7 · ‹ / › · wrapping cycle"],
                       ["Keyboard", "ArrowLeft / ArrowRight global"],
                     ].map(([k, v]) => (
@@ -656,26 +703,39 @@ export function NavigationSection() {
 
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden">
                   <div className="bg-bf-surface border-b border-bf-border px-4 py-3">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Search size={14} strokeWidth={ICON_STROKE} className="text-bf-muted mr-1 flex-shrink-0" />
+                    <div className="flex items-center gap-2 overflow-x-auto">
+                      <Search size={14} strokeWidth={ICON_STROKE} className="text-bf-muted flex-shrink-0" />
                       {filterSortTabs.map((tab, i) => (
                         <button
                           key={tab}
                           onClick={() => setActiveFilterTab(i)}
-                          className={`px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-200 border ${
-                            activeFilterTab === i
-                              ? "btn-active-border"
-                              : "bg-bf-paper text-bf-muted border-bf-border hover:border-bf-text/40 hover:text-bf-text"
-                          }`}
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 5,
+                            padding: "5px 10px",
+                            fontSize: 12,
+                            fontWeight: 500,
+                            borderRadius: 6,
+                            whiteSpace: "nowrap",
+                            flexShrink: 0,
+                            border: activeFilterTab === i ? "1px solid #171717" : "1px solid #D4D4D8",
+                            background: activeFilterTab === i ? "#171717" : "#fff",
+                            color: activeFilterTab === i ? "#fff" : "#71717A",
+                            cursor: "pointer",
+                            transition: "all 150ms ease",
+                          }}
                         >
+                          {tab === "Linear" && <LinearIcon size={12} />}
+                          {tab === "GitHub" && <GitHubDark size={12} />}
                           {tab}
                         </button>
                       ))}
-                      <div className="h-4 w-px bg-bf-border mx-1" />
-                      <span className="px-2.5 py-1 text-xs font-medium bg-bf-paper text-bf-muted border border-bf-border rounded-md">
+                      <div style={{ height: 16, width: 1, background: "#D4D4D8", flexShrink: 0, margin: "0 4px" }} />
+                      <span style={{ padding: "5px 10px", fontSize: 12, fontWeight: 500, background: "#fff", color: "#71717A", border: "1px solid #D4D4D8", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 }}>
                         Status ▾
                       </span>
-                      <span className="px-2.5 py-1 text-xs font-medium bg-bf-paper text-bf-muted border border-bf-border rounded-md">
+                      <span style={{ padding: "5px 10px", fontSize: 12, fontWeight: 500, background: "#fff", color: "#71717A", border: "1px solid #D4D4D8", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 }}>
                         Date ▾
                       </span>
                     </div>
@@ -709,36 +769,50 @@ export function NavigationSection() {
                 </p>
 
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden mb-4">
-                  <div className="bg-gradient-to-b from-[#f6f6f6] to-[#ececec] border-b border-[#c8c8c8] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] px-4 py-3">
-                    <div className="flex items-center gap-3">
-                      {/* Range selector (sits beside iPod segments in real app) */}
-                      <div className="flex items-center gap-1">
+                  <div className="bg-[#F4F4F5] border-b border-[#D4D4D8] px-4 py-3">
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, overflowX: "auto" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
                         {rangeOptions.map((range, i) => (
                           <button
                             key={range}
                             onClick={() => setActiveRange(i)}
-                            className={`rounded-md px-2 py-0.5 text-xs font-medium transition-all border ${
-                              activeRange === i
-                                ? "border-[#bcbcbc] bg-white text-[#171717]"
-                                : "border-transparent text-[#171717]/45 hover:bg-white/50"
-                            }`}
+                            style={{
+                              padding: "4px 10px",
+                              fontSize: 12,
+                              fontWeight: 500,
+                              borderRadius: 6,
+                              whiteSpace: "nowrap",
+                              border: activeRange === i ? "1px solid #D4D4D8" : "1px solid transparent",
+                              background: activeRange === i ? "#fff" : "transparent",
+                              color: activeRange === i ? "#171717" : "rgba(23,23,23,0.45)",
+                              boxShadow: activeRange === i ? "0 1px 2px rgba(0,0,0,0.05)" : "none",
+                              cursor: "pointer",
+                              transition: "all 150ms ease",
+                            }}
                           >
                             {range}
                           </button>
                         ))}
                       </div>
-                      <div className="h-4 w-px bg-[#c8c8c8]" />
-                      {/* iPod segments */}
-                      <div className="inline-flex gap-1">
+                      <div style={{ height: 16, width: 1, background: "#D4D4D8", flexShrink: 0 }} />
+                      <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
                         {ipodFaces.map((face, i) => (
                           <button
                             key={face}
                             onClick={() => setActiveIpodFace(i)}
-                            className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 border ${
-                              activeIpodFace === i
-                                ? "border-[#aeaeae] bg-gradient-to-b from-[#fefefe] to-[#ebebeb] text-[#171717] shadow-[inset_0_1px_0_rgba(255,255,255,0.92),0_1px_1px_rgba(0,0,0,0.08)]"
-                                : "border-transparent text-[#171717]/55 hover:bg-white/40 hover:text-[#171717]"
-                            }`}
+                            style={{
+                              padding: "6px 14px",
+                              fontSize: 12,
+                              fontWeight: 500,
+                              borderRadius: 9999,
+                              whiteSpace: "nowrap",
+                              border: activeIpodFace === i ? "1px solid #D4D4D8" : "1px solid transparent",
+                              background: activeIpodFace === i ? "#fff" : "transparent",
+                              color: activeIpodFace === i ? "#171717" : "rgba(23,23,23,0.5)",
+                              boxShadow: activeIpodFace === i ? "0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)" : "none",
+                              cursor: "pointer",
+                              transition: "all 200ms ease",
+                            }}
                           >
                             {face}
                           </button>
@@ -778,10 +852,10 @@ export function NavigationSection() {
                       {[
                         ["Shape", "rounded-full (pill)"],
                         ["Padding", "px-3.5 py-1.5"],
-                        ["Active bg", "gradient from-[#fefefe] to-[#ebebeb]"],
-                        ["Active border", "border-[#aeaeae]"],
-                        ["Active shadow", "inset white/92, 0 1px 1px black/8"],
-                        ["Inactive", "text-foreground/55 hover:bg-white/40"],
+                        ["Active bg", "bg-white"],
+                        ["Active border", "border-[#D4D4D8]"],
+                        ["Active shadow", "0 1px 3px rgba(0,0,0,0.06)"],
+                        ["Inactive", "text-foreground/50 hover:bg-white/60"],
                         ["Content anim", "cardFlipIn 0.5s ease-out"],
                         ["Routing", "URL-based (?face= param)"],
                       ].map(([k, v]) => (
@@ -805,7 +879,7 @@ export function NavigationSection() {
                     <div className="grid grid-cols-[7rem_1fr] gap-x-4 gap-y-1 text-[11px]">
                       {[
                         ["Size", "text-xs · px-2 py-0.5"],
-                        ["Active", "border-[#bcbcbc] bg-white"],
+                        ["Active", "border-[#D4D4D8] bg-white shadow-sm"],
                         ["Inactive", "border-transparent text-foreground/45"],
                         ["Radius", "rounded-md"],
                         ["Routing", "URL-based (?range= param)"],
@@ -842,21 +916,32 @@ export function NavigationSection() {
 
                 {/* Drawer-style underline tabs demo */}
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden bg-white mb-4">
-                  <div className="border-b border-bf-border px-5">
-                    <div className="flex gap-6 overflow-x-auto">
-                      {drawerTabs.map((tab, i) => (
-                        <button
-                          key={tab}
-                          onClick={() => setActiveDrawerTab(i)}
-                          className={`py-3 border-b-2 text-sm font-medium whitespace-nowrap transition-colors ${
-                            activeDrawerTab === i
-                              ? "border-[#171717] text-[#171717]"
-                              : "border-transparent text-[#171717]/40 hover:text-[#171717]/65"
-                          }`}
-                        >
-                          {tab}
-                        </button>
-                      ))}
+                  <div style={{ borderBottom: "1px solid var(--bf-border)", padding: "0 20px" }}>
+                    <div style={{ display: "flex", gap: 24, overflowX: "auto" }}>
+                      {drawerTabs.map((tab, i) => {
+                        const isActive = activeDrawerTab === i;
+                        return (
+                          <button
+                            key={tab}
+                            onClick={() => setActiveDrawerTab(i)}
+                            style={{
+                              padding: "12px 0",
+                              fontSize: 14,
+                              fontWeight: 500,
+                              whiteSpace: "nowrap",
+                              background: "transparent",
+                              border: "none",
+                              borderBottom: isActive ? "2px solid #171717" : "2px solid transparent",
+                              color: isActive ? "#171717" : "rgba(23,23,23,0.4)",
+                              cursor: "pointer",
+                              transition: "color 150ms ease, border-color 150ms ease",
+                              marginBottom: -1,
+                            }}
+                          >
+                            {tab}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                   <div className="h-24 flex items-center justify-center">
@@ -871,25 +956,37 @@ export function NavigationSection() {
                   Minimal variant — 2 tabs (Feedback source)
                 </p>
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden bg-white mb-4">
-                  <div className="border-b border-bf-border px-5">
-                    <div className="flex gap-6">
-                      {["Overview", "Raw Source"].map((tab, i) => (
-                        <button
-                          key={tab}
-                          className={`py-3 border-b-2 text-sm font-medium whitespace-nowrap transition-colors ${
-                            i === 0
-                              ? "border-[#171717] text-[#171717]"
-                              : "border-transparent text-[#171717]/40 hover:text-[#171717]/65"
-                          }`}
-                        >
-                          {tab}
-                        </button>
-                      ))}
+                  <div style={{ borderBottom: "1px solid var(--bf-border)", padding: "0 20px" }}>
+                    <div style={{ display: "flex", gap: 24 }}>
+                      {["Overview", "Raw Source"].map((tab, i) => {
+                        const isActive = activeMinimalTab === i;
+                        return (
+                          <button
+                            key={tab}
+                            onClick={() => setActiveMinimalTab(i)}
+                            style={{
+                              padding: "12px 0",
+                              fontSize: 14,
+                              fontWeight: 500,
+                              whiteSpace: "nowrap",
+                              background: "transparent",
+                              border: "none",
+                              borderBottom: isActive ? "2px solid #171717" : "2px solid transparent",
+                              color: isActive ? "#171717" : "rgba(23,23,23,0.4)",
+                              cursor: "pointer",
+                              transition: "color 150ms ease, border-color 150ms ease",
+                              marginBottom: -1,
+                            }}
+                          >
+                            {tab}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                   <div className="h-16 flex items-center justify-center">
                     <span className="text-sm text-bf-muted">
-                      Overview content
+                      {["Overview", "Raw Source"][activeMinimalTab]} content
                     </span>
                   </div>
                 </div>
@@ -944,7 +1041,7 @@ export function NavigationSection() {
                       name: "Sidebar",
                       pattern: "Hover-expand rail",
                       context: "Top-level app sections (Clients, Events, Settings…)",
-                      style: "Gradient track, 3 px left accent, icon + label",
+                      style: "Warm surface, 3 px left accent, icon + label",
                     },
                     {
                       tier: "2",
@@ -955,24 +1052,24 @@ export function NavigationSection() {
                     },
                     {
                       tier: "3",
-                      name: "Platinum Tabs",
-                      pattern: "Raised pill on metallic track",
+                      name: "Tab Bar",
+                      pattern: "White pill on surface track",
                       context: "Page sub-sections (Detail tabs, Settings tabs)",
-                      style: "Gradient track, border + inset shadow active",
+                      style: "Surface track, white pill active, soft shadow",
                     },
                     {
                       tier: "4",
-                      name: "Settings Sub-Nav",
+                      name: "Sub-Nav",
                       pattern: "Chevron picker",
                       context: "Cycling within a tab (vendor configs, meeting sources)",
-                      style: "Gradient track, white pill active, ← → arrows",
+                      style: "Surface track, white pill active, ← → arrows",
                     },
                     {
                       tier: "5",
-                      name: "iPod Segments",
+                      name: "Segmented Control",
                       pattern: "Rounded pill toggle",
                       context: "View/face switching within content (Connection, History…)",
-                      style: "Pill shape, gradient active, card flip animation",
+                      style: "Pill shape, white active, card flip animation",
                     },
                     {
                       tier: "6",
@@ -1019,63 +1116,146 @@ export function NavigationSection() {
                   9 · Breadcrumbs
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  The final segment is the page title (bold). Preceding segments are
-                  muted links with chevron separators. Entity icon appears at the leading edge.
-                  Desktop only — hidden on mobile.
+                  Breadcrumbs appear in the page header chrome, anchored left. The final
+                  segment is the current page (semibold). Preceding segments are interactive
+                  links. Vendor logos accompany vendor names. Desktop only.
                 </p>
 
-                <div className="space-y-3">
-                  {breadcrumbSets.map((example, i) => {
-                    const IconComponent = breadcrumbIcons[example.icon];
-                    return (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.4, delay: i * 0.06, ease }}
-                        viewport={{ once: true }}
-                        className="bg-bf-surface rounded-xl border-2 border-bf-border px-5 py-3.5 flex items-center gap-3 hover:border-bf-text/30 transition-colors"
-                      >
-                        <div className="h-8 w-8 rounded-lg btn-active flex items-center justify-center flex-shrink-0">
-                          <IconComponent size={16} strokeWidth={ICON_STROKE} />
-                        </div>
-                        <div className="flex items-center gap-1.5 text-sm">
-                          {example.path.map((segment, j) => (
-                            <span key={j} className="flex items-center gap-1.5">
-                              {j > 0 && (
-                                <ChevronRight size={12} strokeWidth={2} className="text-bf-border" />
-                              )}
-                              <span
-                                className={
-                                  j === example.path.length - 1
-                                    ? "font-bold text-bf-text"
-                                    : "text-bf-muted hover:text-bf-text cursor-pointer transition-colors"
-                                }
-                              >
-                                {segment}
-                              </span>
-                            </span>
-                          ))}
-                        </div>
-                      </motion.div>
-                    );
-                  })}
+                {/* Page header chrome simulation */}
+                <div className="rounded-xl border-2 border-bf-border overflow-hidden mb-6">
+                  {/* Simulated page header */}
+                  <div style={{ 
+                    background: "linear-gradient(to bottom, #FAFAFA 0%, #F4F4F5 100%)",
+                    borderBottom: "1px solid #E4E4E7",
+                    padding: "14px 20px",
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <span style={{ fontSize: 13, color: "rgba(23,23,23,0.45)", cursor: "pointer", transition: "color 150ms" }}>
+                        Clients
+                      </span>
+                      <ChevronRight size={11} strokeWidth={2.5} style={{ color: "#D4D4D8" }} />
+                      <span style={{ fontSize: 13, color: "rgba(23,23,23,0.45)", cursor: "pointer" }}>
+                        Black Flag Design
+                      </span>
+                      <ChevronRight size={11} strokeWidth={2.5} style={{ color: "#D4D4D8" }} />
+                      <span style={{ fontSize: 13, color: "rgba(23,23,23,0.45)", cursor: "pointer" }}>
+                        Foundry
+                      </span>
+                      <ChevronRight size={11} strokeWidth={2.5} style={{ color: "#D4D4D8" }} />
+                      <span style={{ fontSize: 13, fontWeight: 600, color: "#171717" }}>
+                        Events
+                      </span>
+                    </div>
+                  </div>
+                  {/* Simulated page content placeholder */}
+                  <div style={{ height: 80, display: "flex", alignItems: "center", justifyContent: "center", background: "#fff" }}>
+                    <span style={{ fontSize: 12, color: "var(--bf-muted)" }}>Page content area</span>
+                  </div>
                 </div>
 
-                <div className="mt-4 bg-bf-paper rounded-xl border-2 border-bf-border p-4">
-                  <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
-                    Entity Hierarchy
-                  </p>
-                  <p className="text-xs text-bf-muted mb-3">
-                    The canonical entity hierarchy is a strict two-level structure:
-                    <strong> Client → Project</strong>. All content (events, files, meetings)
-                    lives under a project. Breadcrumbs reflect this at every depth.
-                  </p>
-                  <div className="bg-bf-paper rounded-lg border border-bf-border p-3 font-mono text-[10px] sm:text-xs text-bf-text space-y-1 overflow-x-auto">
-                    <p className="whitespace-nowrap">Clients (top-level page)</p>
-                    <p className="whitespace-nowrap pl-4">└─ Client Detail (tabs: Projects, Meetings, Events, Files, Expenses)</p>
-                    <p className="whitespace-nowrap pl-8">└─ Project Detail (tabs: Meetings, Files, Knowledge, ...)</p>
-                    <p className="whitespace-nowrap pl-12">└─ Individual item views (event drawer, file viewer, etc.)</p>
+                {/* Breadcrumb variations in a clean grid */}
+                <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-3">
+                  Context Variations
+                </p>
+                <div style={{ display: "grid", gap: 8 }}>
+                  {/* Client → Project path */}
+                  <div style={{
+                    background: "#fff",
+                    border: "1px solid #E4E4E7",
+                    borderRadius: 8,
+                    padding: "10px 16px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                  }}>
+                    <span style={{ fontSize: 12, color: "rgba(23,23,23,0.45)" }}>Clients</span>
+                    <ChevronRight size={10} strokeWidth={2.5} style={{ color: "#D4D4D8" }} />
+                    <span style={{ fontSize: 12, color: "rgba(23,23,23,0.45)" }}>Acme Corp</span>
+                    <ChevronRight size={10} strokeWidth={2.5} style={{ color: "#D4D4D8" }} />
+                    <span style={{ fontSize: 12, fontWeight: 600, color: "#171717" }}>Project Alpha</span>
+                  </div>
+
+                  {/* Settings with vendor logo */}
+                  <div style={{
+                    background: "#fff",
+                    border: "1px solid #E4E4E7",
+                    borderRadius: 8,
+                    padding: "10px 16px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                  }}>
+                    <span style={{ fontSize: 12, color: "rgba(23,23,23,0.45)" }}>Settings</span>
+                    <ChevronRight size={10} strokeWidth={2.5} style={{ color: "#D4D4D8" }} />
+                    <span style={{ fontSize: 12, color: "rgba(23,23,23,0.45)" }}>Vendors</span>
+                    <ChevronRight size={10} strokeWidth={2.5} style={{ color: "#D4D4D8" }} />
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 12, fontWeight: 600, color: "#171717" }}>
+                      <GitHubDark size={13} />
+                      GitHub
+                    </span>
+                  </div>
+
+                  {/* Events path */}
+                  <div style={{
+                    background: "#fff",
+                    border: "1px solid #E4E4E7",
+                    borderRadius: 8,
+                    padding: "10px 16px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                  }}>
+                    <span style={{ fontSize: 12, color: "rgba(23,23,23,0.45)" }}>Events</span>
+                    <ChevronRight size={10} strokeWidth={2.5} style={{ color: "#D4D4D8" }} />
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 12, fontWeight: 600, color: "#171717" }}>
+                      <GitHubDark size={13} />
+                      Push to main · 3 commits
+                    </span>
+                  </div>
+
+                  {/* File browser path */}
+                  <div style={{
+                    background: "#fff",
+                    border: "1px solid #E4E4E7",
+                    borderRadius: 8,
+                    padding: "10px 16px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                  }}>
+                    <span style={{ fontSize: 12, color: "rgba(23,23,23,0.45)" }}>Clients</span>
+                    <ChevronRight size={10} strokeWidth={2.5} style={{ color: "#D4D4D8" }} />
+                    <span style={{ fontSize: 12, color: "rgba(23,23,23,0.45)" }}>HealthCo</span>
+                    <ChevronRight size={10} strokeWidth={2.5} style={{ color: "#D4D4D8" }} />
+                    <span style={{ fontSize: 12, color: "rgba(23,23,23,0.45)" }}>HW Portal</span>
+                    <ChevronRight size={10} strokeWidth={2.5} style={{ color: "#D4D4D8" }} />
+                    <span style={{ fontSize: 12, color: "rgba(23,23,23,0.45)" }}>Files</span>
+                    <ChevronRight size={10} strokeWidth={2.5} style={{ color: "#D4D4D8" }} />
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 12, fontWeight: 600, color: "#171717" }}>
+                      <Folder size={13} strokeWidth={1.75} />
+                      docs/
+                    </span>
+                  </div>
+                </div>
+
+                {/* Spec card */}
+                <div className="mt-5 bg-bf-paper rounded-xl border-2 border-bf-border p-4">
+                  <div className="grid grid-cols-[6rem_1fr] gap-x-4 gap-y-1.5 text-[11px]">
+                    {[
+                      ["Font size", "13px (matches body copy)"],
+                      ["Separator", "ChevronRight · 11px · #D4D4D8"],
+                      ["Gap", "6px between all elements"],
+                      ["Inactive", "rgba(23,23,23,0.45)"],
+                      ["Active", "#171717 · font-weight: 600"],
+                      ["Hover", "Inactive → #171717 on hover"],
+                      ["Vendor logos", "Always paired with vendor name"],
+                      ["Mobile", "Hidden (use back button instead)"],
+                    ].map(([k, v]) => (
+                      <Fragment key={k}>
+                        <span className="text-bf-muted">{k}</span>
+                        <span className="font-mono text-bf-text">{v}</span>
+                      </Fragment>
+                    ))}
                   </div>
                 </div>
               </motion.div>
@@ -1094,7 +1274,7 @@ export function NavigationSection() {
                   10 · Mobile Navigation
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  Mobile replaces the hover sidebar with a hamburger trigger and slide-in
+                  Mobile replaces the hover sidebar with a logo trigger and slide-in
                   overlay. Tab bars switch to horizontal scroll. Breadcrumbs are hidden.
                 </p>
 
@@ -1104,16 +1284,13 @@ export function NavigationSection() {
                     <div className="relative bg-bf-text rounded-2xl p-2 overflow-hidden">
                       <div className="bg-white rounded-xl overflow-hidden">
                         {/* Mobile header bar */}
-                        <div className="flex items-center h-11 px-3 border-b border-[#bdbdbd] bg-white">
+                        <div className="flex items-center h-16 px-3 border-b border-[#D4D4D8] bg-white">
                           <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                             className="h-6 w-auto flex items-center justify-center"
                           >
                             <BrandLogo variant="dark" size="sm" className="h-5 w-auto" />
                           </button>
-                          <span className="ml-2 text-[10px] font-semibold text-[#171717]">
-                            Clients
-                          </span>
                         </div>
 
                         {/* Mobile sidebar overlay */}
@@ -1132,7 +1309,7 @@ export function NavigationSection() {
                                 animate={{ x: 0 }}
                                 exit={{ x: "-100%" }}
                                 transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                                className="absolute left-2 top-2 bottom-2 w-[140px] bg-white z-20 rounded-lg shadow-lg border border-[#bdbdbd] flex flex-col"
+                                className="absolute left-2 top-2 bottom-2 w-[140px] bg-white z-20 rounded-lg shadow-lg border border-[#D4D4D8] flex flex-col"
                               >
                                 <div className="flex items-center justify-between px-2 py-2">
                                   <BrandLogo variant="dark" size="sm" className="h-4 w-auto" />
@@ -1152,8 +1329,8 @@ export function NavigationSection() {
                                         key={item.label}
                                         className={`relative flex items-center gap-1.5 px-2 py-1.5 rounded-md text-[9px] font-medium border ${
                                           isActive
-                                            ? "border-[#c4c4c4] bg-gradient-to-b from-[#fafafa] to-[#ececec] text-[#171717]"
-                                            : "border-transparent text-[#171717]/55"
+                                            ? "border-[#D4D4D8] bg-white text-[#171717]"
+                                            : "border-transparent text-[#171717]/50"
                                         }`}
                                       >
                                         {isActive && (
@@ -1189,13 +1366,13 @@ export function NavigationSection() {
                       <div className="grid grid-cols-[6rem_1fr] sm:grid-cols-[8rem_1fr] gap-x-3 sm:gap-x-6 gap-y-2 text-sm">
                         {[
                           ["Sidebar", "Slide-in overlay, 256 px, always expanded"],
-                          ["Trigger", "Logo icon tap → open sidebar"],
+                          ["Trigger", "Logo mark tap → open sidebar"],
                           ["Overlay", "bg-black/50 · click to dismiss"],
                           ["Close", "✕ button in sidebar header"],
                           ["Tabs", "overflow-x-auto scrollbar-hide"],
                           ["Breadcrumbs", "hidden (md:flex only)"],
                           ["Header height", "h-16 (consistent with desktop)"],
-                          ["Page title", "Visible in header bar"],
+                          ["Header content", "Logo trigger only (page title optional by shell)"],
                         ].map(([k, v]) => (
                           <Fragment key={k}>
                             <span className="text-bf-muted">{k}</span>
@@ -1237,18 +1414,25 @@ export function NavigationSection() {
                 viewport={{ once: true }}
               >
                 <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
-                  11 · Composite — All Layers
+                  11 · Page Compositions
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  How multiple navigation tiers stack in a real detail page view.
-                  Sidebar + Page Header + Platinum Tabs + Content with filter bar.
+                  How navigation tiers compose into real page layouts. Each
+                  composition below represents a distinct page type in the admin
+                  interface. Keep it general — the patterns apply across any feature.
                 </p>
 
-                {/* Full admin layout composite */}
-                <div className="rounded-xl border-2 border-bf-border overflow-hidden bg-bf-surface">
-                  <div className="flex h-[360px]">
-                    {/* Mini sidebar — collapsed state matching admin sidebar */}
-                    <div className="w-12 flex-shrink-0 bg-gradient-to-b from-[#ececec] to-[#dfdfdf] border-r border-[#bdbdbd] flex flex-col py-2 items-center">
+                {/* ── Composition A: Detail Page ── */}
+                <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
+                  A · Detail Page
+                </p>
+                <p className="text-xs text-bf-muted mb-3">
+                  Entity header with breadcrumbs → tab bar → filtered content list.
+                  The most common layout for drill-down views.
+                </p>
+                <div className="rounded-xl border-2 border-bf-border overflow-hidden bg-bf-surface mb-6">
+                  <div className="flex h-[340px]">
+                    <div className="w-12 flex-shrink-0 bg-[#F4F4F5] border-r border-[#D4D4D8] flex flex-col py-2 items-center">
                       <div className="h-8 w-8 flex items-center justify-center mb-3">
                         <BrandLogo variant="dark" size="sm" className="h-8 w-auto" />
                       </div>
@@ -1259,8 +1443,8 @@ export function NavigationSection() {
                             key={item.label}
                             className={`relative w-8 h-8 rounded-md flex items-center justify-center mb-0.5 border ${
                               i === 0
-                                ? "border-[#c4c4c4] bg-gradient-to-b from-[#fafafa] to-[#ececec] text-[#171717] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
-                                : "border-transparent text-[#171717]/55 hover:bg-white/45"
+                                ? "border-[#D4D4D8] bg-white text-[#171717] shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
+                                : "border-transparent text-[#171717]/50 hover:bg-white/60"
                             }`}
                           >
                             {i === 0 && (
@@ -1277,30 +1461,27 @@ export function NavigationSection() {
                       </div>
                     </div>
 
-                    {/* Main area */}
                     <div className="flex-1 flex flex-col min-w-0">
-                      {/* Entity header */}
                       <div className="h-12 flex items-center px-3 bg-bf-paper border-b-2 border-bf-border">
                         <div className="flex items-center gap-2">
                           <div className="h-7 w-7 rounded bg-bf-text flex items-center justify-center p-1">
                             <BrandLogo variant="light" size="sm" className="w-full h-full" />
                           </div>
                           <span className="text-sm font-medium text-bf-text truncate">
-                            BFD Style Guide
+                            Project Alpha
                           </span>
                         </div>
                       </div>
 
-                      {/* Tab strip — Platinum style */}
-                      <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-b from-[#f2f2f2] to-[#dcdcdc] border-y border-[#bdbdbd] overflow-x-auto">
+                      <div className="flex items-center gap-1 px-1.5 py-1 bg-[#F4F4F5] border-b border-[#D4D4D8] overflow-x-auto">
                         {["Meetings", "Files", "Events", "Work", "Analytics"].map(
                           (tab, i) => (
                             <span
                               key={tab}
                               className={`px-2 py-0.5 text-[10px] font-medium rounded whitespace-nowrap border ${
                                 i === 2
-                                  ? "border-[#bcbcbc] bg-[#f8f8f8] text-[#171717] shadow-[0_1px_0_rgba(255,255,255,0.7),inset_0_1px_0_rgba(255,255,255,0.9)]"
-                                  : "border-transparent text-[#171717]/55"
+                                  ? "border-[#D4D4D8] bg-white text-[#171717] shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
+                                  : "border-transparent text-[#171717]/50"
                               }`}
                             >
                               {tab}
@@ -1309,19 +1490,20 @@ export function NavigationSection() {
                         )}
                       </div>
 
-                      {/* Content area */}
                       <div className="flex-1 bg-bf-paper p-3 overflow-hidden">
                         <div className="flex items-center gap-1.5 mb-3">
                           <Search size={10} strokeWidth={ICON_STROKE} className="text-bf-muted" />
                           {["All", "Linear", "GitHub"].map((f, i) => (
                             <span
                               key={f}
-                              className={`px-1.5 py-0.5 text-[9px] font-medium rounded border ${
+                              className={`inline-flex items-center gap-1 px-1.5 py-0.5 text-[9px] font-medium rounded border ${
                                 i === 0
                                   ? "btn-active-border"
                                   : "bg-bf-paper text-bf-muted border-bf-border"
                               }`}
                             >
+                              {f === "Linear" && <LinearIcon size={9} />}
+                              {f === "GitHub" && <GitHubDark size={9} />}
                               {f}
                             </span>
                           ))}
@@ -1350,14 +1532,204 @@ export function NavigationSection() {
                   </div>
                 </div>
 
-                {/* Composite label */}
+                {/* ── Composition B: List Page ── */}
+                <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
+                  B · List Page
+                </p>
+                <p className="text-xs text-bf-muted mb-3">
+                  Simple top-level page with header and scrollable content. No tabs.
+                  Used for primary collection views like Clients and People.
+                </p>
+                <div className="rounded-xl border-2 border-bf-border overflow-hidden bg-bf-surface mb-6">
+                  <div className="flex h-[260px]">
+                    <div className="w-12 flex-shrink-0 bg-[#F4F4F5] border-r border-[#D4D4D8] flex flex-col py-2 items-center">
+                      <div className="h-8 w-8 flex items-center justify-center mb-3">
+                        <BrandLogo variant="dark" size="sm" className="h-8 w-auto" />
+                      </div>
+                      {sidebarItems.slice(0, 3).map((item, i) => {
+                        const IconComponent = item.Icon;
+                        return (
+                          <div
+                            key={item.label}
+                            className={`relative w-8 h-8 rounded-md flex items-center justify-center mb-0.5 border ${
+                              i === 0
+                                ? "border-[#D4D4D8] bg-white text-[#171717] shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
+                                : "border-transparent text-[#171717]/50"
+                            }`}
+                          >
+                            {i === 0 && (
+                              <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-3 bg-[#171717] rounded-r-full" />
+                            )}
+                            <IconComponent size={14} stroke={ICON_STROKE} />
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="flex-1 flex flex-col min-w-0">
+                      <div className="h-12 flex items-center justify-between px-3 bg-bf-paper border-b-2 border-bf-border">
+                        <h2 className="text-sm font-semibold text-bf-text">Clients</h2>
+                        <span className="px-2 py-0.5 text-[9px] font-bold btn-active rounded">+ New</span>
+                      </div>
+                      <div className="flex-1 bg-bf-paper p-3 overflow-hidden">
+                        {["Acme Corp", "Vanta", "HealthCo"].map((name) => (
+                          <div
+                            key={name}
+                            className="flex items-center gap-2 p-2 rounded-lg border border-bf-border mb-1.5"
+                          >
+                            <div className="h-6 w-6 rounded bg-bf-surface flex items-center justify-center text-[8px] font-bold text-bf-text">
+                              {name[0]}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-[10px] font-medium text-bf-text">{name}</p>
+                              <p className="text-[8px] text-bf-muted">3 projects</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── Composition C: Settings Page ── */}
+                <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
+                  C · Settings Page
+                </p>
+                <p className="text-xs text-bf-muted mb-3">
+                  Header → tab bar → sub-nav → form content. Two tiers of secondary
+                  navigation for deeply nested configuration views.
+                </p>
+                <div className="rounded-xl border-2 border-bf-border overflow-hidden bg-bf-surface mb-6">
+                  <div className="flex h-[300px]">
+                    <div className="w-12 flex-shrink-0 bg-[#F4F4F5] border-r border-[#D4D4D8] flex flex-col py-2 items-center">
+                      <div className="h-8 w-8 flex items-center justify-center mb-3">
+                        <BrandLogo variant="dark" size="sm" className="h-8 w-auto" />
+                      </div>
+                      <div className="relative w-8 h-8 rounded-md flex items-center justify-center border border-transparent text-[#171717]/50">
+                        <IconBuilding size={14} stroke={ICON_STROKE} />
+                      </div>
+                      <div className="relative w-8 h-8 rounded-md flex items-center justify-center border border-transparent text-[#171717]/50">
+                        <IconBolt size={14} stroke={ICON_STROKE} />
+                      </div>
+                    </div>
+                    <div className="flex-1 flex flex-col min-w-0">
+                      <div className="h-10 flex items-center px-3 bg-bf-paper border-b-2 border-bf-border">
+                        <Settings size={12} strokeWidth={ICON_STROKE} className="text-bf-muted mr-2" />
+                        <h2 className="text-sm font-semibold text-bf-text">Settings</h2>
+                      </div>
+                      <div className="flex items-center gap-1 px-1.5 py-1 bg-[#F4F4F5] border-b border-[#D4D4D8]">
+                        {["Access", "Vendors", "Meetings"].map((tab, i) => (
+                          <span
+                            key={tab}
+                            className={`px-2 py-0.5 text-[10px] font-medium rounded border ${
+                              i === 1
+                                ? "border-[#D4D4D8] bg-white text-[#171717] shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
+                                : "border-transparent text-[#171717]/50"
+                            }`}
+                          >
+                            {tab}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex items-center justify-center gap-0.5 px-1 py-1 bg-[#F4F4F5] border-b border-[#D4D4D8]">
+                        <ChevronLeft size={10} className="text-[#171717]/40" />
+                        {["GitHub", "Clerk", "AWS"].map((v, i) => (
+                          <span
+                            key={v}
+                            className={`px-1.5 py-0.5 text-[9px] font-medium rounded border inline-flex items-center gap-1 ${
+                              i === 0
+                                ? "border-[#D4D4D8] bg-white text-[#171717] shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
+                                : "border-transparent text-[#171717]/40"
+                            }`}
+                          >
+                            {v === "GitHub" && <GitHubDark size={8} />}
+                            {v}
+                          </span>
+                        ))}
+                        <ChevronRight size={10} className="text-[#171717]/40" />
+                      </div>
+                      <div className="flex-1 bg-bf-paper p-3">
+                        <div className="space-y-2">
+                          <div className="h-3 w-24 bg-bf-surface rounded" />
+                          <div className="h-7 w-full bg-bf-surface rounded border border-bf-border" />
+                          <div className="h-3 w-32 bg-bf-surface rounded" />
+                          <div className="h-7 w-full bg-bf-surface rounded border border-bf-border" />
+                          <div className="mt-3 flex gap-2">
+                            <span className="px-2 py-0.5 text-[9px] font-bold btn-active rounded">Save</span>
+                            <span className="px-2 py-0.5 text-[9px] font-medium text-bf-muted border border-bf-border rounded">Cancel</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── Composition D: Dashboard ── */}
+                <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
+                  D · Dashboard / Grid
+                </p>
+                <p className="text-xs text-bf-muted mb-3">
+                  Header with segmented control → metric cards → chart area.
+                  Used for analytics, infrastructure costs, and accounting views.
+                </p>
+                <div className="rounded-xl border-2 border-bf-border overflow-hidden bg-bf-surface mb-4">
+                  <div className="flex h-[280px]">
+                    <div className="w-12 flex-shrink-0 bg-[#F4F4F5] border-r border-[#D4D4D8] flex flex-col py-2 items-center">
+                      <div className="h-8 w-8 flex items-center justify-center mb-3">
+                        <BrandLogo variant="dark" size="sm" className="h-8 w-auto" />
+                      </div>
+                      <div className="relative w-8 h-8 rounded-md flex items-center justify-center border border-transparent text-[#171717]/50">
+                        <IconBuilding size={14} stroke={ICON_STROKE} />
+                      </div>
+                      <div className="relative w-8 h-8 rounded-md flex items-center justify-center border border-[#D4D4D8] bg-white text-[#171717] shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-3 bg-[#171717] rounded-r-full" />
+                        <IconServer size={14} stroke={ICON_STROKE} />
+                      </div>
+                    </div>
+                    <div className="flex-1 flex flex-col min-w-0">
+                      <div className="h-10 flex items-center justify-between px-3 bg-bf-paper border-b-2 border-bf-border">
+                        <h2 className="text-sm font-semibold text-bf-text">Infrastructure</h2>
+                        <div className="flex items-center gap-1">
+                          {["24h", "7d", "30d"].map((r, i) => (
+                            <span
+                              key={r}
+                              className={`px-1.5 py-0.5 text-[8px] font-medium rounded border ${
+                                i === 1
+                                  ? "border-[#D4D4D8] bg-white text-[#171717]"
+                                  : "border-transparent text-[#171717]/40"
+                              }`}
+                            >
+                              {r}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex-1 bg-bf-paper p-3 overflow-hidden">
+                        <div className="grid grid-cols-3 gap-2 mb-3">
+                          {[
+                            { label: "Compute", val: "$1,240" },
+                            { label: "Storage", val: "$380" },
+                            { label: "Network", val: "$95" },
+                          ].map((m) => (
+                            <div key={m.label} className="rounded-lg border border-bf-border p-2 text-center">
+                              <p className="text-[8px] text-bf-muted">{m.label}</p>
+                              <p className="text-sm font-bold text-bf-text">{m.val}</p>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="h-20 rounded-lg border border-bf-border bg-bf-surface flex items-center justify-center">
+                          <span className="text-[9px] text-bf-muted">Chart area</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="mt-3 flex flex-wrap gap-2">
                   {[
-                    "① Sidebar (64 px)",
-                    "② Entity Header",
-                    "③ Platinum Tabs",
-                    "④ Filter Bar",
-                    "⑤ Content Cards",
+                    "A · Detail Page",
+                    "B · List Page",
+                    "C · Settings Page",
+                    "D · Dashboard / Grid",
                   ].map((label) => (
                     <span
                       key={label}

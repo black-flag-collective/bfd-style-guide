@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { BrandLogo } from "@/components/BrandLogo";
 
 export function HeroSection() {
   const scrollToContent = () => {
@@ -17,7 +16,13 @@ export function HeroSection() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="pt-10 sm:pt-14 md:pt-16 flex items-center gap-4 sm:gap-5"
           >
-            <BrandLogo variant="dark" size="md" />
+            <img
+              src="/logos/silly-face-dark.png"
+              alt=""
+              aria-hidden="true"
+              className="h-8 w-8 object-contain"
+              style={{ opacity: 0.55 }}
+            />
             <div className="h-7 sm:h-8 w-px bg-bf-border" />
             <span className="text-sm sm:text-base font-medium tracking-tight text-bf-muted">
               Black Flag Design

@@ -12,7 +12,7 @@ interface CardProps extends Omit<HTMLMotionProps<"div">, "ref"> {
 
 const variantStyles: Record<CardVariant, string> = {
   light: "bg-bf-bg rounded-xl shadow-card",
-  dark: "bg-bf-dark-bg rounded-xl text-bf-dark-text",
+  dark: "bg-bf-bg rounded-xl text-bf-text",
   blur: "bg-bf-bg/80 rounded-xl backdrop-blur-sm shadow-card",
 };
 

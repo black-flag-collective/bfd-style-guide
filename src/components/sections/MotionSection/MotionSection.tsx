@@ -16,7 +16,7 @@ export function MotionSection() {
   const [replayKey, setReplayKey] = useState(0);
 
   return (
-    <section id="motion" className="relative bg-bf-bg py-16 sm:py-24">
+    <section id="motion" className="relative bg-white border-t-4 border-bf-royal py-16 sm:py-24">
       <div className="px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="max-w-6xl mx-auto">
               <SectionHeader

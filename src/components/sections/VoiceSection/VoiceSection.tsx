@@ -34,7 +34,7 @@ const toneSpectrum = [
 
 export function VoiceSection() {
   return (
-    <section id="voice" className="relative bg-bf-bg py-16 sm:py-24">
+    <section id="voice" className="relative bg-bf-paper border-t-4 border-bf-slate py-16 sm:py-24">
       <div className="px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="max-w-6xl mx-auto">
               <SectionHeader

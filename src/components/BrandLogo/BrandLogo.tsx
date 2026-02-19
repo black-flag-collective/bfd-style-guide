@@ -12,7 +12,7 @@ const sizeMap = {
 
 export function BrandLogo({ variant = "dark", className = "", size = "md" }: BrandLogoProps) {
   const { width, height } = sizeMap[size];
-  const fill = variant === "dark" ? "#111111" : "#F0EEE9";
+  const fill = variant === "dark" ? "#111111" : "#FAFAFA";
 
   return (
     <svg

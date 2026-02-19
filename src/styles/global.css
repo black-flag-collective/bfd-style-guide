@@ -13,20 +13,20 @@
   --font-heading: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 
   /* BASE PALETTE (60%) — "The Ship"
-     Warm neutrals anchored on Cloud Dancer (Pantone 2026 COTY).
-     Every screen feels intentional, not templated. */
-  --color-bf-bg: #F0EEE9;
-  --color-bf-surface: #E9E5DE;
-  --color-bf-paper: #FAF7F2;
+     Cool zinc grays — sharp, professional, zero warmth.
+     Every screen feels engineered, not decorative. */
+  --color-bf-bg: #F4F4F5;
+  --color-bf-surface: #E4E4E7;
+  --color-bf-paper: #FAFAFA;
   --color-bf-text: #171717;
-  --color-bf-muted: #6B655E;
-  --color-bf-border: #D6D0C8;
+  --color-bf-muted: #71717A;
+  --color-bf-border: #D4D4D8;
 
   /* ACCENT (15%) — "The Officers"
      Brand identity. The black flag itself. */
-  --color-bf-accent: #181B20;
+  --color-bf-accent: #18181B;
   --color-bf-button: #171717;
-  --color-bf-button-text: #F0EEE9;
+  --color-bf-button-text: #FAFAFA;
 
   /* CREW STATE COLORS (25%) — "The Crew"
      Bold, grungy, unapologetic. Every crew member has a job. */
@@ -46,12 +46,10 @@
   --color-bf-note-highlight: #7B3EC4;
   --color-bf-destructive: #E04848;
 
-  /* Dark mode variants (warm dark) */
-  --color-bf-dark-bg: #1A1816;
-  --color-bf-dark-surface: #242019;
-  --color-bf-dark-text: #F0EEE9;
-  --color-bf-dark-muted: #8A847D;
-  --color-bf-dark-border: #36322D;
+  /* Section alternates (light differentiation) */
+  --color-bf-alt-bg: #FFFFFF;
+  --color-bf-alt-surface: #F4F4F5;
+  --color-bf-alt-border: #E4E4E7;
 
   /* Radii */
   --radius-sm: 4px;
@@ -59,12 +57,12 @@
   --radius-lg: 12px;
   --radius-xl: 16px;
 
-  /* Shadows — warm-tinted to match Cloud Dancer base */
-  --shadow-sm: 0 1px 2px 0 rgba(40,35,28,0.06);
-  --shadow-md: 0 4px 6px -1px rgba(40,35,28,0.08), 0 2px 4px -1px rgba(40,35,28,0.04);
-  --shadow-card: 0 4px 24px rgba(40,35,28,0.06);
-  --shadow-card-hover: 0 8px 40px rgba(40,35,28,0.10);
-  --shadow-float: 0 20px 60px rgba(40,35,28,0.08);
+  /* Shadows — neutral, clean */
+  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-card-hover: 0 8px 40px rgba(0,0,0,0.10);
+  --shadow-float: 0 20px 60px rgba(0,0,0,0.08);
   --shadow-comic: 4px 4px 0px 0px rgba(0,0,0,0.95);
   --shadow-comic-sm: 2px 2px 0px 0px rgba(0,0,0,0.95);
 
@@ -78,15 +76,15 @@
 
 /* CSS Variables for runtime theming (used by components via var()) */
 :root {
-  --bf-bg: #F0EEE9;
-  --bf-surface: #E9E5DE;
-  --bf-paper: #FAF7F2;
+  --bf-bg: #F4F4F5;
+  --bf-surface: #E4E4E7;
+  --bf-paper: #FAFAFA;
   --bf-text: #171717;
-  --bf-muted: #6B655E;
-  --bf-border: #D6D0C8;
-  --bf-accent: #181B20;
+  --bf-muted: #71717A;
+  --bf-border: #D4D4D8;
+  --bf-accent: #18181B;
   --bf-button: #171717;
-  --bf-button-text: #F0EEE9;
+  --bf-button-text: #FAFAFA;
 
   --bf-gold: #FFC800;
   --bf-mint: #5AE09A;
@@ -102,11 +100,9 @@
   --bf-note-success: #5AE09A;
   --bf-note-highlight: #7B3EC4;
 
-  --bf-dark-bg: #1A1816;
-  --bf-dark-surface: #242019;
-  --bf-dark-text: #F0EEE9;
-  --bf-dark-muted: #8A847D;
-  --bf-dark-border: #36322D;
+  --bf-alt-bg: #FFFFFF;
+  --bf-alt-surface: #F4F4F5;
+  --bf-alt-border: #E4E4E7;
 
   --font-sans: "Montserrat", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
@@ -235,7 +231,7 @@
   .border-3 { border-width: 3px; }
   .border-4 { border-width: 4px; }
 
-  .heading-on-dark { color: var(--bf-dark-text); }
+  .heading-on-light { color: var(--bf-text); }
 
 }
 
@@ -247,16 +243,16 @@
  * ====================================== */
 .btn-active {
   background-color: #171717 !important;
-  color: #F0EEE9 !important;
+  color: #FAFAFA !important;
 }
 .btn-active-border {
   background-color: #171717 !important;
-  color: #F0EEE9 !important;
+  color: #FAFAFA !important;
   border-color: #171717 !important;
 }
 .btn-destructive {
   background-color: #E04848 !important;
-  color: #F0EEE9 !important;
+  color: #FAFAFA !important;
 }
 
 /* ======================================

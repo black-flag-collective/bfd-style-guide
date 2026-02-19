@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Sun, Moon } from "lucide-react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -78,38 +76,19 @@ const weightShowcase = [
   { weight: 900, sample: "Black" },
 ];
 
-const themes = {
-  light: {
-    bg: "bg-bf-bg",
-    text: "#171717",
-    muted: "#6B655E",
-    border: "border-bf-border/30",
-    toggleBg: "bg-bf-surface hover:bg-bf-border",
-    labelBg: "bg-bf-surface",
-    labelBorder: "border-bf-border",
-    monoBg: "bg-bf-surface",
-  },
-  dark: {
-    bg: "bg-bf-dark-bg",
-    text: "#F0EEE9",
-    muted: "#8A847D",
-    border: "border-white/10",
-    toggleBg: "bg-white/10 hover:bg-white/20",
-    labelBg: "bg-white/5",
-    labelBorder: "border-white/10",
-    monoBg: "bg-white/5",
-  },
+const theme = {
+  bg: "bg-bf-bg border-t-4 border-bf-cobalt",
+  text: "#171717",
+  muted: "#71717A",
+  border: "border-bf-border/30",
+  labelBg: "bg-bf-surface",
+  labelBorder: "border-bf-border",
+  monoBg: "bg-bf-surface",
 };
 
-type Mode = "light" | "dark";
-
 export function TypographySection() {
-  const [mode, setMode] = useState<Mode>("light");
-  const t = themes[mode];
-  const isDark = mode === "dark";
-
   return (
-    <section id="typography" className={`relative ${t.bg} py-16 sm:py-24 transition-colors duration-500`}>
+    <section id="typography" className={`relative ${theme.bg} py-16 sm:py-24`}>
       <div className="px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="max-w-6xl mx-auto">
               {/* Header */}
@@ -120,39 +99,21 @@ export function TypographySection() {
                 className="mb-12 sm:mb-16"
               >
                 <div className="flex items-center gap-4 mb-5">
-                  <span className="text-[11px] font-medium tracking-[0.2em] uppercase transition-colors duration-500" style={{ color: t.muted }}>03</span>
-                  <div className={`h-px flex-1 max-w-16 sm:max-w-24 ${t.border}`} />
+                  <span className="text-[11px] font-medium tracking-[0.2em] uppercase" style={{ color: theme.muted }}>03</span>
+                  <div className={`h-px flex-1 max-w-16 sm:max-w-24 ${theme.border}`} />
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
                 <div className="flex items-center gap-3 sm:gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setMode(isDark ? "light" : "dark")}
-                    className={`p-2 rounded-lg transition-all duration-300 flex-shrink-0 ${t.toggleBg}`}
-                    aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-                  >
-                    <motion.div
-                      initial={false}
-                      animate={{ rotate: isDark ? 180 : 0 }}
-                      transition={{ duration: 0.3, ease }}
-                    >
-                      {isDark ? (
-                        <Moon size={16} strokeWidth={1.75} style={{ color: t.text }} />
-                      ) : (
-                        <Sun size={16} strokeWidth={1.75} style={{ color: t.muted }} />
-                      )}
-                    </motion.div>
-                  </button>
                   <div>
                     <h2
-                      className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 transition-colors duration-500"
-                      style={{ color: t.text }}
+                      className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1"
+                      style={{ color: theme.text }}
                     >
                       Typography
                     </h2>
                     <p
-                      className="text-base max-w-xl transition-colors duration-500"
-                      style={{ color: t.muted }}
+                      className="text-base max-w-xl"
+                      style={{ color: theme.muted }}
                     >
                       Montserrat + JetBrains Mono. Weight-driven hierarchy.
                     </p>
@@ -162,22 +123,22 @@ export function TypographySection() {
                 {/* Font meta */}
                 <div className="hidden sm:flex items-center gap-6 flex-shrink-0 pt-1">
                   <div className="text-right">
-                    <p className="text-sm font-semibold transition-colors duration-500" style={{ color: t.text }}>
+                    <p className="text-sm font-semibold" style={{ color: theme.text }}>
                       {activeFont.name}
                     </p>
-                    <p className="text-[10px] transition-colors duration-500" style={{ color: t.muted }}>
+                    <p className="text-[10px]" style={{ color: theme.muted }}>
                       {activeFont.foundry} &middot; {activeFont.style}
                     </p>
                   </div>
-                  <div className={`w-px h-8 ${t.border}`} />
+                  <div className={`w-px h-8 ${theme.border}`} />
                   <div className="text-right">
                     <p
-                      className="text-sm font-semibold transition-colors duration-500"
-                      style={{ color: t.text, fontFamily: "var(--font-mono)" }}
+                      className="text-sm font-semibold"
+                      style={{ color: theme.text, fontFamily: "var(--font-mono)" }}
                     >
                       {monoFont.name}
                     </p>
-                    <p className="text-[10px] transition-colors duration-500" style={{ color: t.muted }}>
+                    <p className="text-[10px]" style={{ color: theme.muted }}>
                       {monoFont.foundry} &middot; {monoFont.style}
                     </p>
                   </div>
@@ -187,7 +148,6 @@ export function TypographySection() {
 
               {/* Type scale specimens */}
               <motion.div
-                key={`scale-${mode}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, ease }}
@@ -198,14 +158,14 @@ export function TypographySection() {
                     {/* Label pill */}
                     <div className="flex items-center gap-3 mb-2">
                       <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${t.labelBg} ${t.labelBorder} transition-colors duration-500`}
-                        style={{ color: t.muted }}
+                        className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${theme.labelBg} ${theme.labelBorder}`}
+                        style={{ color: theme.muted }}
                       >
                         {item.label}
                       </span>
                       <span
-                        className="text-[10px] font-mono transition-colors duration-500"
-                        style={{ color: t.muted }}
+                        className="text-[10px] font-mono"
+                        style={{ color: theme.muted }}
                       >
                         {item.size} / {item.weightLabel}
                       </span>
@@ -213,9 +173,9 @@ export function TypographySection() {
 
                     {/* Specimen */}
                     <p
-                      className="transition-colors duration-500 max-w-3xl"
+                      className="max-w-3xl"
                       style={{
-                        color: t.text,
+                        color: theme.text,
                         fontSize: ("mobileSize" in item && item.mobileSize)
                           ? `clamp(${(item as any).mobileSize}, 5vw, ${item.size})`
                           : item.size,
@@ -234,22 +194,22 @@ export function TypographySection() {
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${t.labelBg} ${t.labelBorder} transition-colors duration-500`}
-                      style={{ color: t.muted }}
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${theme.labelBg} ${theme.labelBorder}`}
+                      style={{ color: theme.muted }}
                     >
                       Mono
                     </span>
                     <span
-                      className="text-[10px] font-mono transition-colors duration-500"
-                      style={{ color: t.muted }}
+                      className="text-[10px] font-mono"
+                      style={{ color: theme.muted }}
                     >
                       0.8125rem / Regular 400
                     </span>
                   </div>
                   <p
-                    className={`rounded-lg px-4 py-3 transition-colors duration-500 ${t.monoBg}`}
+                    className={`rounded-lg px-4 py-3 ${theme.monoBg}`}
                     style={{
-                      color: t.text,
+                      color: theme.text,
                       fontSize: "0.8125rem",
                       lineHeight: "1.6",
                       fontFamily: "var(--font-mono)",
@@ -269,12 +229,12 @@ export function TypographySection() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.2, ease }}
-                className={`mt-6 sm:mt-8 pt-4 border-t ${t.border}`}
+                className={`mt-6 sm:mt-8 pt-4 border-t ${theme.border}`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <p
-                    className="text-xs uppercase tracking-widest font-bold transition-colors duration-500"
-                    style={{ color: t.muted }}
+                    className="text-xs uppercase tracking-widest font-bold"
+                    style={{ color: theme.muted }}
                   >
                     Weights
                   </p>
@@ -282,14 +242,14 @@ export function TypographySection() {
                     {weightShowcase.map((w) => (
                       <div key={w.weight} className="flex items-baseline gap-2">
                         <span
-                          className="text-base sm:text-lg transition-colors duration-500"
-                          style={{ color: t.text, fontWeight: w.weight }}
+                          className="text-base sm:text-lg"
+                          style={{ color: theme.text, fontWeight: w.weight }}
                         >
                           {w.sample}
                         </span>
                         <span
-                          className="text-[10px] sm:text-xs font-mono transition-colors duration-500"
-                          style={{ color: t.muted }}
+                          className="text-[10px] sm:text-xs font-mono"
+                          style={{ color: theme.muted }}
                         >
                           {w.weight}
                         </span>

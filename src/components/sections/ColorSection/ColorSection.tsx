@@ -6,14 +6,14 @@ const colorCategories = {
   base: {
     label: "Foundation",
     percentage: "60%",
-    description: "The Ship — warm neutrals anchored on Cloud Dancer. Every screen feels intentional, not templated. The difference between a sterile office and a studio where real work gets done.",
+    description: "The Ship — cool zinc grays. Sharp, engineered, zero warmth. Every screen feels intentional and professional, like precision-machined steel.",
     colors: [
-      { name: "Cloud Dancer", hex: "#F0EEE9", persona: "The Harbor", usage: "Primary background — warm, inviting canvas" },
-      { name: "Bone", hex: "#E9E5DE", persona: "The Hull", usage: "Surfaces, sidebars, recessed panels" },
-      { name: "Parchment", hex: "#FAF7F2", persona: "The Chart", usage: "Elevated panels, headers, active states" },
+      { name: "Zinc 100", hex: "#F4F4F5", persona: "The Harbor", usage: "Primary background — cool, professional canvas" },
+      { name: "Zinc 200", hex: "#E4E4E7", persona: "The Hull", usage: "Surfaces, sidebars, recessed panels" },
+      { name: "Zinc 50", hex: "#FAFAFA", persona: "The Chart", usage: "Elevated panels, headers, active states" },
       { name: "Ink", hex: "#171717", persona: "The Flag", usage: "Primary text — bold, uncompromising" },
-      { name: "Driftwood", hex: "#6B655E", persona: "The Helm", usage: "Secondary text, muted labels" },
-      { name: "Rope", hex: "#D6D0C8", persona: "The Rigging", usage: "Borders, dividers, structural lines" },
+      { name: "Zinc 500", hex: "#71717A", persona: "The Helm", usage: "Secondary text, muted labels" },
+      { name: "Zinc 300", hex: "#D4D4D8", persona: "The Rigging", usage: "Borders, dividers, structural lines" },
     ],
   },
   accent: {
@@ -21,9 +21,9 @@ const colorCategories = {
     percentage: "15%",
     description: "The Officers — brand identity elements. The flag, the seal, the signature. Authoritative and uncompromising.",
     colors: [
-      { name: "Brand Ink", hex: "#181B20", persona: "The Seal", usage: "Brand dark accent, authority" },
+      { name: "Brand Ink", hex: "#18181B", persona: "The Seal", usage: "Brand dark accent, authority" },
       { name: "Flag Black", hex: "#171717", persona: "The Standard", usage: "Primary button, CTA background" },
-      { name: "Cloud", hex: "#F0EEE9", persona: "The Signal", usage: "Button text — warm on dark" },
+      { name: "Clean White", hex: "#FAFAFA", persona: "The Signal", usage: "Button text — crisp on dark" },
     ],
   },
   crew: {
@@ -54,13 +54,13 @@ export function ColorSection() {
   const handleTabClick = (key: CategoryKey) => setActiveTab(key);
 
   return (
-    <section id="colors" className="relative bg-bf-bg py-16 sm:py-24">
+    <section id="colors" className="relative bg-white border-t-4 border-bf-gold py-16 sm:py-24">
       <div className="px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="max-w-6xl mx-auto">
               <SectionHeader
                 number="02"
                 title="Color"
-                description="Warm Cloud Dancer foundation. Grungy crew state colors. No sterile whites."
+                description="Cool zinc foundation. Bold crew state colors. Engineered, not decorated."
               />
               <nav className="flex-shrink-0 relative z-10 -mt-6 sm:-mt-8 mb-10">
                 <div className="flex items-center gap-1 p-1 bg-bf-paper border border-bf-border rounded-lg w-fit" role="tablist" aria-label="Color categories">

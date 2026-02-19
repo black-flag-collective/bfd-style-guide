@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Inbox, AlertTriangle, Check } from "lucide-react";
 import { SectionHeader } from "@/components/SectionHeader";
+import { DeviceFrame } from "@/components/DeviceFrame/DeviceFrame";
 import { Clerk, Convex, Cloudflare, GitHubLight } from "developer-icons";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -23,9 +24,9 @@ const severityBadges = [
 
 const baseBadges = [
   { label: "Default", classes: "btn-active border-transparent" },
-  { label: "Secondary", classes: "bg-white/10 text-bf-dark-text border-white/20" },
+  { label: "Secondary", classes: "bg-white/10 text-bf-text border-white/20" },
   { label: "Destructive", classes: "btn-destructive border-transparent" },
-  { label: "Outline", classes: "bg-transparent text-bf-dark-text border-white/20" },
+  { label: "Outline", classes: "bg-transparent text-bf-text border-white/20" },
 ];
 
 /* ── Table data with real vendor icons ── */
@@ -58,19 +59,18 @@ function Badge({ label, bg, text, border }: { label: string; bg: string; text: s
 
 export function DataPatternsSection() {
   return (
-    <section id="data-patterns" className="relative bg-bf-dark-bg py-16 sm:py-24">
+    <section id="data-patterns" className="relative bg-bf-bg border-t-4 border-bf-rose py-16 sm:py-24">
       <div className="px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="max-w-6xl mx-auto">
               <SectionHeader
                 number="11"
                 title="Data Patterns"
                 description="Badges, tables, avatars, and state handling for data-dense admin interfaces."
-                dark
               />
 
               {/* ── Badges ── */}
               <div className="mb-10">
-                <h3 className="text-sm font-medium text-bf-dark-text mb-4 uppercase tracking-wider">
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
                   Status Badges
                 </h3>
                 <div className="flex flex-wrap gap-2 mb-6">
@@ -79,7 +79,7 @@ export function DataPatternsSection() {
                   ))}
                 </div>
 
-                <h3 className="text-sm font-medium text-bf-dark-text mb-4 uppercase tracking-wider">
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
                   Severity Badges
                 </h3>
                 <div className="flex flex-wrap gap-2 mb-6">
@@ -88,7 +88,7 @@ export function DataPatternsSection() {
                   ))}
                 </div>
 
-                <h3 className="text-sm font-medium text-bf-dark-text mb-4 uppercase tracking-wider">
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
                   Base Variants
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -105,27 +105,64 @@ export function DataPatternsSection() {
 
               {/* ── Data Table (with real vendor logos) ── */}
               <div className="mb-10">
-                <h3 className="text-sm font-medium text-bf-dark-text mb-4 uppercase tracking-wider">
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
                   Data Table
                 </h3>
-                <div className="rounded-xl border-2 border-bf-dark-border overflow-hidden">
+                <p className="text-sm text-bf-muted mb-4 max-w-xl">
+                  On mobile the table scrolls horizontally. On desktop all columns
+                  are visible without scrolling.
+                </p>
+                <DeviceFrame desktopHeight={320} tabletHeight={320} mobileHeight={320}>
+                  {() => (
+                    <div style={{ height: "100%", overflowX: "auto", overflowY: "auto", background: "#FAFAFA" }}>
+                      <table style={{ width: "100%", minWidth: 600, borderCollapse: "collapse" }}>
+                        <thead>
+                          <tr style={{ borderBottom: "1px solid var(--bf-border)", background: "var(--bf-paper)" }}>
+                            {["Event", "Vendor", "Status", "Severity", "Time"].map((h, i) => (
+                              <th key={h} style={{ height: 40, padding: "0 14px", textAlign: i === 4 ? "right" : "left", fontSize: 11, fontWeight: 900, color: "rgba(23,23,23,0.6)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{h}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {tableRows.map((row, idx) => {
+                            const ss = statusBadges.find(b => b.label === row.status) ?? statusBadges[0];
+                            const sv = severityBadges.find(b => b.label === row.severity) ?? severityBadges[0];
+                            const VI = row.vendor === "Vanta" ? VantaIcon : vendorIcons[row.vendor];
+                            return (
+                              <tr key={idx} style={{ borderBottom: "1px solid rgba(0,0,0,0.04)" }}>
+                                <td style={{ padding: 14, fontSize: 13, fontWeight: 500, color: "var(--bf-text)" }}>{row.name}</td>
+                                <td style={{ padding: 14 }}><span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "var(--bf-text)" }}>{VI && <VI size={15} />}{row.vendor}</span></td>
+                                <td style={{ padding: 14 }}><Badge label={row.status} bg={ss.bg} text={ss.text} border={ss.border} /></td>
+                                <td style={{ padding: 14 }}><Badge label={row.severity} bg={sv.bg} text={sv.text} border={sv.border} /></td>
+                                <td style={{ padding: 14, fontSize: 13, textAlign: "right", fontFamily: "monospace", color: "rgba(23,23,23,0.5)" }}>{row.time}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </DeviceFrame>
+
+                {/* Original static reference kept below */}
+                <div className="mt-6 rounded-xl border-2 border-bf-border overflow-hidden">
                   <div className="overflow-x-auto">
                   <table className="w-full min-w-[600px]">
                     <thead>
-                      <tr className="border-b border-bf-dark-border bg-bf-dark-surface">
-                        <th className="h-11 px-4 text-left text-xs font-black text-bf-dark-text/70 uppercase tracking-wider">
+                      <tr className="border-b border-bf-border bg-bf-paper">
+                        <th className="h-11 px-4 text-left text-xs font-black text-bf-text/70 uppercase tracking-wider">
                           Event
                         </th>
-                        <th className="h-11 px-4 text-left text-xs font-black text-bf-dark-text/70 uppercase tracking-wider">
+                        <th className="h-11 px-4 text-left text-xs font-black text-bf-text/70 uppercase tracking-wider">
                           Vendor
                         </th>
-                        <th className="h-11 px-4 text-left text-xs font-black text-bf-dark-text/70 uppercase tracking-wider">
+                        <th className="h-11 px-4 text-left text-xs font-black text-bf-text/70 uppercase tracking-wider">
                           Status
                         </th>
-                        <th className="h-11 px-4 text-left text-xs font-black text-bf-dark-text/70 uppercase tracking-wider">
+                        <th className="h-11 px-4 text-left text-xs font-black text-bf-text/70 uppercase tracking-wider">
                           Severity
                         </th>
-                        <th className="h-11 px-4 text-right text-xs font-black text-bf-dark-text/70 uppercase tracking-wider">
+                        <th className="h-11 px-4 text-right text-xs font-black text-bf-text/70 uppercase tracking-wider">
                           Time
                         </th>
                       </tr>
@@ -145,11 +182,11 @@ export function DataPatternsSection() {
                             key={i}
                             className="border-b border-white/5 hover:bg-bf-paper/5 transition-colors"
                           >
-                            <td className="p-4 text-sm font-medium" style={{ color: 'var(--bf-dark-text)' }}>
+                            <td className="p-4 text-sm font-medium" style={{ color: 'var(--bf-text)' }}>
                               {row.name}
                             </td>
                             <td className="p-4">
-                              <span className="inline-flex items-center gap-2 text-sm text-bf-dark-text">
+                              <span className="inline-flex items-center gap-2 text-sm text-bf-text">
                                 {VendorIcon && (
                                   <VendorIcon size={16} className="opacity-80" />
                                 )}
@@ -172,7 +209,7 @@ export function DataPatternsSection() {
                                 border={severityStyle.border}
                               />
                             </td>
-                            <td className="p-4 text-sm text-right font-mono text-bf-dark-text/60">
+                            <td className="p-4 text-sm text-right font-mono text-bf-text/60">
                               {row.time}
                             </td>
                           </tr>
@@ -186,7 +223,7 @@ export function DataPatternsSection() {
 
               {/* ── Avatars ── */}
               <div className="mb-10">
-                <h3 className="text-sm font-medium text-bf-dark-text mb-4 uppercase tracking-wider">
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
                   Avatars
                 </h3>
                 <div className="flex flex-wrap items-end gap-4 sm:gap-8">
@@ -202,7 +239,7 @@ export function DataPatternsSection() {
                       >
                         {a.initials}
                       </div>
-                      <p className="text-[10px] text-bf-dark-muted font-mono">
+                      <p className="text-[10px] text-bf-muted font-mono">
                         {a.px} px
                       </p>
                     </div>
@@ -212,29 +249,29 @@ export function DataPatternsSection() {
 
                   {/* Ring variants */}
                   <div className="text-center">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold mb-2 mx-auto ring-2 ring-bf-gold ring-offset-2 ring-offset-bf-dark-bg">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold mb-2 mx-auto ring-2 ring-bf-gold ring-offset-2 ring-offset-bf-bg">
                       <span className="text-sm">?</span>
                     </div>
-                    <p className="text-[10px] text-bf-dark-muted">Unmatched</p>
+                    <p className="text-[10px] text-bf-muted">Unmatched</p>
                   </div>
                   <div className="text-center">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold mb-2 mx-auto ring-2 ring-bf-mint ring-offset-2 ring-offset-bf-dark-bg">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold mb-2 mx-auto ring-2 ring-bf-mint ring-offset-2 ring-offset-bf-bg">
                       <Check size={16} strokeWidth={2.5} className="text-white" />
                     </div>
-                    <p className="text-[10px] text-bf-dark-muted">Online</p>
+                    <p className="text-[10px] text-bf-muted">Online</p>
                   </div>
                 </div>
               </div>
 
               {/* ── Component States ── */}
               <div>
-                <h3 className="text-sm font-medium text-bf-dark-text mb-4 uppercase tracking-wider">
+                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
                   Component States
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Loading */}
-                  <div className="rounded-xl border-2 border-bf-dark-border p-5">
-                    <p className="text-xs font-black text-bf-dark-text uppercase tracking-wider mb-3">
+                  <div className="rounded-xl border-2 border-bf-border p-5">
+                    <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-3">
                       Loading
                     </p>
                     <div className="space-y-3">
@@ -243,54 +280,54 @@ export function DataPatternsSection() {
                       <div className="h-4 w-5/6 rounded-md bg-bf-paper/10 animate-pulse" />
                       <div className="h-20 w-full rounded-lg bg-bf-paper/10 animate-pulse" />
                     </div>
-                    <p className="text-[10px] text-bf-dark-muted mt-3 font-mono">
+                    <p className="text-[10px] text-bf-muted mt-3 font-mono">
                       data === undefined &rarr; skeleton
                     </p>
                   </div>
 
                   {/* Empty */}
-                  <div className="rounded-xl border-2 border-bf-dark-border p-5 flex flex-col">
-                    <p className="text-xs font-black text-bf-dark-text uppercase tracking-wider mb-4">
+                  <div className="rounded-xl border-2 border-bf-border p-5 flex flex-col">
+                    <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-4">
                       Empty State
                     </p>
                     <div className="flex-1 flex flex-col items-center justify-center py-4">
                       <div className="w-12 h-12 rounded-full bg-bf-paper/5 flex items-center justify-center mb-3">
-                        <Inbox size={24} strokeWidth={1.75} className="text-bf-dark-muted" />
+                        <Inbox size={24} strokeWidth={1.75} className="text-bf-muted" />
                       </div>
-                      <p className="text-sm font-medium text-bf-dark-text mb-1">
+                      <p className="text-sm font-medium text-bf-text mb-1">
                         No events found
                       </p>
-                      <p className="text-xs text-bf-dark-muted max-w-[200px] text-center">
+                      <p className="text-xs text-bf-muted max-w-[200px] text-center">
                         Events from your integrations will appear here.
                       </p>
                     </div>
-                    <p className="text-[10px] text-bf-dark-muted mt-3 font-mono">
+                    <p className="text-[10px] text-bf-muted mt-3 font-mono">
                       data.length === 0 &rarr; empty
                     </p>
                   </div>
 
                   {/* Error */}
-                  <div className="rounded-xl border-2 border-bf-dark-border p-5">
-                    <p className="text-xs font-black text-bf-dark-text uppercase tracking-wider mb-3">
+                  <div className="rounded-xl border-2 border-bf-border p-5">
+                    <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-3">
                       Error State
                     </p>
-                    <div className="rounded-lg border-2 border-red-500/30 bg-red-950/30 p-4">
+                    <div className="rounded-lg border-2 border-red-400/40 bg-red-950/50 p-4">
                       <div className="flex items-start gap-2">
-                        <AlertTriangle size={16} strokeWidth={2} className="text-red-400 mt-0.5 flex-shrink-0" />
+                        <AlertTriangle size={16} strokeWidth={2} className="text-red-300 mt-0.5 flex-shrink-0" />
                         <div>
-                          <p className="text-sm font-bold text-red-300">
+                          <p className="text-sm font-bold text-red-200">
                             Connection failed
                           </p>
-                          <p className="text-xs text-red-400/70 mt-1">
+                          <p className="text-xs text-red-300/90 mt-1">
                             Unable to reach the backend. Check your connection.
                           </p>
-                          <button className="mt-3 text-xs font-bold text-red-300 border-2 border-red-500/30 rounded-md px-3 py-1.5 hover:bg-red-500/10 transition-colors uppercase tracking-wider">
+                          <button className="mt-3 text-xs font-bold text-red-200 border-2 border-red-400/40 rounded-md px-3 py-1.5 hover:bg-red-500/20 transition-colors uppercase tracking-wider">
                             Retry
                           </button>
                         </div>
                       </div>
                     </div>
-                    <p className="text-[10px] text-bf-dark-muted mt-3 font-mono">
+                    <p className="text-[10px] text-bf-muted mt-3 font-mono">
                       catch(err) &rarr; alert destructive
                     </p>
                   </div>

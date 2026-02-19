@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Search, Eye, EyeOff, AlertCircle, Check, ChevronDown, Info } from "lucide-react";
 import { SectionHeader } from "@/components/SectionHeader";
+import { DeviceFrame } from "@/components/DeviceFrame/DeviceFrame";
 
 const inputStates = [
   { label: "Default", state: "default" },
@@ -56,7 +57,7 @@ export function FormPatternsSection() {
   const [selectedRadio, setSelectedRadio] = useState("email");
 
   return (
-    <section id="forms" className="relative bg-bf-bg py-16 sm:py-24">
+    <section id="forms" className="relative bg-white border-t-4 border-bf-teal py-16 sm:py-24">
       <div className="px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="max-w-6xl mx-auto">
               <SectionHeader number="06" title="Form Patterns" description="Inputs, controls, and validation states. Every form element shares the same visual grammar: rounded-md corners, bf-border at rest, bf-text ring on focus." />
@@ -283,57 +284,65 @@ export function FormPatternsSection() {
               {/* ── COMPLETE FORM DEMO ── */}
               <div className="mb-10">
                 <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">Form Layout</h3>
-                <div className="max-w-lg bg-white border border-bf-border rounded-lg p-6 shadow-sm">
-                  <div className="mb-5">
-                    <h4 className="text-base font-semibold text-bf-text">Create Client</h4>
-                    <p className="text-sm text-bf-muted mt-0.5">Add a new client to your organization.</p>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-medium text-bf-text mb-1.5">Client Name</label>
-                      <div className="h-10 rounded-md border border-bf-border bg-white px-3 flex items-center">
-                        <span className="text-sm text-bf-text">Acme Corporation</span>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-bf-text mb-1.5">Contact Email</label>
-                      <div className="h-10 rounded-md border border-bf-border bg-white px-3 flex items-center">
-                        <span className="text-sm text-bf-muted/60">name@company.com</span>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-medium text-bf-text mb-1.5">Plan</label>
-                        <div className="h-10 rounded-md border border-bf-border bg-white px-3 flex items-center justify-between">
-                          <span className="text-sm text-bf-text">Enterprise</span>
-                          <ChevronDown size={14} strokeWidth={2} className="text-bf-muted" />
+                <p className="text-sm text-bf-muted mb-4 max-w-xl">
+                  On desktop the form uses side-by-side fields where space allows.
+                  On tablet and mobile every field stacks into a single column.
+                </p>
+                <DeviceFrame desktopHeight={460} tabletHeight={480} mobileHeight={500}>
+                  {({ device }) => {
+                    const isMobile = device === "mobile";
+                    const p = isMobile ? 16 : 24;
+                    return (
+                      <div style={{ height: "100%", overflowY: "auto", background: "#FAFAFA", padding: p }}>
+                        <div style={{ maxWidth: isMobile ? "100%" : 480, background: "#fff", border: "1px solid var(--bf-border)", borderRadius: 8, padding: p, boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}>
+                          <div style={{ marginBottom: 16 }}>
+                            <h4 style={{ fontSize: 15, fontWeight: 600, color: "var(--bf-text)" }}>Create Client</h4>
+                            <p style={{ fontSize: 12, color: "var(--bf-muted)", marginTop: 2 }}>Add a new client to your organization.</p>
+                          </div>
+                          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                            <div>
+                              <label style={{ display: "block", fontSize: 11, fontWeight: 500, color: "var(--bf-text)", marginBottom: 4 }}>Client Name</label>
+                              <div style={{ height: 36, borderRadius: 6, border: "1px solid var(--bf-border)", background: "#fff", padding: "0 10px", display: "flex", alignItems: "center" }}>
+                                <span style={{ fontSize: 13, color: "var(--bf-text)" }}>Acme Corporation</span>
+                              </div>
+                            </div>
+                            <div>
+                              <label style={{ display: "block", fontSize: 11, fontWeight: 500, color: "var(--bf-text)", marginBottom: 4 }}>Contact Email</label>
+                              <div style={{ height: 36, borderRadius: 6, border: "1px solid var(--bf-border)", background: "#fff", padding: "0 10px", display: "flex", alignItems: "center" }}>
+                                <span style={{ fontSize: 13, color: "var(--bf-muted)", opacity: 0.6 }}>name@company.com</span>
+                              </div>
+                            </div>
+                            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 10 }}>
+                              <div>
+                                <label style={{ display: "block", fontSize: 11, fontWeight: 500, color: "var(--bf-text)", marginBottom: 4 }}>Plan</label>
+                                <div style={{ height: 36, borderRadius: 6, border: "1px solid var(--bf-border)", background: "#fff", padding: "0 10px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                  <span style={{ fontSize: 13, color: "var(--bf-text)" }}>Enterprise</span>
+                                  <ChevronDown size={13} strokeWidth={2} style={{ color: "var(--bf-muted)" }} />
+                                </div>
+                              </div>
+                              <div>
+                                <label style={{ display: "block", fontSize: 11, fontWeight: 500, color: "var(--bf-text)", marginBottom: 4 }}>Seats</label>
+                                <div style={{ height: 36, borderRadius: 6, border: "1px solid var(--bf-border)", background: "#fff", padding: "0 10px", display: "flex", alignItems: "center" }}>
+                                  <span style={{ fontSize: 13, color: "var(--bf-text)" }}>25</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div>
+                              <label style={{ display: "block", fontSize: 11, fontWeight: 500, color: "var(--bf-text)", marginBottom: 4 }}>Notes</label>
+                              <div style={{ borderRadius: 6, border: "1px solid var(--bf-border)", background: "#fff", padding: 10, minHeight: 60 }}>
+                                <p style={{ fontSize: 13, color: "var(--bf-muted)", opacity: 0.6 }}>Optional internal notes…</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 8, marginTop: 20, paddingTop: 14, borderTop: "1px solid var(--bf-border)" }}>
+                            <button style={{ height: 36, padding: "0 12px", fontSize: 13, fontWeight: 500, borderRadius: 6, color: "var(--bf-muted)", background: "transparent", border: "none", cursor: "pointer" }}>Cancel</button>
+                            <button style={{ height: 36, padding: "0 14px", fontSize: 13, fontWeight: 500, borderRadius: 6, color: "#fff", background: "var(--bf-text)", border: "none", cursor: "pointer" }}>Create Client</button>
+                          </div>
                         </div>
                       </div>
-                      <div>
-                        <label className="block text-xs font-medium text-bf-text mb-1.5">Seats</label>
-                        <div className="h-10 rounded-md border border-bf-border bg-white px-3 flex items-center">
-                          <span className="text-sm text-bf-text">25</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-bf-text mb-1.5">Notes</label>
-                      <div className="rounded-md border border-bf-border bg-white p-3 min-h-[80px]">
-                        <p className="text-sm text-bf-muted/60">Optional internal notes…</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-bf-border">
-                    <button className="h-10 px-4 text-sm font-medium rounded-md text-bf-muted hover:text-bf-text hover:bg-bf-surface transition-colors">
-                      Cancel
-                    </button>
-                    <button className="h-10 px-4 text-sm font-medium rounded-md bg-bf-text text-white hover:bg-bf-text/90 transition-colors">
-                      Create Client
-                    </button>
-                  </div>
-                </div>
+                    );
+                  }}
+                </DeviceFrame>
 
                 {/* Form spec */}
                 <div className="mt-5 bg-bf-surface/60 border border-bf-border rounded-lg p-5 flex items-start gap-3">

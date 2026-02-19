@@ -57,7 +57,7 @@ const toastVariants = [
 
 export function FeedbackSection() {
   return (
-    <section id="feedback" className="relative bg-bf-bg py-16 sm:py-24">
+    <section id="feedback" className="relative bg-white border-t-4 border-bf-crimson py-16 sm:py-24">
       <div className="px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="max-w-6xl mx-auto">
               <SectionHeader number="08" title="Feedback & States" description="Alerts, toasts, loading skeletons, and empty states. How the system communicates status, progress, and absence to the user." />
