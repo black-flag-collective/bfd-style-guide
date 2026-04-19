@@ -120,7 +120,7 @@ export function SurfacePatternsSection() {
                   Dialog
                 </h3>
                 <p className="text-sm mb-6 leading-relaxed max-w-2xl" style={{ color: "var(--bf-muted)" }}>
-                  Mirrors the real Create Project and Delete Client dialogs from <span className="font-mono text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "var(--bf-surface)", color: "var(--bf-text)" }}>admin-app-convex/ClientDetail.tsx</span>. Click each trigger to see the open/close animation with spring physics.
+                  Mirrors the real Create Project and Delete Client dialogs from <span className="font-mono text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "var(--bf-surface)", color: "var(--bf-text)" }}>bfd-platform/ClientDetail.tsx</span>. Click each trigger to see the open/close animation with spring physics.
                 </p>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Standard dialog — mirrors ClientDetail.tsx "Create New Project" (line 549) */}
@@ -140,7 +140,7 @@ export function SurfacePatternsSection() {
                           <div>
                             <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--bf-text)" }}>Project Name *</label>
                             <div className="h-10 rounded-md border px-3 flex items-center" style={{ borderColor: "var(--bf-border)", backgroundColor: "var(--bf-paper)" }}>
-                              <span className="text-sm" style={{ color: "var(--bf-text)" }}>admin-app-convex</span>
+                              <span className="text-sm" style={{ color: "var(--bf-text)" }}>bfd-platform</span>
                             </div>
                           </div>
                           <div>
@@ -246,7 +246,7 @@ export function SurfacePatternsSection() {
                   <div className="mt-3 pt-3 border-t" style={{ borderColor: "var(--bf-border)" }}>
                     <p className="text-xs font-black uppercase tracking-wider mb-2" style={{ color: "var(--bf-text)" }}>Source</p>
                     <p className="text-xs font-mono" style={{ color: "var(--bf-muted)" }}>
-                      admin-app-convex → app/src/apps/admin/pages/ClientDetail.tsx (lines 549–704)
+                      bfd-platform → app/src/apps/admin/pages/ClientDetail.tsx (lines 549–704)
                     </p>
                   </div>
                 </div>

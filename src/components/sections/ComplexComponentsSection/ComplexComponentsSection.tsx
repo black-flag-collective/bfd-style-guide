@@ -447,7 +447,7 @@ export function ComplexComponentsSection() {
                       <div style={{ background: "#1e1e2e", borderRadius: 8, padding: "14px 16px", fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#cdd6f4", lineHeight: 1.7, overflowX: "auto", marginBottom: 14 }}>
                         <span style={{ color: "#89b4fa" }}>bfd-admin-apps/</span>{"\n"}
                         {"  "}├── <span style={{ color: "#a6e3a1" }}>projects/</span>{"\n"}
-                        {"  "}│   ├── admin-app-convex/  <span style={{ color: "#6c7086" }}># Main admin portal</span>{"\n"}
+                        {"  "}│   ├── bfd-platform/  <span style={{ color: "#6c7086" }}># Main admin portal</span>{"\n"}
                         {"  "}│   ├── bfd-style-guide/   <span style={{ color: "#6c7086" }}># This guide</span>{"\n"}
                         {"  "}│   └── bfd-platform/      <span style={{ color: "#6c7086" }}># Client-facing</span>{"\n"}
                         {"  "}├── <span style={{ color: "#a6e3a1" }}>blueprints/</span>{"\n"}

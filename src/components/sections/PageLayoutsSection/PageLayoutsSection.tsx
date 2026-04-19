@@ -831,7 +831,7 @@ export function PageLayoutsSection() {
               Component Coverage Audit
             </h3>
             <p className="text-sm text-bf-muted mb-5 max-w-xl">
-              Mapping of admin-app-convex React components to style guide coverage.
+              Mapping of bfd-platform React components to style guide coverage.
             </p>
             <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-5 sm:p-7 overflow-x-auto">
               <pre className="text-[11px] sm:text-xs font-mono leading-relaxed" style={{ color: "var(--bf-text)" }}>

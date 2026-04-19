@@ -1547,7 +1547,7 @@ export function NavigationSection() {
                 </p>
                 <p className="text-xs text-bf-muted mb-3">
                   Simple top-level page with header and scrollable content. No tabs.
-                  Uses the same live client records mirrored from admin-app-convex metadata.
+                  Uses the same live client records mirrored from bfd-platform metadata.
                 </p>
                 <div className="rounded-xl border-2 border-bf-border overflow-hidden bg-bf-surface mb-6">
                   <div className="flex h-[260px]">

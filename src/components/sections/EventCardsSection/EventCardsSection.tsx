@@ -17,7 +17,7 @@ import { ClientGrid, CLIENTS } from "./shared/ClientGrid";
 const ease = [0.16, 1, 0.3, 1] as const;
 
 /* ═══════════════════════════════════════════════════════════
- * CLIENT LOGOS — real from admin-app-convex seed data
+ * CLIENT LOGOS — real from bfd-platform seed data
  * ═══════════════════════════════════════════════════════════ */
 
 const BF_LOGO = CLIENTS.find(c => c.slug === "black-flag")!.logoUrl!;
@@ -29,7 +29,7 @@ const ADVISORPEDIA_LOGO = CLIENTS.find(c => c.slug === "advisorpedia")!.logoUrl!
 const VOLTAGE_LOGO = CLIENTS.find(c => c.slug === "voltage-control")!.logoUrl!;
 
 /* ═══════════════════════════════════════════════════════════
- * SAMPLE DATA — real data from admin-app-convex
+ * SAMPLE DATA — real data from bfd-platform
  * ═══════════════════════════════════════════════════════════ */
 
 const githubSamples: GitHubCardData[] = [
@@ -510,9 +510,9 @@ const cursorSamples: CursorSessionData[] = [
     duration: "4m 12s",
     eventCount: 38,
     subagentCount: 2,
-    firstPrompt: "I need you to identify all the types of events that are happening or are possible in the admin-app-convex project and give me a detailed plan...",
+    firstPrompt: "I need you to identify all the types of events that are happening or are possible in the bfd-platform project and give me a detailed plan...",
     agentOutputs: [
-      "Subagent: explore admin-app-convex event types",
+      "Subagent: explore bfd-platform event types",
       "Subagent: explore bfd-style-guide structure",
       "Read: UnifiedEventCard.tsx",
       "Read: event-card-constants.ts",
@@ -521,14 +521,14 @@ const cursorSamples: CursorSessionData[] = [
     timestamp: "just now",
     timeline: [
       { type: "session_start", model: "claude-4-opus", composerMode: "agent", gitBranch: "main", time: "0:00" },
-      { type: "user_prompt", text: "I need you to identify all the types of events that are happening or are possible in the admin-app-convex project and give me a detailed plan for how we can add carousels of new designs in the new brand system...", time: "0:00" },
-      { type: "agent_thought", text: "The user wants me to explore all event types in admin-app-convex and plan new card designs. I need to understand the data shapes for GitHub, Linear, Cursor, Feedback, and Commit events.", durationMs: 2100, time: "0:02" },
+      { type: "user_prompt", text: "I need you to identify all the types of events that are happening or are possible in the bfd-platform project and give me a detailed plan for how we can add carousels of new designs in the new brand system...", time: "0:00" },
+      { type: "agent_thought", text: "The user wants me to explore all event types in bfd-platform and plan new card designs. I need to understand the data shapes for GitHub, Linear, Cursor, Feedback, and Commit events.", durationMs: 2100, time: "0:02" },
       { type: "file_read", filePath: "src/apps/admin/components/events/types.ts", totalLines: 89, time: "0:03" },
       { type: "file_read", filePath: "src/apps/admin/components/events/UnifiedEventCard.tsx", lineRange: "1-45", totalLines: 312, time: "0:04" },
       { type: "grep_search", pattern: "eventType.*=", filesMatched: 8, matchCount: 23, time: "0:05" },
       { type: "glob_search", pattern: "**/events/**/*.tsx", filesFound: 24, time: "0:06" },
       { type: "semantic_search", query: "How are cursor session events structured and rendered?", targetDir: "src/apps/admin/components/events/", resultsCount: 12, time: "0:07" },
-      { type: "subagent_launch", description: "Explore all event types in admin-app-convex", subagentType: "explore", model: "fast", time: "0:08" },
+      { type: "subagent_launch", description: "Explore all event types in bfd-platform", subagentType: "explore", model: "fast", time: "0:08" },
       { type: "file_read", filePath: "app/convex/schema.ts", lineRange: "502-594", totalLines: 642, time: "0:09" },
       { type: "file_read", filePath: "src/apps/admin/components/events/cursor-drawer/chat-helpers.ts", totalLines: 156, time: "0:10" },
       { type: "subagent_result", description: "Found 5 event sources with 20+ GitHub types, 16 Linear types, 9 cursor categories", durationMs: 18200, time: "0:26" },
@@ -599,7 +599,7 @@ const cursorSamples: CursorSessionData[] = [
     cost: "$0.08",
     duration: "45s",
     eventCount: 12,
-    firstPrompt: "Explore all event types in the admin-app-convex project. Look at schema, types, and component files.",
+    firstPrompt: "Explore all event types in the bfd-platform project. Look at schema, types, and component files.",
     agentOutputs: [
       "Glob: **/events/**",
       "Read: schema.ts (lines 502-594)",
@@ -610,7 +610,7 @@ const cursorSamples: CursorSessionData[] = [
     timestamp: "24m ago",
     timeline: [
       { type: "session_start", model: "fast", composerMode: "explore", gitBranch: "main", time: "0:00" },
-      { type: "user_prompt", text: "Explore all event types in the admin-app-convex project.", time: "0:00" },
+      { type: "user_prompt", text: "Explore all event types in the bfd-platform project.", time: "0:00" },
       { type: "glob_search", pattern: "**/events/**/*.{ts,tsx}", filesFound: 32, time: "0:02" },
       { type: "file_read", filePath: "app/src/apps/admin/components/events/types.ts", totalLines: 89, time: "0:04" },
       { type: "grep_search", pattern: "EventSource|eventType", filesMatched: 14, matchCount: 47, time: "0:06" },

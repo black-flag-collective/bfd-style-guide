@@ -157,7 +157,7 @@ Never use:
 
 **Primary icon library: `lucide-react`** (already installed in both `bfd-style-guide` and `bfd-front-door`).
 
-The admin app (`admin-app-convex`) uses `@tabler/icons-react` for the sidebar and `lucide-react` for everything else. For the design system and cross-platform consistency, we standardize on `lucide-react`.
+The admin app (`bfd-platform`) uses `@tabler/icons-react` for the sidebar and `lucide-react` for everything else. For the design system and cross-platform consistency, we standardize on `lucide-react`.
 
 ### Icon Constants
 
