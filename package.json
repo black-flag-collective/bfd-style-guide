@@ -7,7 +7,9 @@
     "dev": "astro dev --port 4350",
     "build": "astro build",
     "preview": "astro preview --port 4350",
-    "check": "astro check"
+    "$check": "`npm run check` runs the full quality-gate pipeline under scripts/check-budget.mjs (90s local / 300s CI ceiling). The actual chain lives in `check:pipeline`.",
+    "check": "node scripts/check-budget.mjs",
+    "check:pipeline": "astro check"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
