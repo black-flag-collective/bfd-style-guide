@@ -1,0 +1,35 @@
+name: Code-quality report (daily)
+# Cron 12:00 UTC.
+on:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch: {}
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: code-quality-report
+  cancel-in-progress: false
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with: { fetch-depth: 1 }
+      - uses: actions/setup-node@v5
+        with: { node-version: 22, cache: npm }
+      - run: npm ci --no-audit --no-fund
+      - run: |
+          mkdir -p docs
+          node scripts/quality/generate-report.mjs > docs/code-quality-report.md
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: chore/daily-code-quality-report
+          base: main
+          commit-message: "chore: daily code-quality report"
+          title: "chore: daily code-quality report"
+          body: "Auto-generated. Persistent daily snapshot."
+          delete-branch: false
+          add-paths: docs/code-quality-report.md
