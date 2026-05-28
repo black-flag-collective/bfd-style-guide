@@ -1,0 +1,471 @@
+{
+  "schemaVersion": "0.1.0",
+  "pluginVersion": "0.1.24",
+  "support": {
+    "pluginRepo": "https://github.com/black-flag-collective/bfd-plugins",
+    "cliRepo": "https://github.com/black-flag-collective/quality-os-cli",
+    "pluginSourceUrl": "https://github.com/black-flag-collective/bfd-plugins/tree/main/plugins/quality-os",
+    "cliSourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+    "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+    "submitPluginPrUrl": "https://github.com/black-flag-collective/bfd-plugins/compare",
+    "submitCliPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare",
+    "issuePolicy": "Black Flag agents and humans should fix deterministic CLI behavior in quality-os-cli and plugin/skill guidance in bfd-plugins.",
+    "checkGuidance": "Every check includes guidanceSummary and guidance (markdown). Use those fields for setup steps; do not rely on separate plugin skills for optional tools."
+  },
+  "repo": {
+    "path": "/Users/keith/Documents/black-flag/Black Flag/bfd-style-guide",
+    "name": "bfd-style-guide",
+    "gitRef": null
+  },
+  "profile": "node-cli",
+  "maturity": "adopting",
+  "owners": [],
+  "criticalFlows": [],
+  "knownGaps": [],
+  "status": "pass",
+  "v0Decision": {
+    "status": "ready",
+    "summary": "Required Quality OS MVP v0 gates pass. Optional checks are enhancements the team can add after adoption.",
+    "requiredBlockers": 0,
+    "optionalNote": "Optional checks do not block rollout unless this repo opts them into required gates."
+  },
+  "nextActions": [
+    {
+      "id": "optional.knip",
+      "scope": "optional",
+      "blocking": false,
+      "action": "Add Knip when the team can act on dead-code findings; keep it optional until then.",
+      "evidence": "no Knip signal found",
+      "command": null,
+      "resolution": {
+        "human": "Add Knip when the team can act on dead-code findings; keep it optional until then. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.knip` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      }
+    },
+    {
+      "id": "optional.coverage",
+      "scope": "optional",
+      "blocking": false,
+      "action": "Add coverage reporting first; promote thresholds to required gates only after the baseline is understood.",
+      "evidence": "no coverage script found",
+      "command": null,
+      "resolution": {
+        "human": "Add coverage reporting first; promote thresholds to required gates only after the baseline is understood. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.coverage` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      }
+    },
+    {
+      "id": "optional.fallow",
+      "scope": "optional",
+      "blocking": false,
+      "action": "Add fallow with baselines under `.fallow/` when the repo is ready for dead-code, health, and dupe audits.",
+      "evidence": "no Fallow signal found",
+      "command": null,
+      "resolution": {
+        "human": "Add fallow with baselines under `.fallow/` when the repo is ready for dead-code, health, and dupe audits. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.fallow` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "id": "quality-os.config",
+      "category": "repo-config",
+      "status": "pass",
+      "severity": "info",
+      "required": true,
+      "evidence": [
+        "quality-os.config.json"
+      ],
+      "expected": "quality-os.config.json exists at the repo root",
+      "actual": "found quality-os.config.json",
+      "remediation": "Run `quality-os init --dry-run --json`, review the plan, then apply with `quality-os init --yes --json`.",
+      "autofixAvailable": true,
+      "command": "quality-os init --dry-run --json",
+      "resolution": {
+        "human": "Run `quality-os init --dry-run --json`, review the plan, then apply with `quality-os init --yes --json`. Start by running `quality-os init --dry-run --json` from the repo root. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `quality-os.config` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Adopt Quality OS config before gates.",
+      "guidance": "## Add `quality-os.config.json`\n\n1. From the repo root, preview the file Quality OS expects:\n\n   ```bash\n   quality-os init --dry-run --json\n   ```\n\n2. Review `changes[]` for `quality-os.config.json` — profile, `commands`, `gates`, and `optionalChecks`.\n\n3. Apply only after the operator approves:\n\n   ```bash\n   quality-os init --yes --json\n   ```\n\n4. For a fuller adoption plan (Husky, workflows, missing scripts):\n\n   ```bash\n   quality-os scaffold --profile convex-react --dry-run --json\n   ```\n\n   Pick the profile that matches the repo: `express-react`, `convex-react`, `astro`, or `node-cli`.\n\n5. Rerun `quality-os doctor --json` and confirm `quality-os.config` passes.\n"
+    },
+    {
+      "id": "package-json.present",
+      "category": "package-scripts",
+      "status": "pass",
+      "severity": "info",
+      "required": false,
+      "evidence": [],
+      "expected": "TypeScript/JavaScript repos expose package.json scripts",
+      "actual": "package.json not found; native commands are declared in quality-os.config.json",
+      "remediation": "If this is not a JavaScript repo, keep the `node-cli` profile and declare native commands in quality-os.config.json.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "If this is not a JavaScript repo, keep the `node-cli` profile and declare native commands in quality-os.config.json. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `package-json.present` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Declare native commands in quality-os.config for non-Node repos.",
+      "guidance": "## Native / CLI repo without `package.json`\n\n1. Keep `\"profile\": \"node-cli\"` in `quality-os.config.json`.\n\n2. Declare every gate command under `commands` (e.g. `\"test\": \"cargo test\"`, `\"lint\": \"npm run json\"`).\n\n3. Map those ids in `gates.preCommit`, `gates.prePush`, and `gates.pullRequest`.\n\n4. Rerun `quality-os doctor --json`.\n\nDo not add a fake `package.json` if the repo is Rust-only or native-only.\n"
+    },
+    {
+      "id": "husky.pre-commit",
+      "category": "local-gates",
+      "status": "pass",
+      "severity": "info",
+      "required": true,
+      "evidence": [
+        ".githooks/pre-commit"
+      ],
+      "expected": "Pre-commit gate exists and is enforceable in this checkout",
+      "actual": "found .githooks/pre-commit and core.hooksPath is .githooks",
+      "remediation": "Add a fast pre-commit gate for typecheck/lint/format checks.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add a fast pre-commit gate for typecheck/lint/format checks. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `husky.pre-commit` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Wire a fast pre-commit hook for static checks.",
+      "guidance": "## Pre-commit gate\n\n1. Install Husky and a `prepare` script if missing: `npm install -D husky` and `\"prepare\": \"husky\"`.\n\n2. Create `.husky/pre-commit` (or configure `core.hooksPath` to `.githooks/pre-commit`) that runs the repo's fast gate, e.g. `npm run lint && npm run typecheck`.\n\n3. Prefer calling the same command ids declared in `quality-os.config.json` `gates.preCommit`.\n\n4. Test: make a small change and commit — hook should run.\n\n5. `quality-os run --dry-run --gate pre-commit --json` shows the exact commands Quality OS will use.\n\n6. Rerun `quality-os doctor --json`.\n"
+    },
+    {
+      "id": "husky.pre-push",
+      "category": "local-gates",
+      "status": "pass",
+      "severity": "info",
+      "required": true,
+      "evidence": [
+        ".githooks/pre-push"
+      ],
+      "expected": "Pre-push gate exists and is enforceable in this checkout",
+      "actual": "found .githooks/pre-push and core.hooksPath is .githooks",
+      "remediation": "Add a pre-push gate that runs the repo's focused test suite.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add a pre-push gate that runs the repo's focused test suite. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `husky.pre-push` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Wire pre-push to run focused tests.",
+      "guidance": "## Pre-push gate\n\n1. Add `.husky/pre-push` (or `.githooks/pre-push` with `core.hooksPath`) that runs focused tests.\n\n2. Align with `gates.prePush` in `quality-os.config.json` (usually `test` or `test:unit`).\n\n3. Dry-run: `quality-os run --dry-run --gate pre-push --json`.\n\n4. Rerun `quality-os doctor --json`.\n"
+    },
+    {
+      "id": "ci.github-actions",
+      "category": "ci-gates",
+      "status": "pass",
+      "severity": "info",
+      "required": true,
+      "evidence": [
+        ".github/workflows/quality-os.yml"
+      ],
+      "expected": "GitHub Actions PR workflow mirrors Quality OS gates",
+      "actual": "found PR workflow running quality-os run for the pull-request gate",
+      "remediation": "Add a PR workflow that mirrors lint, typecheck, build, and tests.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add a PR workflow that mirrors lint, typecheck, build, and tests. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `ci.github-actions` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Mirror PR quality commands in GitHub Actions.",
+      "guidance": "## GitHub Actions PR gate\n\n1. Add or update `.github/workflows/*` with a `pull_request` trigger.\n\n2. Run the same commands as `gates.pullRequest` in `quality-os.config.json` — not echo placeholders.\n\n3. Typical steps: checkout, setup Node, `npm ci`, then `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build` as declared.\n\n4. `quality-os run --dry-run --gate pull-request --json` lists the resolved command list.\n\n5. Rerun `quality-os doctor --json`.\n"
+    },
+    {
+      "id": "unit-tests.colocated",
+      "category": "unit-tests",
+      "status": "pass",
+      "severity": "info",
+      "required": true,
+      "evidence": [
+        "tests/quality-os.test.js"
+      ],
+      "expected": "Unit or focused tests are present",
+      "actual": "found focused test files",
+      "remediation": "Add unit tests next to source with `__tests__`, or use a repo-level `tests/` directory for CLI/native packages.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add unit tests next to source with `__tests__`, or use a repo-level `tests/` directory for CLI/native packages. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `unit-tests.colocated` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Colocate unit tests next to source or under tests/.",
+      "guidance": "## Unit tests\n\n1. Add `__tests__/` next to source modules or a top-level `tests/` directory with focused specs.\n\n2. Ensure `script.test` or `script.test:unit` runs them (Vitest, Jest, or node:test).\n\n3. Wire the test script into `gates.prePush` and `gates.pullRequest`.\n\n4. Rerun `quality-os doctor --json`.\n"
+    },
+    {
+      "id": "optional.knip",
+      "category": "optional",
+      "status": "fail",
+      "severity": "warn",
+      "required": false,
+      "evidence": [],
+      "expected": "Knip dead-code detection is available when the repo is ready",
+      "actual": "no Knip signal found",
+      "remediation": "Add Knip when the team can act on dead-code findings; keep it optional until then.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add Knip when the team can act on dead-code findings; keep it optional until then. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.knip` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Wire Knip for dead-code visibility (optional).",
+      "guidance": "## Optional: Knip (dead code)\n\n1. Install: `npm install -D knip` and add `knip.json` (or `knip.ts`).\n\n2. Add `\"knip\": \"knip\"` to `package.json` scripts.\n\n3. List `\"knip\"` under `optionalChecks` in `quality-os.config.json` if you want doctor to track it.\n\n4. Run `npm run knip` locally and fix or baseline findings before promoting to a required gate.\n\n5. To **block PRs**, add `knip` to `commands` and `gates.pullRequest` — optional alone does not block.\n\n6. Rerun `quality-os doctor --json` — `optional.knip` should pass when config or script exists.\n"
+    },
+    {
+      "id": "optional.coverage",
+      "category": "optional",
+      "status": "fail",
+      "severity": "warn",
+      "required": false,
+      "evidence": [],
+      "expected": "Coverage reporting is visible before any required threshold",
+      "actual": "no coverage script found",
+      "remediation": "Add coverage reporting first; promote thresholds to required gates only after the baseline is understood.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add coverage reporting first; promote thresholds to required gates only after the baseline is understood. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.coverage` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Add coverage reporting before thresholds (optional).",
+      "guidance": "## Optional: coverage visibility\n\n1. Add a coverage script, e.g. `\"test:coverage\": \"vitest run --coverage\"` with Istanbul already configured.\n\n2. Add `\"coverage\"` to `optionalChecks` in config if desired.\n\n3. Publish coverage in CI as an artifact before setting fail-under thresholds.\n\n4. To require a minimum coverage in PRs, add the script to `gates.pullRequest` with your threshold flags.\n\n5. Rerun `quality-os doctor --json`.\n"
+    },
+    {
+      "id": "optional.fallow",
+      "category": "optional",
+      "status": "fail",
+      "severity": "warn",
+      "required": false,
+      "evidence": [],
+      "expected": "Static Fallow project-graph audits are wired",
+      "actual": "no Fallow signal found",
+      "remediation": "Add fallow with baselines under `.fallow/` when the repo is ready for dead-code, health, and dupe audits.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add fallow with baselines under `.fallow/` when the repo is ready for dead-code, health, and dupe audits. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.fallow` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Wire static Fallow audits with baselines (optional).",
+      "guidance": "## Optional: static Fallow audit\n\n1. Install: `npm install -D fallow-cli` (or `fallow` per repo convention).\n\n2. Run `npx fallow init` and commit `.fallowrc.json` next to the analysis root (often repo root or `app/`).\n\n3. Create baselines:\n\n   ```bash\n   mkdir -p .fallow\n   fallow dead-code --save-baseline .fallow/dead-code-baseline.json\n   fallow health --save-baseline .fallow/health-baseline.json\n   fallow dupes --save-baseline .fallow/dupes-baseline.json\n   ```\n\n4. Add scripts such as `\"fallow:audit\": \"fallow audit\"` to `package.json`.\n\n5. Add `\"fallow\"` to `optionalChecks` in `quality-os.config.json`.\n\n6. To gate commits, add `fallow:audit` to `gates.preCommit` after the team owns baseline updates.\n\n7. Rerun `quality-os doctor --json`.\n\nFor Convex repos, add `fallow-plugin-convex.json` per Fallow docs so handler proxies are not false positives.\n"
+    },
+    {
+      "id": "optional.fallowBeacon",
+      "category": "optional",
+      "status": "fail",
+      "severity": "warn",
+      "required": false,
+      "evidence": [],
+      "expected": "Fallow Cloud runtime beacon is wired for production coverage rollups",
+      "actual": "no Fallow beacon signal found",
+      "remediation": "Add the Fallow Cloud beacon when runtime coverage should roll up to the shared workspace.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add the Fallow Cloud beacon when runtime coverage should roll up to the shared workspace. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.fallowBeacon` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Wire Fallow Cloud runtime beacon (optional).",
+      "guidance": "## Optional: Fallow Cloud beacon (runtime coverage)\n\n1. Complete static Fallow setup first (`optional.fallow` guidance).\n\n2. Add `@fallow-cli/beacon` and wire the browser + Convex integration files your stack uses (see bfd-platform reference implementation).\n\n3. Configure CI to upload inventory so production execution rolls up to the Fallow Cloud workspace.\n\n4. Add `\"fallowBeacon\"` to `optionalChecks`.\n\n5. This is **observability**, not a commit gate — do not add to `gates` unless the team explicitly wants upload failures to block.\n\n6. Rerun `quality-os doctor --json`.\n"
+    },
+    {
+      "id": "optional.wallace",
+      "category": "optional",
+      "status": "fail",
+      "severity": "warn",
+      "required": false,
+      "evidence": [],
+      "expected": "Project Wallace built-CSS hygiene checks are wired",
+      "actual": "no Wallace signal found",
+      "remediation": "Add Project Wallace thresholds when CSS bundle hygiene should be visible before promotion to required gates.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add Project Wallace thresholds when CSS bundle hygiene should be visible before promotion to required gates. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.wallace` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Wire Project Wallace CSS thresholds (optional).",
+      "guidance": "## Optional: Project Wallace (CSS hygiene)\n\n1. Install Wallace tooling: `wallace-cli`, `@projectwallace/css-analyzer`, or your repo's existing CSS audit script.\n\n2. Commit `.wallace-thresholds.json` with frozen limits.\n\n3. Add `\"css:check\": \"node scripts/wallace/check.mjs\"` (or equivalent) to `package.json`.\n\n4. Add `\"wallace\"` to `optionalChecks`.\n\n5. Promote to required by listing the script in `gates.pullRequest` when thresholds must not regress.\n\n6. Rerun `quality-os doctor --json`.\n"
+    },
+    {
+      "id": "optional.visualRegression",
+      "category": "optional",
+      "status": "fail",
+      "severity": "warn",
+      "required": false,
+      "evidence": [],
+      "expected": "Visual regression or snapshot testing is visible",
+      "actual": "no visual-regression signal found",
+      "remediation": "Add Playwright snapshots or a visual-regression service after smoke tests are stable.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add Playwright snapshots or a visual-regression service after smoke tests are stable. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.visualRegression` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Add snapshot or visual-regression tooling (optional).",
+      "guidance": "## Optional: visual regression\n\n1. Start from a stable Playwright smoke suite.\n\n2. Add snapshot tests (`toHaveScreenshot`) or integrate Percy/Chromatic/Lost Pixel per vendor docs.\n\n3. Add a dedicated script name containing `visual`, `snapshot`, or the vendor CLI.\n\n4. Add `\"visualRegression\"` to `optionalChecks`.\n\n5. Keep optional until flake budget is understood; then add to `gates` if PRs must block on diffs.\n\n6. Rerun `quality-os doctor --json`.\n"
+    },
+    {
+      "id": "optional.sonarqube",
+      "category": "optional",
+      "status": "fail",
+      "severity": "warn",
+      "required": false,
+      "evidence": [],
+      "expected": "SonarQube analysis runs in pull-request CI before it becomes a required gate",
+      "actual": "no SonarQube config, script, pull-request workflow, or pullRequest gate found",
+      "remediation": "Run SonarQube from pull-request CI against the shared Black Flag server; promote it to `gates.pullRequest` only after the baseline is owned.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Run SonarQube from pull-request CI against the shared Black Flag server; promote it to `gates.pullRequest` only after the baseline is owned. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.sonarqube` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Wire SonarQube before making it a required gate (optional).",
+      "guidance": "## Optional: SonarQube\n\n1. Add `sonar-project.properties` at the repo root with project key, source/test paths, coverage report paths, and:\n\n   ```properties\n   sonar.qualitygate.wait=true\n   ```\n\n2. Create the matching project on the shared Black Flag SonarQube server and bind it to the GitHub repo. Store `SONAR_HOST_URL` and `SONAR_TOKEN` as GitHub Actions secrets or variables; do not commit tokens or host-specific credentials. `sonar-project.properties` must not contain `sonar.token`, `sonar.login`, or `sonar.password`.\n\n3. Run SonarQube from a `pull_request` GitHub Actions workflow after tests produce coverage. Use `SonarSource/sonarqube-scan-action` or a repo-local `sonar` script that calls `sonar-scanner`.\n\n4. Add `\"sonarqube\"` to `optionalChecks`. Quality OS should pass this optional check only when it finds pull-request CI or `gates.pullRequest` wiring, not just a config file.\n\n5. Treat the first scans as advisory. Fix obvious false positives, exclusions, generated files, and coverage paths before blocking merges.\n\n6. To **require** Sonar on every PR, add a command under `commands`, list it in `gates.pullRequest`, and make the corresponding GitHub workflow check required in branch protection.\n\n7. Rerun `quality-os doctor --json`.\n"
+    },
+    {
+      "id": "optional.agentEvals",
+      "category": "optional",
+      "status": "fail",
+      "severity": "warn",
+      "required": false,
+      "evidence": [],
+      "expected": "Agent or LLM evaluation harness is visible",
+      "actual": "no agent-eval signal found",
+      "remediation": "Add agent eval scripts when AI-assisted flows need regression coverage beyond unit tests.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add agent eval scripts when AI-assisted flows need regression coverage beyond unit tests. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.agentEvals` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Add agent/LLM eval harness (optional).",
+      "guidance": "## Optional: agent / LLM evals\n\n1. Create an `evals/` directory or `test:agent-eval` script that runs deterministic eval cases.\n\n2. Wire Vitest or a small runner that asserts tool/output contracts for AI features.\n\n3. Add `\"agentEvals\"` to `optionalChecks`.\n\n4. Promote to `gates.prePush` when agent regressions should block merge.\n\n5. Rerun `quality-os doctor --json`.\n"
+    },
+    {
+      "id": "optional.alex",
+      "category": "optional",
+      "status": "fail",
+      "severity": "warn",
+      "required": false,
+      "evidence": [],
+      "expected": "Alex inclusive-language linting is wired for prose surfaces",
+      "actual": "no alex signal found",
+      "remediation": "Add alex when markdown or JSX prose should be linted for inclusive language.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add alex when markdown or JSX prose should be linted for inclusive language. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.alex` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Wire alex for inclusive-language lint (optional).",
+      "guidance": "## Optional: alex (inclusive language)\n\n1. `npm install -D alex` and add `.alexrc` or `.alexrc.json` allowlist as needed.\n\n2. Add `\"alex\": \"alex .\"` targeting markdown and prose surfaces.\n\n3. Add `\"alex\"` to `optionalChecks`.\n\n4. Add to `gates.pullRequest` when inclusive-language violations should block.\n\n5. Rerun `quality-os doctor --json`.\n"
+    },
+    {
+      "id": "optional.bundleBudget",
+      "category": "optional",
+      "status": "fail",
+      "severity": "warn",
+      "required": false,
+      "evidence": [],
+      "expected": "JS bundle size budgets are visible",
+      "actual": "no bundle-budget signal found",
+      "remediation": "Add size-limit or bundlewatch when client bundle regressions should be tracked.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add size-limit or bundlewatch when client bundle regressions should be tracked. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.bundleBudget` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Track bundle size with size-limit or bundlewatch (optional).",
+      "guidance": "## Optional: bundle size budget\n\n1. Install `size-limit` or `bundlewatch` and commit config (`.size-limit.json` or `bundlewatch.config.js`).\n\n2. Add `\"size-limit\": \"size-limit\"` or `\"bundlewatch\": \"bundlewatch\"` script.\n\n3. Add `\"bundleBudget\"` to `optionalChecks`.\n\n4. Promote to required by adding the script to `gates.pullRequest` with your budget policy.\n\n5. Rerun `quality-os doctor --json`.\n"
+    },
+    {
+      "id": "optional.scheduledReport",
+      "category": "optional",
+      "status": "fail",
+      "severity": "warn",
+      "required": false,
+      "evidence": [],
+      "expected": "A scheduled Quality OS report workflow keeps quality metrics visible",
+      "actual": "no scheduled Quality OS report workflow found",
+      "remediation": "Add a weekly `quality-os report` GitHub Actions job when the team wants trend visibility without blocking PRs.",
+      "autofixAvailable": false,
+      "command": null,
+      "resolution": {
+        "human": "Add a weekly `quality-os report` GitHub Actions job when the team wants trend visibility without blocking PRs. If the finding is wrong, inspect the Quality OS source and open a PR with a focused fixture or real-repo evidence.",
+        "agent": "Use the JSON fields for `optional.scheduledReport` as source of truth. Do not bypass the gate. Apply the smallest repo-local fix, rerun `quality-os doctor --json`, and submit code changes in the target repo. If the Quality OS engine is wrong, submit a PR to the CLI source repo.",
+        "docsUrl": "https://github.com/black-flag-collective/bfd-plugins/blob/main/plugins/quality-os/README.md",
+        "sourceUrl": "https://github.com/black-flag-collective/quality-os-cli",
+        "submitPrUrl": "https://github.com/black-flag-collective/quality-os-cli/compare"
+      },
+      "guidanceSummary": "Schedule a weekly quality-os report workflow (optional).",
+      "guidance": "## Optional: scheduled Quality OS report\n\n1. Add `.github/workflows/quality-os-report.yml` with `schedule` (weekly) and `workflow_dispatch`.\n\n2. Steps: checkout, install Quality OS (`plugins/quality-os/scripts/install-quality-os.sh` or release binary), then:\n\n   ```bash\n   quality-os report --json --markdown --write\n   ```\n\n3. Upload `.quality-os/report` as a CI artifact.\n\n4. Add `\"scheduledReport\"` to `optionalChecks` if you want doctor to track the workflow.\n\n5. This does not block PRs — it is trend visibility only.\n\n6. Rerun `quality-os doctor --json`.\n"
+    }
+  ],
+  "summary": {
+    "requiredPassed": 5,
+    "requiredFailed": 0,
+    "optionalPassed": 1,
+    "optionalFailed": 11
+  }
+}

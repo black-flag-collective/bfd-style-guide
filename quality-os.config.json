@@ -1,0 +1,46 @@
+{
+  "commands": {
+    "build": "npm --prefix preview-app run build",
+    "formatCheck": "npm --prefix preview-app run build",
+    "lint": "npm --prefix preview-app run build",
+    "test": "node --test tests/*.test.js",
+    "typecheck": "npm --prefix preview-app run build"
+  },
+  "criticalFlows": [],
+  "gates": {
+    "preCommit": [
+      "lint",
+      "typecheck",
+      "formatCheck"
+    ],
+    "prePush": [
+      "test"
+    ],
+    "pullRequest": [
+      "lint",
+      "typecheck",
+      "build",
+      "test"
+    ]
+  },
+  "knownGaps": [],
+  "maturity": "adopting",
+  "optionalChecks": [
+    "knip",
+    "coverage",
+    "a11y",
+    "fallow",
+    "fallowBeacon",
+    "wallace",
+    "visualRegression",
+    "sonarqube",
+    "agentEvals",
+    "alex",
+    "bundleBudget",
+    "scheduledReport"
+  ],
+  "owners": [],
+  "packageManager": "npm",
+  "profile": "node-cli",
+  "schemaVersion": "0.1.0"
+}

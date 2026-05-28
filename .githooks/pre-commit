@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+set -eu
+
+quality-os run --gate pre-commit --json

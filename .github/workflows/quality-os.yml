@@ -1,0 +1,13 @@
+name: Quality OS
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  quality-os:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Quality OS
+        run: quality-os run --json
