@@ -6,13 +6,13 @@ import { SectionHeader } from "@/components/SectionHeader";
 const hierarchy = [
   {
     tier: "Primary",
-    name: "Black Flag Mark",
-    rule: "Default in product UI. Use this whenever the brand is already clear from context.",
+    name: "BFD Wordmark",
+    rule: "The default logo everywhere: product UI, headers, decks, and first-impression moments.",
   },
   {
     tier: "Secondary",
-    name: "Black Flag Lockup",
-    rule: "Use in headers, invoices, and first-impression moments where the full name must be visible.",
+    name: "Black Flag Mark",
+    rule: "The flag. Use in compact spaces and wherever the brand is already clear from context.",
   },
   {
     tier: "Tertiary",
@@ -22,20 +22,20 @@ const hierarchy = [
 ];
 
 const logoAssets = [
-  { name: "Mark (Dark)", description: "Primary mark for light backgrounds", file: "/logos/mark-dark.svg", preview: "dark" as const },
-  { name: "Mark (Light)", description: "Primary mark for dark backgrounds", file: "/logos/mark-light.svg", preview: "light" as const },
-  { name: "Lockup (Dark)", description: "Wordmark + flag for light backgrounds", file: "/logos/lockup-dark.svg", preview: "dark" as const },
-  { name: "Lockup (Light)", description: "Wordmark + flag for dark backgrounds", file: "/logos/lockup-light.svg", preview: "light" as const },
+  { name: "BFD (Dark)", description: "Primary wordmark for light backgrounds", file: "/logos/bfd-dark.svg", preview: "dark" as const },
+  { name: "BFD (Light)", description: "Primary wordmark for dark backgrounds", file: "/logos/bfd-light.svg", preview: "light" as const },
+  { name: "Mark (Dark)", description: "Flag mark for light backgrounds", file: "/logos/mark-dark.svg", preview: "dark" as const },
+  { name: "Mark (Light)", description: "Flag mark for dark backgrounds", file: "/logos/mark-light.svg", preview: "light" as const },
   { name: "Character (Dark)", description: "Mouth icon for light backgrounds", file: "/logos/silly-face-dark.png", preview: "dark" as const },
   { name: "Character (Light)", description: "Mouth icon for dark backgrounds", file: "/logos/silly-face-light.png", preview: "light" as const },
   { name: "Favicon", description: "Browser tab icon", file: "/favicon.svg", preview: "dark" as const },
 ];
 
 const guidelines = [
-  { title: "Clear Space", description: "Maintain clear space equal to mark height around the logo at all times." },
-  { title: "Minimum Size", description: "Never smaller than 24x12px. Always maintain the 2:1 aspect ratio for the mark." },
-  { title: "Aspect Ratio", description: "The mark is always 2:1 (width:height). No stretching, no exceptions." },
-  { title: "Hierarchy", description: "Primary mark first, lockup second, silly face third. Do not invert this order." },
+  { title: "Clear Space", description: "Maintain clear space equal to the letter height (wordmark) or mark height (flag) around the logo at all times." },
+  { title: "Minimum Size", description: "Wordmark never smaller than 36x12px; flag mark never smaller than 24x12px." },
+  { title: "Aspect Ratio", description: "The wordmark is 3:1 and the flag mark is 2:1 (width:height). No stretching, no exceptions." },
+  { title: "Hierarchy", description: "BFD wordmark first, flag mark second, silly face third. The full Black Flag Design lockup is retired — do not use it." },
 ];
 
 export function LogoSection() {
@@ -55,7 +55,7 @@ export function LogoSection() {
               <SectionHeader
                 number="01"
                 title="Logo"
-                description="Black Flag uses a strict logo hierarchy: mark first, lockup second, character mark third."
+                description="Black Flag uses a strict logo hierarchy: BFD wordmark first, flag mark second, character mark third. The full Black Flag Design lockup is retired."
               />
 
               <motion.div
@@ -86,8 +86,8 @@ export function LogoSection() {
                   viewport={{ once: true }}
                   className="bg-bf-text rounded-lg p-4 md:p-6 flex flex-col items-center justify-center aspect-[4/3]"
                 >
-                  <BrandLogo variant="light" size="lg" className="h-10 md:h-16 lg:h-20" />
-                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-bg/60 uppercase tracking-wider">Primary Mark - Light on Dark</p>
+                  <img src="/logos/bfd-light.svg" alt="BFD wordmark on dark background" className="w-[62%] max-w-[300px] h-auto" />
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-bg/60 uppercase tracking-wider">Primary Wordmark - Light on Dark</p>
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -96,8 +96,8 @@ export function LogoSection() {
                   viewport={{ once: true }}
                   className="bg-bf-bg rounded-lg p-4 md:p-6 flex flex-col items-center justify-center shadow-card aspect-[4/3]"
                 >
-                  <BrandLogo variant="dark" size="lg" className="h-10 md:h-16 lg:h-20" />
-                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-muted uppercase tracking-wider">Primary Mark - Dark on Light</p>
+                  <img src="/logos/bfd-dark.svg" alt="BFD wordmark on light background" className="w-[62%] max-w-[300px] h-auto" />
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-muted uppercase tracking-wider">Primary Wordmark - Dark on Light</p>
                 </motion.div>
               </div>
 
@@ -109,8 +109,8 @@ export function LogoSection() {
                   viewport={{ once: true }}
                   className="bg-bf-text rounded-lg p-4 md:p-6 flex flex-col items-center justify-center aspect-[4/3]"
                 >
-                  <img src="/logos/lockup-light.svg" alt="Black Flag lockup on dark background" className="w-[78%] max-w-[360px] h-auto" />
-                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-bg/60 uppercase tracking-wider">Secondary Lockup - Light on Dark</p>
+                  <BrandLogo variant="light" size="lg" className="h-10 md:h-16 lg:h-20" />
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-bg/60 uppercase tracking-wider">Secondary Mark - Light on Dark</p>
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -119,8 +119,8 @@ export function LogoSection() {
                   viewport={{ once: true }}
                   className="bg-bf-bg rounded-lg p-4 md:p-6 flex flex-col items-center justify-center shadow-card aspect-[4/3]"
                 >
-                  <img src="/logos/lockup-dark.svg" alt="Black Flag lockup on light background" className="w-[78%] max-w-[360px] h-auto" />
-                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-muted uppercase tracking-wider">Secondary Lockup - Dark on Light</p>
+                  <BrandLogo variant="dark" size="lg" className="h-10 md:h-16 lg:h-20" />
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-muted uppercase tracking-wider">Secondary Mark - Dark on Light</p>
                 </motion.div>
               </div>
 
