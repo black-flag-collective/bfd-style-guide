@@ -226,7 +226,7 @@ export function NavigationSection() {
                           <div style={{ display: "flex", alignItems: "center", height: 60, padding: "0 10px", flexShrink: 0, justifyContent: sidebarExpanded && !isTablet ? "flex-start" : "center" }}>
                             <div style={{ position: "relative", display: "flex", alignItems: "center", height: 36 }}>
                               <div style={{ transition: "all 300ms cubic-bezier(0.25,0.1,0.25,1)", opacity: sidebarExpanded && !isTablet ? 0 : 1, transform: sidebarExpanded && !isTablet ? "scale(0.9)" : "scale(1)", position: sidebarExpanded && !isTablet ? "absolute" : "relative", left: 0, pointerEvents: sidebarExpanded && !isTablet ? "none" : "auto" }}>
-                                <img src="/logos/mark-dark.svg" alt="" style={{ height: 32, width: "auto" }} />
+                                <img src="/logos/mark-dark.svg" alt="" style={{ height: 26, width: "auto" }} />
                               </div>
                               <div style={{ transition: "all 300ms cubic-bezier(0.25,0.1,0.25,1)", opacity: sidebarExpanded && !isTablet ? 1 : 0, transform: sidebarExpanded && !isTablet ? "scale(1)" : "scale(0.95)", position: sidebarExpanded && !isTablet ? "relative" : "absolute", left: 0, pointerEvents: sidebarExpanded && !isTablet ? "auto" : "none" }}>
                                 <img src="/logos/bfd-dark.svg" alt="" style={{ height: 22, width: "auto" }} />
