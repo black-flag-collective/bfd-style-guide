@@ -244,7 +244,7 @@ export function StyleGuideSidebar({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Logo zone — crossfade mark ↔ lockup */}
+        {/* Logo zone — crossfade flag mark ↔ BFD wordmark */}
         <div
           style={{
             display: "flex",
@@ -269,7 +269,7 @@ export function StyleGuideSidebar({
             >
               <img src="/logos/mark-dark.svg" alt="Black Flag Design" style={{ height: 40, width: "auto" }} />
             </div>
-            {/* Lockup — expanded */}
+            {/* BFD wordmark — expanded */}
             <div
               style={{
                 transition: `all ${DURATION} ${CUBIC}`,
@@ -280,7 +280,7 @@ export function StyleGuideSidebar({
                 pointerEvents: isHovered ? "auto" : "none",
               }}
             >
-              <img src="/logos/lockup-dark.svg" alt="Black Flag Design" style={{ height: 48, width: "auto" }} />
+              <img src="/logos/bfd-dark.svg" alt="BFD" style={{ height: 30, width: "auto" }} />
             </div>
           </div>
         </div>
@@ -337,7 +337,7 @@ export function StyleGuideSidebar({
             flexShrink: 0,
           }}
         >
-          <img src="/logos/lockup-dark.svg" alt="Black Flag Design" style={{ height: 48, width: "auto" }} />
+          <img src="/logos/bfd-dark.svg" alt="BFD" style={{ height: 30, width: "auto" }} />
           <button
             onClick={onMobileClose}
             style={{

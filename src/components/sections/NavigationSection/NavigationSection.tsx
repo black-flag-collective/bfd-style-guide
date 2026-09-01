@@ -164,7 +164,7 @@ export function NavigationSection() {
                                   style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 210, background: "#FFFFFF", zIndex: 20, borderRight: "1px solid #bdbdbd", display: "flex", flexDirection: "column" }}
                                 >
                                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 12px", height: 52, flexShrink: 0, borderBottom: "1px solid #D4D4D8" }}>
-                                    <img src="/logos/lockup-dark.svg" alt="" style={{ height: 28, width: "auto" }} />
+                                    <img src="/logos/bfd-dark.svg" alt="" style={{ height: 18, width: "auto" }} />
                                     <button onClick={() => setMobileMenuOpen(false)} style={{ color: "#71717A", background: "none", border: "none", cursor: "pointer", padding: 2 }}>
                                       <IconX size={16} stroke={1.75} />
                                     </button>
@@ -229,7 +229,7 @@ export function NavigationSection() {
                                 <img src="/logos/mark-dark.svg" alt="" style={{ height: 32, width: "auto" }} />
                               </div>
                               <div style={{ transition: "all 300ms cubic-bezier(0.25,0.1,0.25,1)", opacity: sidebarExpanded && !isTablet ? 1 : 0, transform: sidebarExpanded && !isTablet ? "scale(1)" : "scale(0.95)", position: sidebarExpanded && !isTablet ? "relative" : "absolute", left: 0, pointerEvents: sidebarExpanded && !isTablet ? "auto" : "none" }}>
-                                <img src="/logos/lockup-dark.svg" alt="" style={{ height: 36, width: "auto" }} />
+                                <img src="/logos/bfd-dark.svg" alt="" style={{ height: 22, width: "auto" }} />
                               </div>
                             </div>
                           </div>
@@ -304,7 +304,7 @@ export function NavigationSection() {
                           ["Inactive text", "rgba(23,23,23,0.55)"],
                           ["Hover", "bg-white/45 · color rgba(23,23,23,0.85)"],
                           ["Logo collapsed", "mark-dark.svg · h-10 · crossfade"],
-                          ["Logo expanded", "lockup-dark.svg · h-12 · crossfade"],
+                          ["Logo expanded", "bfd-dark.svg · h-8 · crossfade"],
                           ["Footer", "1px solid #bdbdbd divider · reserved space"],
                         ]
                       : sidebarDevice === "tablet"
@@ -326,7 +326,7 @@ export function NavigationSection() {
                           ["Slide easing", "300ms ease-in-out"],
                           ["Position", "fixed · left 0 · full height"],
                           ["z-index", "50 (sidebar) · 40 (overlay)"],
-                          ["Header", "lockup-dark.svg + close icon"],
+                          ["Header", "bfd-dark.svg + close icon"],
                           ["Active state", "Same gradient + accent bar as desktop"],
                           ["Footer", "Same divider + reserved space"],
                           ["Border", "border-right 1px solid #bdbdbd"],
