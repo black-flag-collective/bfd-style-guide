@@ -267,7 +267,7 @@ export function StyleGuideSidebar({
                 pointerEvents: isHovered ? "none" : "auto",
               }}
             >
-              <img src="/logos/mark-dark.svg" alt="Black Flag Design" style={{ height: 40, width: "auto" }} />
+              <img src="/logos/mark-dark.svg" alt="Black Flag ensign" style={{ height: 26, width: "auto" }} />
             </div>
             {/* BFD wordmark — expanded */}
             <div

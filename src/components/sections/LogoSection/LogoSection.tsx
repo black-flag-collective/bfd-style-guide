@@ -11,7 +11,7 @@ const hierarchy = [
   },
   {
     tier: "Secondary",
-    name: "Black Flag Mark",
+    name: "Black Flag Ensign",
     rule: "The flag. Use in compact spaces and wherever the brand is already clear from context.",
   },
   {
@@ -19,23 +19,31 @@ const hierarchy = [
     name: "Silly Face",
     rule: "Character mark only. Use sparingly for playful moments, never as the default product logo.",
   },
+  {
+    tier: "Optional",
+    name: "Ensign Lockup",
+    rule: "Ensign beside the BFD wordmark. Use when both the flag and the name should carry.",
+  },
 ];
 
 const logoAssets = [
   { name: "BFD (Dark)", description: "Primary wordmark for light backgrounds", file: "/logos/bfd-dark.svg", preview: "dark" as const },
   { name: "BFD (Light)", description: "Primary wordmark for dark backgrounds", file: "/logos/bfd-light.svg", preview: "light" as const },
-  { name: "Mark (Dark)", description: "Flag mark for light backgrounds", file: "/logos/mark-dark.svg", preview: "dark" as const },
-  { name: "Mark (Light)", description: "Flag mark for dark backgrounds", file: "/logos/mark-light.svg", preview: "light" as const },
+  { name: "Ensign (Dark)", description: "Flag ensign for light backgrounds", file: "/logos/mark-dark.svg", preview: "dark" as const },
+  { name: "Ensign (Light)", description: "Flag ensign for dark backgrounds", file: "/logos/mark-light.svg", preview: "light" as const },
+  { name: "Ensign Lockup (Dark)", description: "Ensign + BFD for light backgrounds", file: "/logos/ensign-lockup-dark.svg", preview: "dark" as const },
+  { name: "Ensign Lockup (Light)", description: "Ensign + BFD for dark backgrounds", file: "/logos/ensign-lockup-light.svg", preview: "light" as const },
   { name: "Character (Dark)", description: "Mouth icon for light backgrounds", file: "/logos/silly-face-dark.png", preview: "dark" as const },
   { name: "Character (Light)", description: "Mouth icon for dark backgrounds", file: "/logos/silly-face-light.png", preview: "light" as const },
   { name: "Favicon", description: "Browser tab icon", file: "/favicon.svg", preview: "dark" as const },
 ];
 
 const guidelines = [
-  { title: "Clear Space", description: "Maintain clear space equal to the letter height (wordmark) or mark height (flag) around the logo at all times." },
-  { title: "Minimum Size", description: "Wordmark never smaller than 36x12px; flag mark never smaller than 24x12px." },
-  { title: "Aspect Ratio", description: "The wordmark is 3:1 and the flag mark is 2:1 (width:height). No stretching, no exceptions." },
-  { title: "Hierarchy", description: "BFD wordmark first, flag mark second, silly face third. The full Black Flag Design lockup is retired — do not use it." },
+  { title: "Clear Space", description: "Maintain clear space equal to the letter height (wordmark) or ensign height around the logo at all times." },
+  { title: "Minimum Size", description: "Wordmark never smaller than 36x12px; ensign never smaller than 31x20px." },
+  { title: "Aspect Ratio", description: "The wordmark is 3:1 and the ensign is 20:13 (width:height). No stretching, no exceptions." },
+  { title: "Render It Complete", description: "The ensign always shows all 13 rows, including the three detached lower stripes. Never crop, clip, or squeeze it into a container that cuts them off." },
+  { title: "Hierarchy", description: "BFD wordmark first, ensign second, silly face third; the ensign lockup is optional. The full Black Flag Design lockup is retired — do not use it." },
 ];
 
 export function LogoSection() {
@@ -55,7 +63,7 @@ export function LogoSection() {
               <SectionHeader
                 number="01"
                 title="Logo"
-                description="Black Flag uses a strict logo hierarchy: BFD wordmark first, flag mark second, character mark third. The full Black Flag Design lockup is retired."
+                description="Black Flag uses a strict logo hierarchy: BFD wordmark first, ensign second, character mark third, with an optional ensign + BFD lockup. The full Black Flag Design lockup is retired."
               />
 
               <motion.div
@@ -63,7 +71,7 @@ export function LogoSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
                 viewport={{ once: true }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-6"
               >
                 {hierarchy.map((item, index) => (
                   <div
@@ -109,8 +117,8 @@ export function LogoSection() {
                   viewport={{ once: true }}
                   className="bg-bf-text rounded-lg p-4 md:p-6 flex flex-col items-center justify-center aspect-[4/3]"
                 >
-                  <BrandLogo variant="light" size="lg" className="h-10 md:h-16 lg:h-20" />
-                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-bg/60 uppercase tracking-wider">Secondary Mark - Light on Dark</p>
+                  <BrandLogo variant="light" size="lg" className="h-10 md:h-16 lg:h-20 w-auto" />
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-bg/60 uppercase tracking-wider">Secondary Ensign - Light on Dark</p>
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -119,8 +127,8 @@ export function LogoSection() {
                   viewport={{ once: true }}
                   className="bg-bf-bg rounded-lg p-4 md:p-6 flex flex-col items-center justify-center shadow-card aspect-[4/3]"
                 >
-                  <BrandLogo variant="dark" size="lg" className="h-10 md:h-16 lg:h-20" />
-                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-muted uppercase tracking-wider">Secondary Mark - Dark on Light</p>
+                  <BrandLogo variant="dark" size="lg" className="h-10 md:h-16 lg:h-20 w-auto" />
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-muted uppercase tracking-wider">Secondary Ensign - Dark on Light</p>
                 </motion.div>
               </div>
 
@@ -144,6 +152,29 @@ export function LogoSection() {
                 >
                   <img src="/logos/silly-face-dark.png" alt="Mouth character mark on light background" className="h-16 md:h-20 w-auto" />
                   <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-muted uppercase tracking-wider">Character Mark - Dark on Light</p>
+                </motion.div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  viewport={{ once: true }}
+                  className="bg-bf-text rounded-lg p-4 md:p-6 flex flex-col items-center justify-center aspect-[4/3]"
+                >
+                  <img src="/logos/ensign-lockup-light.svg" alt="Ensign + BFD lockup on dark background" className="w-[78%] max-w-[360px] h-auto" />
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-bg/60 uppercase tracking-wider">Optional Ensign Lockup - Light on Dark</p>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  viewport={{ once: true }}
+                  className="bg-bf-bg rounded-lg p-4 md:p-6 flex flex-col items-center justify-center shadow-card aspect-[4/3]"
+                >
+                  <img src="/logos/ensign-lockup-dark.svg" alt="Ensign + BFD lockup on light background" className="w-[78%] max-w-[360px] h-auto" />
+                  <p className="mt-2 md:mt-4 text-[10px] md:text-xs text-bf-muted uppercase tracking-wider">Optional Ensign Lockup - Dark on Light</p>
                 </motion.div>
               </div>
 

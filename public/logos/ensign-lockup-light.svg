@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3414 700" role="img" aria-label="Black Flag ensign + BFD lockup light">
+  <title>Black Flag ensign + BFD lockup light</title>
+  <g fill="#F2F2F2">
+    <g transform="scale(5.3846)">
+      <rect x="0" y="0" width="100" height="10"/>
+      <rect x="0" y="20" width="100" height="10"/>
+      <rect x="0" y="40" width="100" height="10"/>
+      <rect x="0" y="60" width="100" height="10"/>
+      <rect x="100" y="0" width="100" height="70"/>
+      <rect x="0" y="80" width="200" height="10"/>
+      <rect x="0" y="100" width="200" height="10"/>
+      <rect x="0" y="120" width="200" height="10"/>
+    </g>
+    <g transform="translate(1317,0)">
+            <path transform="translate(-57,700) scale(1,-1)" d="M747 193Q747 101 671.0 50.5Q595 0 451 0H57V700H431Q571 700 642.5 650.0Q714 600 714 517Q714 468 689.5 429.0Q665 390 617 366Q679 343 713.0 299.0Q747 255 747 193ZM289 535V431H399Q476 431 476 483Q476 535 399 535ZM509 220Q509 275 431 275H289V165H431Q509 165 509 220Z"/>
+      <path transform="translate(686,700) scale(1,-1)" d="M293 522V402H585V224H293V0H57V700H626V522Z"/>
+      <path transform="translate(1300,700) scale(1,-1)" d="M57 700H402Q519 700 608.5 657.5Q698 615 747.5 536.0Q797 457 797 350Q797 243 747.5 164.0Q698 85 608.5 42.5Q519 0 402 0H57ZM392 184Q468 184 513.5 227.5Q559 271 559 350Q559 429 513.5 472.5Q468 516 392 516H293V184Z"/>
+    </g>
+  </g>
+</svg>
