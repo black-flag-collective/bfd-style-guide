@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 /* ======================================
@@ -12,9 +12,7 @@
   --font-mono: "JetBrains Mono", "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
   --font-heading: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 
-  /* BASE PALETTE (60%) — "The Ship"
-     Cool zinc grays — sharp, professional, zero warmth.
-     Every screen feels engineered, not decorative. */
+  /* Product foundation: light paper, ink, and restrained zinc structure. */
   --color-bf-bg: #F4F4F5;
   --color-bf-surface: #E4E4E7;
   --color-bf-paper: #FAFAFA;
@@ -39,6 +37,12 @@
   --color-bf-teal: #2BB5A0;
   --color-bf-rose: #D94F8C;
   --color-bf-slate: #64748B;
+
+  /* Editorial illustration accents from bfd.studio. Keep these out of status UI. */
+  --color-bf-print-blue: #2759D6;
+  --color-bf-print-coral: #EE6950;
+  --color-bf-print-yellow: #EAC74D;
+  --color-bf-print-wash: #E5EAF5;
 
   /* Legacy aliases (components still reference these) */
   --color-bf-note-warning: #FFC800;
@@ -95,6 +99,10 @@
   --bf-teal: #2BB5A0;
   --bf-rose: #D94F8C;
   --bf-slate: #64748B;
+  --bf-print-blue: #2759D6;
+  --bf-print-coral: #EE6950;
+  --bf-print-yellow: #EAC74D;
+  --bf-print-wash: #E5EAF5;
 
   --bf-note-warning: #FFC800;
   --bf-note-success: #5AE09A;

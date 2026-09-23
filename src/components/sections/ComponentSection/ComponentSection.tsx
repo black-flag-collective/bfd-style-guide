@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, type TargetAndTransition } from "framer-motion";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ArrowRight, Bell, Plus, Search, Trash2, Check, AlertTriangle, X } from "lucide-react";
 import type { CSSProperties } from "react";
@@ -9,7 +9,7 @@ interface BtnVariant {
   desc?: string;
   label: string;
   base: CSSProperties;       // applied via style={}
-  hover: Record<string, unknown>; // applied via whileHover={}
+  hover: TargetAndTransition; // applied via whileHover={}
 }
 
 // Light-surface variants
@@ -195,7 +195,7 @@ export function ComponentSection() {
                           <motion.button
                             key={`light-${v.name}-${size.name}`}
                             className="inline-flex items-center justify-center font-medium tracking-wide w-full"
-                            style={{ ...v.base, height: size.height, paddingLeft: size.px, paddingRight: size.px, fontSize: size.fontSize, borderRadius: size.radius }}
+                            style={{ ...v.base, height: size.height, paddingLeft: size.px, paddingRight: size.px, fontSize: size.fontSize, borderRadius: size.borderRadius }}
                             whileHover={v.hover}
                             whileTap={{ scale: 0.97 }}
                             transition={{ duration: 0.15, ease: "easeOut" }}
@@ -229,7 +229,7 @@ export function ComponentSection() {
                           <motion.button
                             key={`dark-${v.name}-${size.name}`}
                             className="inline-flex items-center justify-center font-medium tracking-wide w-full"
-                            style={{ ...v.base, height: size.height, paddingLeft: size.px, paddingRight: size.px, fontSize: size.fontSize, borderRadius: size.radius }}
+                            style={{ ...v.base, height: size.height, paddingLeft: size.px, paddingRight: size.px, fontSize: size.fontSize, borderRadius: size.borderRadius }}
                             whileHover={v.hover}
                             whileTap={{ scale: 0.97 }}
                             transition={{ duration: 0.15, ease: "easeOut" }}
