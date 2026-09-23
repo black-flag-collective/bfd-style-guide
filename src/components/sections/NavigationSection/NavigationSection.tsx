@@ -1277,8 +1277,8 @@ export function NavigationSection() {
                   10 · Mobile Navigation
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  Mobile replaces the hover sidebar with a logo trigger and slide-in
-                  overlay. Tab bars switch to horizontal scroll. Breadcrumbs are hidden.
+                  Mobile uses a menu trigger and slide-in navigation. Tab bars
+                  scroll horizontally when needed. Breadcrumbs give way to a back action.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-start">
@@ -1374,8 +1374,8 @@ export function NavigationSection() {
                           ["Close", "✕ button in sidebar header"],
                           ["Tabs", "overflow-x-auto scrollbar-hide"],
                           ["Breadcrumbs", "hidden (md:flex only)"],
-                          ["Header height", "h-16 (consistent with desktop)"],
-                          ["Header content", "Logo trigger only (page title optional by shell)"],
+                          ["Utility bar", "Compact menu and search controls"],
+                          ["Page title", "Screen-reader heading; show a visible title only for a useful entity"],
                         ].map(([k, v]) => (
                           <Fragment key={k}>
                             <span className="text-bf-muted">{k}</span>
@@ -1393,8 +1393,8 @@ export function NavigationSection() {
                       </p>
                       <div className="grid grid-cols-[4rem_1fr] gap-x-4 gap-y-1.5 text-[11px]">
                         {[
-                          ["< md", "Mobile sidebar (overlay), h-16 header, no breadcrumbs"],
-                          ["≥ md", "Hover sidebar (64 → 208 px), h-20 header, breadcrumbs visible"],
+                          ["< md", "Mobile menu overlay; show content immediately"],
+                          ["≥ md", "Stable labeled sidebar; no hover expansion"],
                         ].map(([k, v]) => (
                           <Fragment key={k}>
                             <span className="text-bf-muted font-mono">{k}</span>
@@ -1420,10 +1420,14 @@ export function NavigationSection() {
                   11 · Page Compositions
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  How navigation tiers compose into real page layouts. Each
-                  composition below represents a distinct page type in the admin
-                  interface. Keep it general — the patterns apply across any feature.
+                  The older compositions below show how navigation layers can fit
+                  together. They are archive examples, not current Agora page chrome.
+                  Use Agora Storybook for the screens people see now.
                 </p>
+
+                <details className="rounded-lg border border-bf-border bg-bf-paper p-4">
+                  <summary className="cursor-pointer text-sm font-medium text-bf-text">View older page compositions</summary>
+                <div className="mt-4">
 
                 {/* ── Composition A: Detail Page ── */}
                 <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-2">
@@ -1752,6 +1756,8 @@ export function NavigationSection() {
                     </span>
                   ))}
                 </div>
+                </div>
+                </details>
               </motion.div>
         </div>
       </div>

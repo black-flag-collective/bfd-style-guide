@@ -4,9 +4,9 @@ import { Play } from "lucide-react";
 import { SectionHeader } from "@/components/SectionHeader";
 
 const timingSpecs = [
-  { name: "Interaction", value: "0.2s ease-in-out", usage: "Buttons, links, inputs" },
-  { name: "Scroll Entrance", value: "0.8s cubic-bezier(0.4, 0, 0.2, 1)", usage: "Fade-in-up, scale-in" },
-  { name: "Stagger Increment", value: "0.1s per child", usage: "Sequential child reveals" },
+  { name: "App interaction", value: "0.15s ease-out", usage: "Buttons, links, inputs; respect reduced motion" },
+  { name: "Editorial entrance", value: "0.8s cubic-bezier(0.4, 0, 0.2, 1)", usage: "Marketing sections only" },
+  { name: "Editorial stagger", value: "0.1s per child", usage: "Story or campaign reveals" },
   { name: "Transform", value: "0.3s ease-out", usage: "Hover scale, translate" },
   { name: "Framer Motion", value: "[0.16, 1, 0.3, 1]", usage: "Section animations" },
   { name: "Marquee", value: "60s linear infinite", usage: "Scrolling text" },
@@ -22,7 +22,7 @@ export function MotionSection() {
               <SectionHeader
                 number="04"
                 title="Motion"
-                description="Animation timing, easing, and interaction patterns."
+                description="Fast feedback in the app. More expressive motion belongs to editorial stories and the marketing site."
                 actions={
                   <button
                     onClick={() => setReplayKey((k) => k + 1)}

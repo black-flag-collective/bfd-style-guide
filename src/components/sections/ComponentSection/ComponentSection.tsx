@@ -130,8 +130,8 @@ const stickyNotes = [
     borderColor: "border-bf-text",
     btnBorder: "border-bf-text",
     btnText: "text-bf-text",
-    title: "BROKEN SOFTWARE",
-    body: "We can fix it. No extra charge.",
+    title: "START WITH A QUESTION",
+    body: "Choose the workshop that fits the team's next decision.",
     rotation: "rotate-2",
   },
   {
@@ -142,8 +142,8 @@ const stickyNotes = [
     borderColor: "border-bf-text",
     btnBorder: "border-bf-text",
     btnText: "text-bf-text",
-    title: "100% SATISFACTION",
-    body: "Guaranteed or your money back.",
+    title: "WEEK BY WEEK",
+    body: "Make progress and decisions visible.",
     rotation: "-rotate-1",
   },
   {
@@ -154,8 +154,8 @@ const stickyNotes = [
     borderColor: "border-[#FAFAFA]",
     btnBorder: "border-[#FAFAFA]",
     btnText: "text-[#FAFAFA]",
-    title: "VANTA PARTNER",
-    body: "Enterprise-grade security built in.",
+    title: "BUILD TRUST",
+    body: "Trust belongs in the design, too.",
     rotation: "rotate-1",
   },
 ];
@@ -165,7 +165,7 @@ export function ComponentSection() {
     <section id="components" className="relative bg-bf-paper border-t-4 border-bf-text py-16 sm:py-24">
       <div className="px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="max-w-6xl mx-auto">
-              <SectionHeader number="05" title="Components" description="Button variants, sticky notes, and card patterns defined by CVA." />
+              <SectionHeader number="05" title="Components" description="Controls for useful actions, visible identities for records, and print-style callouts for editorial moments. Agora Storybook shows the current app states." />
 
               {/* ── BUTTON VARIANTS ─────────────────────────────────── */}
               <div className="mb-16">
@@ -443,9 +443,10 @@ export function ComponentSection() {
                 </div>
               </div>
 
-              {/* Sticky Notes */}
+              {/* Editorial callouts */}
               <div className="mb-10">
-                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">Sticky Notes</h3>
+                <h3 className="text-sm font-medium text-bf-text mb-2 uppercase tracking-wider">Editorial callouts</h3>
+                <p className="mb-4 max-w-2xl text-sm text-bf-muted">The current BFD site uses bold type and playful print color to invite exploration. Keep these expressive treatments in stories and campaigns; task screens use compact controls and records.</p>
                 <div className="flex gap-6 sm:gap-8 justify-center flex-wrap items-start py-4">
                   {stickyNotes.map((note, index) => (
                     <motion.div
@@ -471,8 +472,16 @@ export function ComponentSection() {
 
               {/* Card Patterns */}
               <div>
-                <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">Card Patterns</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                <h3 className="text-sm font-medium text-bf-text mb-2 uppercase tracking-wider">Product cards</h3>
+                <p className="mb-4 max-w-2xl text-sm text-bf-muted">A card should answer what this is, who it belongs to, and where it opens. Use the actual client or product mark on a solid surface. A print-color wash can support a missing-logo fallback, but cannot replace an available mark.</p>
+                <a href="https://app.blackflag.design/admin/projects" className="mb-6 flex max-w-md items-start gap-4 rounded-lg border border-bf-border bg-bf-paper p-4 text-bf-text no-underline transition-colors hover:border-bf-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bf-cobalt">
+                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-md border border-bf-border bg-white p-2"><img src="/logos/bfd-dark.svg" alt="BFD" className="h-full w-full object-contain" /></span>
+                  <span className="min-w-0 flex-1"><strong className="block text-sm">Shared workspace</strong><span className="mt-1 block text-xs text-bf-muted">Black Flag Design</span><span className="mt-3 block text-xs leading-relaxed text-bf-muted">Find project owners, recent work, and the next result.</span></span>
+                  <ArrowRight aria-hidden="true" size={16} className="mt-1 shrink-0" />
+                </a>
+                <details className="rounded-lg border border-bf-border bg-bf-bg p-4">
+                  <summary className="cursor-pointer text-sm font-medium text-bf-text">View older surface experiments</summary>
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                   {["Light", "Dark", "Blur / Glass"].map((name, i) => {
                     const styles = [
                       "bg-bf-bg border-2 border-bf-border rounded-xl hover:border-bf-text/50 hover:shadow-lg",
@@ -491,6 +500,7 @@ export function ComponentSection() {
                     );
                   })}
                 </div>
+                </details>
               </div>
         </div>
       </div>
