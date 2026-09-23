@@ -10,7 +10,7 @@ const colorCategories = {
     colors: [
       { name: "Zinc 100", hex: "#F4F4F5", persona: "The Harbor", usage: "Primary background — cool, professional canvas" },
       { name: "Zinc 200", hex: "#E4E4E7", persona: "The Hull", usage: "Surfaces, sidebars, recessed panels" },
-      { name: "Zinc 50", hex: "#FAFAFA", persona: "The Chart", usage: "Elevated panels, headers, active states" },
+      { name: "Zinc 50", hex: "#FAFAFA", persona: "The Chart", usage: "Cards, active controls, readable surfaces" },
       { name: "Ink", hex: "#171717", persona: "The Flag", usage: "Primary text — bold, uncompromising" },
       { name: "Zinc 500", hex: "#71717A", persona: "The Helm", usage: "Secondary text, muted labels" },
       { name: "Zinc 300", hex: "#D4D4D8", persona: "The Rigging", usage: "Borders, dividers, structural lines" },
