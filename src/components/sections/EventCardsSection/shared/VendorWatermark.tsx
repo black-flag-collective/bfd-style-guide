@@ -56,7 +56,7 @@ export function VendorWatermark({ vendor, active = false, className = "" }: Vend
   return (
     <div
       className={className}
-      style={{ opacity: active ? 0.6 : 0.35, transition: "opacity 200ms ease" }}
+      style={{ opacity: active ? 1 : 0.85, transition: "opacity 200ms ease" }}
     >
       <Icon size={20} />
     </div>

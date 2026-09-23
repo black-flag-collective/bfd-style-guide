@@ -51,7 +51,7 @@ export function HeroSection() {
                 className="font-bold text-bf-text leading-[1.08] tracking-tight"
                 style={{ fontSize: "clamp(2.75rem, 8vw, 7rem)" }}
               >
-                Software so good you can&rsquo;t help but smile
+                Business design for what comes next
               </motion.h1>
 
               <motion.p
@@ -61,8 +61,8 @@ export function HeroSection() {
                 className="text-base sm:text-lg md:text-xl text-bf-muted leading-relaxed max-w-lg sm:max-w-xl"
                 style={{ marginTop: "clamp(4rem, 8vw, 10rem)" }}
               >
-                Visual identity, component language, and voice. Reference this
-                document as the canonical source.
+                Visual identity, component language, and voice. Agora's current
+                screen patterns live in its Storybook.
               </motion.p>
             </div>
           </div>

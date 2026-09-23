@@ -4,30 +4,30 @@ import { SectionHeader } from "@/components/SectionHeader";
 
 const examples = [
   {
-    doText: "Software so good you can't help but smile.",
+    doText: "We run business experiments that turn AI into products customers use.",
     dontText: "We are a leading provider of innovative software solutions.",
-    principle: "Playful Confidence",
+    principle: "Business outcome",
   },
   {
-    doText: "Broken software sucks. We can fix it.",
+    doText: "Start with the right question, then show what the work changed.",
     dontText: "Our team has identified several areas of improvement in your current technology stack.",
-    principle: "Direct, No-BS",
+    principle: "Direct language",
   },
   {
-    doText: "We become your tech team. Something off? We fix it. No extra charge.",
+    doText: "We work alongside your team to make the next decision clearer.",
     dontText: "Our comprehensive service level agreement covers a wide range of support scenarios.",
-    principle: "Partner-First",
+    principle: "Work together",
   },
   {
-    doText: "Business idea to production services at warp speed.",
+    doText: "Find a useful result quickly, then build from the evidence.",
     dontText: "We employ agile methodologies to accelerate your digital transformation journey.",
-    principle: "Speed-Focused",
+    principle: "Useful progress",
   },
 ];
 
 const toneSpectrum = [
-  { label: "Playful", description: "Sticky notes, bold claims, exclamation points, humor" },
-  { label: "Confident", description: "Direct statements, no hedging, clear value propositions" },
+  { label: "Clear", description: "Useful facts and concrete next actions" },
+  { label: "Confident", description: "Direct statements backed by visible work" },
   { label: "Professional", description: "Process explanations, technical credibility, structured info" },
   { label: "Partner", description: "Inclusive language, shared goals, commitment statements" },
 ];
@@ -40,7 +40,7 @@ export function VoiceSection() {
               <SectionHeader
                 number="12"
                 title="Voice & Tone"
-                description="Lead with playful confidence. Follow with professional substance. Never corporate-speak. Never fake positivity."
+                description="Lead with the business question and the work people can inspect. Use plain, concrete language and do not promise more than the evidence shows."
               />
 
               {/* Do / Don't Examples */}

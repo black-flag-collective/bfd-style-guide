@@ -168,7 +168,7 @@ export function ClientGrid() {
         </div>
         <p className="text-[10px] mt-3" style={{ color: "var(--bf-muted)" }}>
           Logo source: <span className="font-mono">clients.logoUrl</span> → Google Favicon API fallback →
-          deterministic color + 2-letter initials. On event cards: <span className="font-mono">14×14px opacity-50</span> in header between actor name and project name.
+          deterministic color + 2-letter initials. On event cards, the client mark stays visible at full opacity beside the actor and project.
         </p>
       </div>
     </div>

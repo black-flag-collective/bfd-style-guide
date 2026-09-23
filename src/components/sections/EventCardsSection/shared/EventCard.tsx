@@ -62,12 +62,12 @@ export function EventCard({
             {avatarInitials}
           </div>
         )}
-        {/* Client logo — below avatar, full rail width, low opacity */}
+        {/* Client logo remains visible below the avatar. */}
         {clientLogoUrl && (
           <img
             src={clientLogoUrl}
             alt=""
-            className="mt-2 h-5 w-5 rounded-sm object-contain opacity-30"
+            className="mt-2 h-7 w-7 rounded-sm bg-white object-contain"
           />
         )}
       </div>

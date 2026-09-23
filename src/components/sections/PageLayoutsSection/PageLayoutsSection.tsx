@@ -217,7 +217,7 @@ export function PageLayoutsSection() {
           <SectionHeader
             number="15"
             title="Page Layouts"
-            description="These compositions show layout structure and real logo use. The current Agora screens are reviewed in its Storybook, where Home leads with projects and Activity keeps reading controls close to the work."
+            description="These older compositions show layout structure and real logo use, not current page chrome. Use Agora Storybook for the current Home, Activity, and project screens: content starts immediately, without page banners or eyebrows."
           />
 
           {/* ── 1. Clients Grid ── */}
