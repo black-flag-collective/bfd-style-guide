@@ -88,6 +88,8 @@ bfd-style-guide/
 
 The [current BFD site](https://bfd.studio/) also uses a print palette for editorial artwork: blue `#2759D6`, coral `#EE6950`, yellow `#EAC74D`, and pale blue wash `#E5EAF5`. Use the `--bf-print-*` tokens for illustration and occasional editorial accents. Do not use them in place of product status colors.
 
+The site combines bold type, a few lively print-color shapes, hand-drawn lines, and the established BFD marks. Carry that character into small, useful app details: a colored illustration in an empty state, a compact mark beside a project, or a restrained accent on a selected card. Keep controls, data, and status legible. Preserve the logo artwork in this guide; adjust its surface, size, and surrounding space when a product screen needs stronger recognition.
+
 ## Typography
 
 - **Sans**: Montserrat (Google Fonts, weights 400/500/600/700/800/900)

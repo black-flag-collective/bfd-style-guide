@@ -95,7 +95,7 @@ export function MotionSection() {
                 <div className="overflow-hidden relative hover:[&>div]:pause" style={{ maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)" }}>
                   <div className="flex gap-8 whitespace-nowrap" style={{ animation: "marquee 30s linear infinite" }}>
                     {Array.from({ length: 2 }).map((_, setIdx) =>
-                      ["Black Flag Design", "\u2022", "Software so good you can\u2019t help but smile", "\u2022", "Playful Confidence", "\u2022", "Direct, No-BS", "\u2022"].map((text, i) => (
+                      ["Black Flag Design", "\u2022", "Business design for AI products", "\u2022", "Start with the work", "\u2022", "Show the result", "\u2022"].map((text, i) => (
                         <span key={`${setIdx}-${i}`} className="text-lg font-bold text-bf-text">{text}</span>
                       ))
                     )}

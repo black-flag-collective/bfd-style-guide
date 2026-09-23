@@ -840,7 +840,7 @@ export function EventCardsSection() {
           <SectionHeader
             number="14"
             title="Event Cards"
-            description="Card and drawer patterns for multi-source event feeds. Each source has distinct visual identity within a unified card shell. Click any card to open its detail drawer."
+            description="These source-card examples show identity and readable work. In current Agora, the card also exposes a visible Open action; use Storybook for the live interaction and loading states."
           />
 
           {/* ── Clients Grid ── */}
@@ -955,8 +955,8 @@ export function EventCardsSection() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs" style={{ color: "var(--bf-muted)" }}>
               <div><span className="font-mono" style={{ color: "var(--bf-text)" }}>clientLogoUrl</span> from clients table</div>
               <div><span className="font-mono" style={{ color: "var(--bf-text)" }}>projectName</span> from projects table</div>
-              <div><span className="font-mono" style={{ color: "var(--bf-text)" }}>opacity-50</span> logo in header</div>
-              <div><span className="font-mono" style={{ color: "var(--bf-text)" }}>opacity-40</span> logo in rail</div>
+              <div><span className="font-mono" style={{ color: "var(--bf-text)" }}>full opacity</span> client logo in the rail</div>
+              <div><span className="font-mono" style={{ color: "var(--bf-text)" }}>visible at rest</span> vendor mark in the footer</div>
             </div>
           </div>
         </div>

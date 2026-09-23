@@ -84,7 +84,6 @@ function getInitials(name: string): string {
 }
 
 export function NavigationSection() {
-  const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [activeSidebarItem, setActiveSidebarItem] = useState(0);
   const [activeDetailTab, setActiveDetailTab] = useState(0);
   const [activeSettingsTab, setActiveSettingsTab] = useState(0);
@@ -103,7 +102,7 @@ export function NavigationSection() {
               <SectionHeader
                 number="09"
                 title="Navigation"
-                description="Navigation tiers for complex admin interfaces — primary sidebar, page-level tab bars, segmented controls, underline tabs, filter bars, and page compositions. Every pattern below is the canonical specification."
+                description="Keep destinations visible and put the work immediately after navigation. Agora Storybook is the current source for page-level behavior; the older compositions below show structure only."
               />
 
               {/* ═══════════════════════════════════════════ */}
@@ -120,14 +119,13 @@ export function NavigationSection() {
                   1 · Primary — Sidebar
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  Hover-expand from 64 → 208 px. Active item uses a gradient fill
-                  with subtle border and 3 px left accent bar. Collapsed shows only
-                  icons with tooltip hints; expanded reveals labels. Footer rail
-                  reserves space below a divider.
+                  Desktop destinations keep their labels visible. The sidebar does
+                  not move when someone points at it. On narrow screens, a menu
+                  button opens the same destinations in an overlay.
                 </p>
 
                 <DeviceFrame
-                  hint="Hover sidebar to expand · click items to navigate"
+                  hint="Choose a destination; labels stay visible on desktop"
                   desktopHeight={520}
                   tabletHeight={520}
                   mobileHeight={520}
@@ -215,20 +213,17 @@ export function NavigationSection() {
                             display: "flex", flexDirection: "column",
                             backgroundImage: "linear-gradient(to bottom, #ececec, #dfdfdf)",
                             borderRight: "1px solid #bdbdbd",
-                            width: sidebarExpanded && !isTablet ? 200 : 60,
-                            minWidth: sidebarExpanded && !isTablet ? 200 : 60,
-                            transition: "all 300ms cubic-bezier(0.25,0.1,0.25,1)",
+                            width: isTablet ? 60 : 200,
+                            minWidth: isTablet ? 60 : 200,
                             flexShrink: 0, overflow: "hidden",
                           }}
-                          onMouseEnter={() => !isTablet && setSidebarExpanded(true)}
-                          onMouseLeave={() => !isTablet && setSidebarExpanded(false)}
                         >
-                          <div style={{ display: "flex", alignItems: "center", height: 60, padding: "0 10px", flexShrink: 0, justifyContent: sidebarExpanded && !isTablet ? "flex-start" : "center" }}>
+                          <div style={{ display: "flex", alignItems: "center", height: 60, padding: "0 10px", flexShrink: 0, justifyContent: isTablet ? "center" : "flex-start" }}>
                             <div style={{ position: "relative", display: "flex", alignItems: "center", height: 36 }}>
-                              <div style={{ transition: "all 300ms cubic-bezier(0.25,0.1,0.25,1)", opacity: sidebarExpanded && !isTablet ? 0 : 1, transform: sidebarExpanded && !isTablet ? "scale(0.9)" : "scale(1)", position: sidebarExpanded && !isTablet ? "absolute" : "relative", left: 0, pointerEvents: sidebarExpanded && !isTablet ? "none" : "auto" }}>
+                              <div style={{ opacity: isTablet ? 1 : 0, position: isTablet ? "relative" : "absolute", left: 0, pointerEvents: isTablet ? "auto" : "none" }}>
                                 <img src="/logos/mark-dark.svg" alt="" style={{ height: 26, width: "auto" }} />
                               </div>
-                              <div style={{ transition: "all 300ms cubic-bezier(0.25,0.1,0.25,1)", opacity: sidebarExpanded && !isTablet ? 1 : 0, transform: sidebarExpanded && !isTablet ? "scale(1)" : "scale(0.95)", position: sidebarExpanded && !isTablet ? "relative" : "absolute", left: 0, pointerEvents: sidebarExpanded && !isTablet ? "auto" : "none" }}>
+                              <div style={{ opacity: isTablet ? 0 : 1, position: isTablet ? "absolute" : "relative", left: 0, pointerEvents: isTablet ? "none" : "auto" }}>
                                 <img src="/logos/bfd-dark.svg" alt="" style={{ height: 22, width: "auto" }} />
                               </div>
                             </div>
@@ -237,7 +232,7 @@ export function NavigationSection() {
                             {sidebarItems.map((item, i) => {
                               const IconComponent = item.Icon;
                               const isActive = activeSidebarItem === i;
-                              const showLabel = sidebarExpanded && !isTablet;
+                              const showLabel = !isTablet;
                               return (
                                 <button
                                   key={item.label}
@@ -290,11 +285,8 @@ export function NavigationSection() {
                     {(sidebarDevice === "desktop"
                       ? [
                           ["Icons", "@tabler/icons-react · size 20 · stroke 1.75"],
-                          ["Collapsed", "w-16 (64 px) · icon only + tooltip"],
-                          ["Expanded", "w-52 (208 px) · icon + label"],
-                          ["Trigger", "mouseenter / mouseleave"],
-                          ["Easing", "cubic-bezier(0.25, 0.1, 0.25, 1)"],
-                          ["Duration", "300 ms"],
+                          ["Width", "Stable 208 px · icon + visible label"],
+                          ["Trigger", "Click a destination; no hover expansion"],
                           ["Frame bg", "linear-gradient(to bottom, #ececec, #dfdfdf)"],
                           ["Frame border", "1px solid #bdbdbd"],
                           ["Active fill", "linear-gradient(to bottom, #fafafa, #ececec)"],
@@ -303,14 +295,13 @@ export function NavigationSection() {
                           ["Active bar", "3 px left · bg-foreground · rounded-r-full"],
                           ["Inactive text", "rgba(23,23,23,0.55)"],
                           ["Hover", "bg-white/45 · color rgba(23,23,23,0.85)"],
-                          ["Logo collapsed", "mark-dark.svg · h-10 · crossfade"],
-                          ["Logo expanded", "bfd-dark.svg · h-8 · crossfade"],
+                          ["Logo", "BFD wordmark, visible with destinations"],
                           ["Footer", "1px solid #bdbdbd divider · reserved space"],
                         ]
                       : sidebarDevice === "tablet"
                       ? [
                           ["Width", "w-16 (64 px) · permanently collapsed"],
-                          ["Hover expand", "Disabled — stays icon-only"],
+                          ["Hover expand", "Never; sidebar width is stable"],
                           ["Logo", "mark-dark.svg · h-8 · centered"],
                           ["Trigger", "Tap icon to navigate (no expand)"],
                           ["Active state", "Same gradient + accent bar as desktop"],
@@ -355,15 +346,17 @@ export function NavigationSection() {
                 className="mb-10"
               >
                 <h3 className="text-sm font-medium text-bf-text mb-4 uppercase tracking-wider">
-                  2 · Page Headers
+                  2 · Context and Actions
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  Page headers anchor every view. Paper background with strong
-                  typographic emphasis. Breadcrumbs sit above the title on desktop.
-                  Optional action buttons aligned right.
+                  Agora opens on the work itself. The older banner examples below
+                  are migration references, not a pattern to copy. Keep only context,
+                  breadcrumbs, and actions that help someone complete the current task.
                 </p>
 
-                <div className="space-y-4">
+                <details className="rounded-lg border border-bf-border bg-bf-paper p-4">
+                  <summary className="cursor-pointer text-sm font-medium text-bf-text">View older banner examples</summary>
+                <div className="mt-4 space-y-4">
                   {/* Top-level page header */}
                   <div className="rounded-xl border-2 border-bf-border overflow-hidden">
                     <div className="border-b-2 border-bf-border bg-bf-paper">
@@ -461,7 +454,7 @@ export function NavigationSection() {
                 {/* Header spec */}
                 <div className="mt-4 bg-bf-paper rounded-xl border-2 border-bf-border p-5">
                   <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-3">
-                    Page Header Spec
+                    Legacy header measurements
                   </p>
                   <div className="grid grid-cols-[6rem_1fr] sm:grid-cols-[8rem_1fr] gap-x-3 sm:gap-x-6 gap-y-2 text-sm">
                     {[
@@ -483,6 +476,7 @@ export function NavigationSection() {
                     ))}
                   </div>
                 </div>
+                </details>
               </motion.div>
 
               {/* ═══════════════════════════════════════════ */}
@@ -1038,9 +1032,9 @@ export function NavigationSection() {
                   8 · Navigation Hierarchy
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  How the six navigation tiers compose in a real admin interface.
-                  Each tier has a single pattern — no alternatives, no feature flags,
-                  no &ldquo;it depends.&rdquo; Pick the tier that matches your context.
+                  Use the smallest navigation layer that helps someone reach the
+                  next record or action. Current Agora pages start with content,
+                  filters, or tabs rather than a banner.
                 </p>
 
                 <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-6 space-y-4">
@@ -1048,16 +1042,16 @@ export function NavigationSection() {
                     {
                       tier: "1",
                       name: "Sidebar",
-                      pattern: "Hover-expand rail",
+                      pattern: "Stable labeled navigation",
                       context: "Top-level app sections (Clients, Events, Settings…)",
                       style: "Warm surface, 3 px left accent, icon + label",
                     },
                     {
                       tier: "2",
-                      name: "Page Header",
-                      pattern: "Breadcrumb + title",
-                      context: "Every page — anchors the view",
-                      style: "Paper bg, h-20, entity icon left",
+                      name: "Context and actions",
+                      pattern: "Only when needed",
+                      context: "A back path, source, or primary action where it helps",
+                      style: "Compact controls beside the work; no page banner",
                     },
                     {
                       tier: "3",
@@ -1125,9 +1119,9 @@ export function NavigationSection() {
                   9 · Breadcrumbs
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  Breadcrumbs appear in the page header chrome, anchored left. The final
-                  segment is the current page (semibold). Preceding segments are interactive
-                  links. Vendor logos accompany vendor names. Desktop only.
+                  Breadcrumbs help on deeper detail views when the path is useful.
+                  Keep them short and interactive; do not stack them over a repeated
+                  page title. Vendor logos accompany vendor names.
                 </p>
 
                 {/* Page header chrome simulation */}

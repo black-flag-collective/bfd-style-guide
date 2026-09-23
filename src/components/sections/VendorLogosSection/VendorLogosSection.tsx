@@ -91,7 +91,7 @@ export function VendorLogosSection() {
               <SectionHeader
                 number="10"
                 title="Vendor Logos"
-                description="Partner and integration logos use opacity states, never CSS grayscale. Preserves brand color fidelity while creating clear visual hierarchy."
+                description="Vendor and client marks stay recognizable at rest. Use a solid surface and full opacity; show status with text, borders, and badges rather than fading the logo."
               />
 
               {/* ── Watermark Pattern ── */}
@@ -106,8 +106,8 @@ export function VendorLogosSection() {
                   Watermark Pattern
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  Logo sits in the card corner. Inactive: 40 % opacity. Hover:
-                  70 %. Active: full opacity + semantic green tint.
+                  Keep the source mark visible in the card corner at full opacity.
+                  The badge carries the connection state; the logo keeps its identity.
                 </p>
 
                 {/* Toggle */}
@@ -136,21 +136,8 @@ export function VendorLogosSection() {
                     <p className="text-xs text-bf-muted mb-8">
                       2 min ago · POST /api/webhook
                     </p>
-                    <div
-                      className={`absolute bottom-3 right-3 transition-opacity duration-200 ${
-                        activeCard === "inactive"
-                          ? "opacity-40 group-hover:opacity-70"
-                          : "opacity-70 group-hover:opacity-100"
-                      }`}
-                    >
-                      <GitHubDark
-                        size={20}
-                        className={
-                          activeCard === "active"
-                            ? "text-green-600"
-                            : "text-bf-muted"
-                        }
-                      />
+                    <div className="absolute bottom-3 right-3 rounded bg-white p-1">
+                      <GitHubDark size={20} className="text-bf-text" />
                     </div>
                     <div className="absolute top-3 right-3">
                       <span
@@ -165,22 +152,22 @@ export function VendorLogosSection() {
                     </div>
                   </div>
 
-                  {/* Opacity scale */}
+                  {/* Marks remain visible across card states */}
                   <div className="bg-bf-paper rounded-xl border-2 border-bf-border p-5">
                     <p className="text-xs font-black text-bf-text uppercase tracking-wider mb-4">
-                      Opacity Scale
+                      Visible at every state
                     </p>
                     <div className="grid grid-cols-3 gap-4 text-center">
                       {[
-                        { op: "0.4", label: "Rest", cls: "opacity-40 text-bf-muted" },
-                        { op: "0.7", label: "Hover", cls: "opacity-70 text-bf-muted" },
+                        { op: "1.0", label: "Rest", cls: "text-bf-text" },
+                        { op: "1.0", label: "Hover", cls: "text-bf-text" },
                         {
                           op: "1.0",
                           label: "Active",
-                          cls: "opacity-100 text-green-600",
+                          cls: "text-bf-text",
                         },
                       ].map((s) => (
-                        <div key={s.op}>
+                        <div key={s.label}>
                           <div
                             className={`mx-auto mb-2 w-10 h-10 flex items-center justify-center ${s.cls}`}
                           >
@@ -211,8 +198,8 @@ export function VendorLogosSection() {
                   Integration Grid
                 </h3>
                 <p className="text-sm text-bf-muted mb-6 max-w-xl">
-                  Each tile shows the vendor brand color on hover. Icon size: 32 px
-                  in tiles. No grayscale filter — ever.
+                  Each tile keeps the vendor mark visible before hover. Hover can
+                  emphasize the border, never reveal the logo. Icon size: 32 px.
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -239,6 +226,7 @@ export function VendorLogosSection() {
                             backgroundColor: isHovered
                               ? `${vendor.color}0A`
                               : "var(--bf-surface)",
+                            color: vendor.color,
                           }}
                         >
                           <vendor.Icon
@@ -274,10 +262,10 @@ export function VendorLogosSection() {
                     Logo Rules
                   </p>
                   <div className="space-y-1.5 text-sm text-bf-text/80 font-medium">
-                    <p>✓ Opacity states (0.4 → 0.7 → 1.0)</p>
-                    <p>✓ Inline at 16 px, foreground color only</p>
-                    <p>✓ Brand color on hover in grid context</p>
-                    <p>✓ Active = full opacity + semantic green</p>
+                    <p>✓ Full opacity before hover</p>
+                    <p>✓ Solid light surface behind client marks</p>
+                    <p>✓ Vendor color or original artwork in grid context</p>
+                    <p>✓ State shown with a word or badge</p>
                     <p className="text-bf-destructive font-bold">✗ Never CSS grayscale</p>
                     <p className="text-bf-destructive font-bold">
                       ✗ Never colorize inline logos
