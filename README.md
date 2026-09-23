@@ -90,7 +90,7 @@ The [current BFD site](https://bfd.studio/) also uses a print palette for editor
 
 ## Typography
 
-- **Sans**: Montserrat (Google Fonts, weights 400/500/600/700/900)
+- **Sans**: Montserrat (Google Fonts, weights 400/500/600/700/800/900)
 - **Mono**: JetBrains Mono (Google Fonts, weights 400/500)
 - **Editorial headings**: bold Montserrat with tight tracking; occasional Georgia italic words give the marketing site its print character.
 - **Product UI**: lead with the work itself. Do not add page banners, eyebrows, or editorial heading stacks to Agora. Use short labels only when they help someone navigate, understand a state, or take an action.

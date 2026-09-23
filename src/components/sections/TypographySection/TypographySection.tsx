@@ -73,6 +73,7 @@ const weightShowcase = [
   { weight: 400, sample: "Regular" },
   { weight: 500, sample: "Medium" },
   { weight: 700, sample: "Bold" },
+  { weight: 800, sample: "Extra bold" },
   { weight: 900, sample: "Black" },
 ];
 

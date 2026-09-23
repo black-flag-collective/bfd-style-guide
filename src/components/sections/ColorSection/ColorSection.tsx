@@ -73,8 +73,8 @@ export function ColorSection() {
                 title="Color"
                 description="Paper and ink lead. State colors explain work; editorial colors bring character to illustrations."
               />
-              <nav className="flex-shrink-0 relative z-10 -mt-6 sm:-mt-8 mb-10">
-                <div className="flex items-center gap-1 p-1 bg-bf-paper border border-bf-border rounded-lg w-fit" role="tablist" aria-label="Color categories">
+              <nav className="relative z-10 -mt-6 mb-10 max-w-full overflow-x-auto sm:-mt-8" aria-label="Color categories">
+                <div className="flex w-max items-center gap-1 rounded-lg border border-bf-border bg-bf-paper p-1" role="tablist" aria-label="Color categories">
                   {categoryOrder.map((key) => {
                     const cat = colorCategories[key];
                     const isActive = activeTab === key;
