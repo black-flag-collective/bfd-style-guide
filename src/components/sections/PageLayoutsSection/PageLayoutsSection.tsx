@@ -217,7 +217,7 @@ export function PageLayoutsSection() {
           <SectionHeader
             number="15"
             title="Page Layouts"
-            description="Full-page compositions from the admin app with real client data, vendor logos, and proper tab structures. Each uses the sidebar, chrome header, and responsive grid."
+            description="These compositions show layout structure and real logo use. The current Agora screens are reviewed in its Storybook, where Home leads with projects and Activity keeps reading controls close to the work."
           />
 
           {/* ── 1. Clients Grid ── */}

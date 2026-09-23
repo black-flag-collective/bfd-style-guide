@@ -6,7 +6,7 @@ const colorCategories = {
   base: {
     label: "Foundation",
     percentage: "60%",
-    description: "The Ship — cool zinc grays. Sharp, engineered, zero warmth. Every screen feels intentional and professional, like precision-machined steel.",
+    description: "Light paper, quiet zinc structure, and clear ink keep dense work easy to read.",
     colors: [
       { name: "Zinc 100", hex: "#F4F4F5", persona: "The Harbor", usage: "Primary background — cool, professional canvas" },
       { name: "Zinc 200", hex: "#E4E4E7", persona: "The Hull", usage: "Surfaces, sidebars, recessed panels" },
@@ -29,7 +29,7 @@ const colorCategories = {
   crew: {
     label: "Crew",
     percentage: "25%",
-    description: "Every crew member has a job. Bold, grungy, unapologetic state colors for an enterprise app that doesn't pretend to be something it's not.",
+    description: "State colors each have a specific job. Use text and shape alongside color to explain status.",
     colors: [
       { name: "Gold", hex: "#FFC800", persona: "The Lookout", usage: "Warnings, caution, attention" },
       { name: "Mint", hex: "#5AE09A", persona: "The Medic", usage: "Success, healthy, online, all-clear" },
@@ -42,10 +42,21 @@ const colorCategories = {
       { name: "Slate", hex: "#64748B", persona: "The Anchor", usage: "Archived, disabled, at rest" },
     ],
   },
+  print: {
+    label: "Editorial",
+    percentage: "Illustration",
+    description: "The current BFD site uses cobalt, coral, yellow, and a pale wash in editorial artwork. These are illustration accents, not success, error, or warning states.",
+    colors: [
+      { name: "Print blue", hex: "#2759D6", persona: "Illustration", usage: "Cobalt shapes and editorial highlights" },
+      { name: "Print coral", hex: "#EE6950", persona: "Illustration", usage: "Coral shapes and warm editorial emphasis" },
+      { name: "Print yellow", hex: "#EAC74D", persona: "Illustration", usage: "Yellow shapes and composition accents" },
+      { name: "Print wash", hex: "#E5EAF5", persona: "Illustration", usage: "Soft blue backing for artwork" },
+    ],
+  },
 };
 
 type CategoryKey = keyof typeof colorCategories;
-const categoryOrder: CategoryKey[] = ["base", "accent", "crew"];
+const categoryOrder: CategoryKey[] = ["base", "accent", "crew", "print"];
 
 export function ColorSection() {
   const [activeTab, setActiveTab] = useState<CategoryKey>("base");
@@ -60,10 +71,10 @@ export function ColorSection() {
               <SectionHeader
                 number="02"
                 title="Color"
-                description="Cool zinc foundation. Bold crew state colors. Engineered, not decorated."
+                description="Paper and ink lead. State colors explain work; editorial colors bring character to illustrations."
               />
-              <nav className="flex-shrink-0 relative z-10 -mt-6 sm:-mt-8 mb-10">
-                <div className="flex items-center gap-1 p-1 bg-bf-paper border border-bf-border rounded-lg w-fit" role="tablist" aria-label="Color categories">
+              <nav className="relative z-10 -mt-6 mb-10 max-w-full overflow-x-auto sm:-mt-8" aria-label="Color categories">
+                <div className="flex w-max items-center gap-1 rounded-lg border border-bf-border bg-bf-paper p-1" role="tablist" aria-label="Color categories">
                   {categoryOrder.map((key) => {
                     const cat = colorCategories[key];
                     const isActive = activeTab === key;

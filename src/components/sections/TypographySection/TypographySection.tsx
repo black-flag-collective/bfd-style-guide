@@ -17,16 +17,16 @@ const monoFont = {
 const typeScale = [
   {
     label: "Display",
-    specimen: "Software so good you can't help but smile",
+    specimen: "Business design for the next big idea",
     size: "3rem",
     mobileSize: "2rem",
     lineHeight: "1.1",
-    weight: 700,
-    weightLabel: "Bold 700",
+    weight: 800,
+    weightLabel: "Extra bold 800",
   },
   {
     label: "H1",
-    specimen: "Broken software sucks. We fix it.",
+    specimen: "Start with the right question",
     size: "1.5rem",
     lineHeight: "1.2",
     weight: 400,
@@ -34,7 +34,7 @@ const typeScale = [
   },
   {
     label: "H2",
-    specimen: "Everything your tech team should be",
+    specimen: "Confidence, week by week",
     size: "1.25rem",
     lineHeight: "1.25",
     weight: 400,
@@ -42,7 +42,7 @@ const typeScale = [
   },
   {
     label: "H3",
-    specimen: "From idea to production at warp speed",
+    specimen: "Your business. Our starting point.",
     size: "1.125rem",
     lineHeight: "1.3",
     weight: 500,
@@ -51,7 +51,7 @@ const typeScale = [
   {
     label: "Body",
     specimen:
-      "We become your tech team. Something off? We fix it. No extra charge. Business idea to production services — that's what we do.",
+      "We align our work with your business, gather evidence, and make progress and decisions visible.",
     size: "0.875rem",
     lineHeight: "1.6",
     weight: 400,
@@ -59,7 +59,7 @@ const typeScale = [
   },
   {
     label: "CTA",
-    specimen: "Get started now",
+    specimen: "See what's possible",
     size: "0.875rem",
     lineHeight: "1",
     weight: 500,
@@ -73,6 +73,7 @@ const weightShowcase = [
   { weight: 400, sample: "Regular" },
   { weight: 500, sample: "Medium" },
   { weight: 700, sample: "Bold" },
+  { weight: 800, sample: "Extra bold" },
   { weight: 900, sample: "Black" },
 ];
 
