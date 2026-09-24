@@ -136,7 +136,7 @@ export function NavigationSection() {
                       return (
                         <div style={{ height: "100%", background: "#FFFFFF", position: "relative" }}>
                           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 52, padding: "0 16px", borderBottom: "1px solid #D4D4D8" }}>
-                            <button aria-label="Open example navigation" aria-expanded={mobileMenuOpen} onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ cursor: "pointer", background: "none", border: "none", padding: 8, minWidth: 40, minHeight: 40 }}>
+                            <button aria-label={mobileMenuOpen ? "Close example navigation" : "Open example navigation"} aria-expanded={mobileMenuOpen} onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ cursor: "pointer", background: "none", border: "none", padding: 8, minWidth: 40, minHeight: 40 }}>
                               <img src="/logos/mark-dark.svg" alt="" style={{ height: 24, width: "auto" }} />
                             </button>
                             <span style={{ fontSize: 13, fontWeight: 600, color: "#171717" }}>
@@ -1289,6 +1289,8 @@ export function NavigationSection() {
                         {/* Mobile header bar */}
                         <div className="flex items-center h-16 px-3 border-b border-[#D4D4D8] bg-white">
                           <button
+                            aria-label={mobileMenuOpen ? "Close example navigation" : "Open example navigation"}
+                            aria-expanded={mobileMenuOpen}
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                             className="h-6 w-auto flex items-center justify-center"
                           >
