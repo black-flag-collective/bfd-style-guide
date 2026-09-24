@@ -136,7 +136,7 @@ export function NavigationSection() {
                       return (
                         <div style={{ height: "100%", background: "#FFFFFF", position: "relative" }}>
                           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 52, padding: "0 16px", borderBottom: "1px solid #D4D4D8" }}>
-                            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ cursor: "pointer", background: "none", border: "none", padding: 0 }}>
+                            <button aria-label={mobileMenuOpen ? "Close example navigation" : "Open example navigation"} aria-expanded={mobileMenuOpen} onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ cursor: "pointer", background: "none", border: "none", padding: 8, minWidth: 40, minHeight: 40 }}>
                               <img src="/logos/mark-dark.svg" alt="" style={{ height: 24, width: "auto" }} />
                             </button>
                             <span style={{ fontSize: 13, fontWeight: 600, color: "#171717" }}>
@@ -163,7 +163,7 @@ export function NavigationSection() {
                                 >
                                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 12px", height: 52, flexShrink: 0, borderBottom: "1px solid #D4D4D8" }}>
                                     <img src="/logos/bfd-dark.svg" alt="" style={{ height: 18, width: "auto" }} />
-                                    <button onClick={() => setMobileMenuOpen(false)} style={{ color: "#71717A", background: "none", border: "none", cursor: "pointer", padding: 2 }}>
+                                    <button aria-label="Close example navigation" onClick={() => setMobileMenuOpen(false)} style={{ color: "#71717A", background: "none", border: "none", cursor: "pointer", padding: 8, minWidth: 40, minHeight: 40 }}>
                                       <IconX size={16} stroke={1.75} />
                                     </button>
                                   </div>
@@ -1289,6 +1289,8 @@ export function NavigationSection() {
                         {/* Mobile header bar */}
                         <div className="flex items-center h-16 px-3 border-b border-[#D4D4D8] bg-white">
                           <button
+                            aria-label={mobileMenuOpen ? "Close example navigation" : "Open example navigation"}
+                            aria-expanded={mobileMenuOpen}
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                             className="h-6 w-auto flex items-center justify-center"
                           >

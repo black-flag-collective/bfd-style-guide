@@ -295,7 +295,7 @@ export function FeedbackSection() {
                     <AlertCircle size={28} strokeWidth={1.25} className="mb-3" style={{ color: "var(--bf-crimson)" }} />
                     <p className="text-sm font-medium text-bf-text mb-1">Something went wrong</p>
                     <p className="text-xs text-bf-muted leading-relaxed max-w-[200px] mb-3">
-                      An unexpected error occurred. Our team has been notified.
+                      An unexpected error occurred. Report the issue so the team can investigate.
                     </p>
                     <button className="h-8 px-3 text-xs font-medium rounded-md text-white transition-colors flex items-center gap-1.5" style={{ backgroundColor: "var(--bf-crimson)" }}>
                       Report Issue
