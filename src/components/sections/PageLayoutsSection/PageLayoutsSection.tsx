@@ -32,6 +32,7 @@ import {
   DollarSign,
 } from "lucide-react";
 import { GitHubDark, Convex, Clerk, Cloudflare, AWS, Supabase } from "developer-icons";
+import { ProductWorkspaceExample } from "./ProductWorkspaceExample";
 import { SectionHeader } from "@/components/SectionHeader";
 import { DeviceFrame } from "@/components/DeviceFrame/DeviceFrame";
 import { CLIENTS } from "../EventCardsSection/shared/ClientGrid";
@@ -217,9 +218,10 @@ export function PageLayoutsSection() {
           <SectionHeader
             number="15"
             title="Page Layouts"
-            description="These older compositions show layout structure and real logo use, not current page chrome. Use Agora Storybook for the current Home, Activity, and project screens: content starts immediately, without page banners or eyebrows."
+            description="Product views start with records and controls. Keep identity, the current view, and the next action clear without banners or eyebrows. Use Agora Storybook for complete application states."
           />
 
+          <ProductWorkspaceExample />
           {/* ── 1. Clients Grid ── */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
