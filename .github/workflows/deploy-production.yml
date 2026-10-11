@@ -4,7 +4,7 @@
 # Triggered on push to main branch
 #
 # Required GitHub Secrets:
-#   CLOUDFLARE_API_KEY     - Cloudflare API Token
+#   CLOUDFLARE_API_TOKEN   - Scoped Cloudflare API token (Pages Write)
 #   CLOUDFLARE_ACCOUNT_ID  - Cloudflare account ID
 
 name: Deploy to Production
@@ -42,7 +42,7 @@ jobs:
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_KEY }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=bfd-style-guide --branch=main --commit-dirty=true
 
