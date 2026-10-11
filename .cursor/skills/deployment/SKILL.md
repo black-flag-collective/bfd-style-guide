@@ -75,24 +75,23 @@ These are set on the `black-flag-collective/bfd-style-guide` repository:
 
 | Secret | What It Is | Where It Comes From |
 |--------|-----------|---------------------|
-| `CLOUDFLARE_API_KEY` | Cloudflare API Token (scoped for Pages + DNS) | Root `.env` as `CLOUDFLARE_API_TOKEN_2` |
-| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID | Root `.env` as `CLOUDFLARE_ACCOUNT_ID_2` |
+| `CLOUDFLARE_API_TOKEN` | Scoped Cloudflare API token (Pages Write, Account Settings Read) | 1Password "BFD Automation" item "BFD Style Guide Cloudflare Pages deploy token (OS-647)", field `credential` |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID | Black Flag Design account `0c4626f42b59ae6fcf7af5c6e71665a4` |
 
 **To update secrets** (e.g., after key rotation):
 
 ```bash
-# From the monorepo root
-source .env
-gh secret set CLOUDFLARE_API_KEY \
-  --body "${CLOUDFLARE_API_TOKEN_2}" \
-  --repo black-flag-collective/bfd-style-guide
+# Pipe the token from 1Password; never paste it into a command line.
+op item get "BFD Style Guide Cloudflare Pages deploy token (OS-647)" \
+  --vault "BFD Automation" --fields credential --reveal \
+  | tr -d '\n' | gh secret set CLOUDFLARE_API_TOKEN --repo black-flag-collective/bfd-style-guide
 
 gh secret set CLOUDFLARE_ACCOUNT_ID \
-  --body "${CLOUDFLARE_ACCOUNT_ID_2}" \
+  --body 0c4626f42b59ae6fcf7af5c6e71665a4 \
   --repo black-flag-collective/bfd-style-guide
 ```
 
-**Authentication method:** The `cloudflare/wrangler-action@v3` uses the `apiToken` input, which internally sets `CLOUDFLARE_API_TOKEN`. Do NOT set `CLOUDFLARE_EMAIL` or `CLOUDFLARE_API_KEY` as env vars in the workflow — only use the `with.apiToken` and `with.accountId` inputs.
+**Authentication method:** The `cloudflare/wrangler-action@v3` uses the `apiToken` input, which internally sets `CLOUDFLARE_API_TOKEN`. Never use the account-wide Global API Key (`CLOUDFLARE_EMAIL` + `CLOUDFLARE_API_KEY`) here — only use the `with.apiToken` and `with.accountId` inputs.
 
 ---
 
@@ -158,7 +157,7 @@ CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN_2}" \
 
 ### Deployment fails with "Authentication error"
 
-Check that `CLOUDFLARE_API_KEY` secret is set correctly. It should be the scoped API Token (`CLOUDFLARE_API_TOKEN_2` from root `.env`), NOT the Global API Key. The wrangler action uses the `apiToken` input which maps to `CLOUDFLARE_API_TOKEN` env var internally.
+Check that the `CLOUDFLARE_API_TOKEN` secret is set correctly. It must be the scoped Pages token from 1Password, NOT the Global API Key. The wrangler action uses the `apiToken` input which maps to `CLOUDFLARE_API_TOKEN` env var internally.
 
 ### Deployment fails with "Unknown internal error occurred"
 
