@@ -139,16 +139,19 @@ If you need to deploy without GitHub Actions:
 cd projects/bfd-style-guide
 npm run build
 
-# Load credentials from monorepo root .env
-source ../../.env
+# Read the scoped Pages token from 1Password into this shell only
+CLOUDFLARE_API_TOKEN="$(op item get "BFD Style Guide Cloudflare Pages deploy token (OS-647)" \
+  --vault "BFD Automation" --fields credential --reveal)"
+export CLOUDFLARE_API_TOKEN
+export CLOUDFLARE_ACCOUNT_ID=0c4626f42b59ae6fcf7af5c6e71665a4
 
 # Deploy to production
-CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN_2}" \
-  npx wrangler pages deploy dist --project-name=bfd-style-guide --branch=main
+npx wrangler pages deploy dist --project-name=bfd-style-guide --branch=main
 
 # Deploy to staging
-CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN_2}" \
-  npx wrangler pages deploy dist --project-name=bfd-style-guide --branch=staging
+npx wrangler pages deploy dist --project-name=bfd-style-guide --branch=staging
+
+unset CLOUDFLARE_API_TOKEN
 ```
 
 ---
