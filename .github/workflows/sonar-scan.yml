@@ -1,0 +1,36 @@
+name: SonarQube Scan
+
+# Path A: analysis only (this repo has no test workflow yet). When tests land,
+# switch to the Path B workflow_run wrapper and add LCOV coverage.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: read
+
+concurrency:
+  group: sonar-scan-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sonarqube:
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    uses: black-flag-collective/action-workflows/.github/workflows/sonar-scan.yml@a9f926522ca067b44c31608f05f0e7327a90d15b # main 2026-10-11 (OS-648)
+    secrets: inherit
+    with:
+      sonar-host-url: https://sonarqube.blackflag.design
+      fetch-depth: 0
+      use-pull-request-scan: ${{ github.event_name == 'pull_request' }}
+      pull-request-key: ${{ github.event.pull_request.number }}
+      pull-request-branch: ${{ github.event.pull_request.head.ref }}
+      pull-request-base: ${{ github.event.pull_request.base.ref }}
+      scm-revision: ${{ github.event.pull_request.head.sha }}
+      branch-name: ${{ github.ref_name }}
+      issue-gate-scope: new-code
+      enforce-quality-gate: ${{ github.event_name != 'pull_request' }}
