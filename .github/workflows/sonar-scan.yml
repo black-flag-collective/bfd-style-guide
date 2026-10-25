@@ -1,0 +1,50 @@
+name: SonarQube Scan
+
+# Self-contained scan. This repo is public, so it cannot call the private
+# black-flag-collective/action-workflows reusable workflow. It uses the public
+# SonarQube scan action with the org SONAR_TOKEN secret instead.
+#
+# GitHub-hosted runner on purpose: hosted minutes are free for public repos,
+# and the BFD self-hosted runner groups serve private repos only.
+# Pull requests get the "SonarQube Code Analysis" check from SonarQube; main
+# gets a branch analysis. Fork pull requests never receive the token.
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sonar-scan-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sonarqube:
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.event.pull_request.head.repo.full_name == github.repository
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      # TypeScript analysis reads tsconfig.json, which resolves Astro's types.
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: SonarQube scan
+        uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995 # v8.1.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarqube.blackflag.design
