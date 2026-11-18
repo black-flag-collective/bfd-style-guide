@@ -12,9 +12,9 @@
     "check:pipeline": "astro check"
   },
   "dependencies": {
-    "@astrojs/react": "^4.4.2",
+    "@astrojs/react": "^7.1.9",
     "@tabler/icons-react": "^3.36.1",
-    "astro": "^5.17.1",
+    "astro": "^7.4.12",
     "clsx": "^2.1.1",
     "developer-icons": "^6.0.5",
     "framer-motion": "^11.13.1",
@@ -24,11 +24,11 @@
     "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.6",
-    "@tailwindcss/vite": "^4.1.18",
+    "@astrojs/check": "^0.9.12",
+    "@tailwindcss/vite": "^4.3.5",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
-    "tailwindcss": "^4.1.18",
+    "tailwindcss": "^4.3.5",
     "typescript": "5.6.3"
   }
 }

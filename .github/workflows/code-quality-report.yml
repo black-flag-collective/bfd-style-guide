@@ -1,35 +1,51 @@
 name: Code-quality report (daily)
-# Cron 12:00 UTC.
+
+# Daily snapshot of every metric the BFD code-quality stack tracks.
+# Regenerates docs/code-quality-report.md and publishes it to the run summary
+# and a `code-quality-report` artifact kept for 90 days. It never opens a PR:
+# a bot PR that nobody merges only piles up commits and blocks nothing useful.
+#
+# Cron is staggered org-wide. This repo keeps 12:00 UTC.
+
 on:
   schedule:
     - cron: "0 12 * * *"
   workflow_dispatch: {}
+
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+
 concurrency:
   group: code-quality-report
   cancel-in-progress: false
+
 jobs:
   report:
+    # Public repo: GitHub-hosted minutes are free and the Fly runner groups
+    # serve private repos only.
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
-        with: { fetch-depth: 1 }
+        with:
+          fetch-depth: 1
+          persist-credentials: false
       - uses: actions/setup-node@v5
-        with: { node-version: 22, cache: npm }
-      - run: npm ci --no-audit --no-fund
-      - run: |
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install workspace deps
+        run: npm ci --no-audit --no-fund
+      - name: Regenerate report
+        run: |
           mkdir -p docs
           node scripts/quality/generate-report.mjs > docs/code-quality-report.md
-      - uses: peter-evans/create-pull-request@v7
+      - name: Publish report to run summary
+        run: cat docs/code-quality-report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: chore/daily-code-quality-report
-          base: main
-          commit-message: "chore: daily code-quality report"
-          title: "chore: daily code-quality report"
-          body: "Auto-generated. Persistent daily snapshot."
-          delete-branch: false
-          add-paths: docs/code-quality-report.md
+          name: code-quality-report
+          path: docs/code-quality-report.md
+          retention-days: 90
+          if-no-files-found: error
