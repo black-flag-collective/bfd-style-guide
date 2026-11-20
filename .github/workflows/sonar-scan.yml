@@ -34,6 +34,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - name: Mitigate Java4Shell in scanner JVMs
+        run: |
+          # Protect both the bundled launcher and the scanner engine, preserving existing options.
+          printf '%s\n' "JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS:+$JAVA_TOOL_OPTIONS }-XX:-UseBASE64Intrinsics" >> "$GITHUB_ENV"
+          printf '%s\n' "SONAR_SCANNER_JAVA_OPTS=${SONAR_SCANNER_JAVA_OPTS:+$SONAR_SCANNER_JAVA_OPTS }-XX:-UseBASE64Intrinsics" >> "$GITHUB_ENV"
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
