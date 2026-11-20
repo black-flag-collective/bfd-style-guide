@@ -40,6 +40,23 @@ jobs:
           printf '%s\n' "JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS:+$JAVA_TOOL_OPTIONS }-XX:-UseBASE64Intrinsics" >> "$GITHUB_ENV"
           printf '%s\n' "SONAR_SCANNER_JAVA_OPTS=${SONAR_SCANNER_JAVA_OPTS:+$SONAR_SCANNER_JAVA_OPTS }-XX:-UseBASE64Intrinsics" >> "$GITHUB_ENV"
 
+      - name: Install the verified scanner trust-store JDK
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: temurin
+          java-version: '21.0.13.1+2'
+
+      - name: Use a clean scanner trust store
+        run: |
+          # Both launcher and engine must use this store, even when the CLI bundles its own JRE.
+          store="$JAVA_HOME/lib/security/cacerts"
+          test -s "$store"
+          test -r "$store"
+          trust_option="-Djavax.net.ssl.trustStore=\"$store\""
+          printf '%s\n' "JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS:+$JAVA_TOOL_OPTIONS }$trust_option" >> "$GITHUB_ENV"
+          printf '%s\n' "SONAR_SCANNER_JAVA_OPTS=${SONAR_SCANNER_JAVA_OPTS:+$SONAR_SCANNER_JAVA_OPTS }$trust_option" >> "$GITHUB_ENV"
+          printf '%s\n' 'SONAR_SCANNER_SKIP_JRE_PROVISIONING=true' >> "$GITHUB_ENV"
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
