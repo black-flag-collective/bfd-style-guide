@@ -9,7 +9,7 @@ const workflow = readFileSync(new URL('../.github/workflows/sonar-scan.yml', imp
 test('public scanner uses the pinned clean trust store for launcher and engine', () => {
   const install = workflow.indexOf('uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961');
   assert.ok(install >= 0, 'missing pinned clean-JDK setup');
-  assert.match(workflow, /distribution: temurin\n          java-version: '21\.0\.13\.1\+2'/);
+  assert.match(workflow, /distribution: temurin\n(?:          #[^\n]*\n)?          java-version: '21\.0\.13\+100000002\.0\.LTS'/);
   const setup = workflow.match(/^      - name: Use a clean scanner trust store\n        run: \|\n((?:          .*\n|\n)+)/m);
   assert.ok(setup, 'missing clean trust-store setup');
   assert.ok(install < setup.index && setup.index < workflow.indexOf('      - uses: actions/checkout@'));
