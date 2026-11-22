@@ -39,14 +39,7 @@ const {
   <body>
     <slot />
 
-    <!-- BFD Feedback Widget -->
-    <link rel="stylesheet" href="https://widget.blackflag.design/latest/style.css" />
-    <script is:inline>
-      window.BlackFlagConfig = {
-        projectKey: 'bf_854596fcc5281bfe',
-        apiBaseUrl: 'https://astute-emu-523.convex.site',
-      };
-    </script>
-    <script defer src="https://widget.blackflag.design/latest/widget.js" is:inline></script>
+    <!-- Black Flag feedback widget -->
+    <script is:inline src="https://widget.blackflag.design/latest/widget.js" data-project-key="bf_854596fcc5281bfe" async></script>
   </body>
 </html>
