@@ -1,0 +1,75 @@
+name: Build
+on:
+  pull_request:
+    branches:
+    - main
+    - uat
+    - staging
+  push:
+    branches:
+    - main
+    - uat
+    - staging
+permissions:
+  contents: read
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        fetch-depth: 1
+        persist-credentials: false
+    - uses: actions/setup-node@v5
+      with:
+        node-version: 22
+        cache: npm
+    - name: Install dependencies
+      run: npm ci --no-audit --no-fund
+    - name: Build
+      run: npm run build
+  sonar:
+    if: "${{\n  github.event_name != 'pull_request' ||\n  github.event.pull_request.head.repo.full_name == github.repository\n}}"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - name: Mitigate Java4Shell in scanner JVMs
+      run: '# Protect both the bundled launcher and the scanner engine, preserving existing options.
+
+        printf ''%s\n'' "JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS:+$JAVA_TOOL_OPTIONS }-XX:-UseBASE64Intrinsics" >> "$GITHUB_ENV"
+
+        printf ''%s\n'' "SONAR_SCANNER_JAVA_OPTS=${SONAR_SCANNER_JAVA_OPTS:+$SONAR_SCANNER_JAVA_OPTS }-XX:-UseBASE64Intrinsics" >> "$GITHUB_ENV"
+
+        '
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.head.sha || github.sha }}
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: npm
+    - run: npm ci --ignore-scripts --no-audit --no-fund
+    - name: SonarQube scan
+      uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: https://sonarqube.blackflag.design
+      with:
+        args: -Dsonar.qualitygate.wait=true -Dsonar.scm.revision=${{ github.event.pull_request.head.sha || github.sha }}
+    needs: build
+  sonar-required:
+    name: Sonar required
+    needs: sonar
+    if: ${{ always() && (github.event_name == 'pull_request' || github.event_name == 'push') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Require successful Sonar analysis
+      env:
+        SONAR_RESULT: ${{ needs.sonar.result }}
+      run: test "$SONAR_RESULT" = success
